@@ -87,6 +87,9 @@ class Libs(object):
             else:
                 print('subdns.py 正在运行...')
                 return True
+
+    def Install_DiscoverTarget(self):
+        pass
             
 
 
