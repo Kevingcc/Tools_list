@@ -10,7 +10,12 @@ import traceback
 class Libs(object):
     
     def __init__(self):
-        pass
+        self.config_pip_source()
+        c1 = self.Inspect_pip()
+        if c1:
+            self.vle = True
+        else:
+            self.vle = False
 
     def commands(self,cmd):
         try:
@@ -39,6 +44,19 @@ class Libs(object):
             # print(traceback.format_exc())
             return False    
         
+    def commands__(self,cmd='',decodes_='utf-8'):
+        try:
+            cc = []
+            c = subprocess.call(cmd,shell=True)
+            cc.append(c)
+            for value in cc:
+                if value:
+                    return value
+                else:
+                    return False
+        except Exception as e:
+            # print(traceback.format_exc())
+            return False   
 
     def config_pip_source(self):
         c1 = self.commands_(cmd=['echo $HOME'])
@@ -72,16 +90,14 @@ class Libs(object):
             return False
     
     def Install_subdns(self):
-        self.config_pip_source()
-        c1 = self.Inspect_pip()
-        if c1:
+        if self.vle:
             c2 = self.commands_(cmd=['python3 subdns/subdns.py --help'])
             if not c2:
                 print('subdns.py 没有安装依赖项...')
                 print('subdns.py 正在安装依赖项...')
                 c3 = self.commands_(cmd=['python3 -m pip install aiodns==2.0.0 colorlog==4.0.2'])
                 if c3:
-                    print('subdns.py 安装完成...')
+                    print('subdns.py 依赖项安装完成...')
                 
                 return False
             else:
@@ -89,8 +105,22 @@ class Libs(object):
                 return True
 
     def Install_DiscoverTarget(self):
-        pass
-            
+        if self.vle:
+            c1 = self.commands_(cmd=['python2 DiscoverTarget/DiscoverTarget.py --help'])
+            if not c1:
+                print('DiscoverTarget.py 没有安装依赖项...')
+                print('DiscoverTarget.py 正在安装依赖项...')
+                c2 = self.commands_(cmd=['python2 -m pip install fofa==1.0.1 shodan==1.13.0 gevent==1.4.0 lxml==4.3.3 bs4==0.0.1'])
+                if c2:
+                    print('DiscoverTarget.py 依赖项安装完成...')
+                
+                return False
+            else:
+                print('DiscoverTarget.py 正在运行...')
+                return True
+
+    
+        
 
 
 
@@ -102,9 +132,13 @@ class Run(Libs):
     
     def __init__(self,cmd=''):
         self.cmd = cmd
+        super(Run,self).__init__()
 
     def Run_subdns(self):
         content = """
+########
+子域名爆破
+########
 1.查看帮助.
 2.输入url.
 3.自定义字典.
@@ -130,7 +164,7 @@ optional arguments:
             print(content)
             c2 = input('>')
             if c2 is '1':
-                c3 = self.commands_(cmd=['python3 subdns/subdns.py --help'])
+                c3 = self.commands__(cmd=['python3 subdns/subdns.py --help'])
                 print(c3)
                 print('')
                 print("##############################################################################################")
@@ -138,15 +172,66 @@ optional arguments:
             if c2 is '2':
                 print(helps2)
                 ipt1 = input('Url>')
-                c3 = self.commands_(cmd=['python3 subdns/subdns.py -u {} -d mini_names.txt'.format(ipt1)])
+                c3 = self.commands__(cmd=['python3 subdns/subdns.py -u {} -d mini_names.txt'.format(ipt1)])
             if c2 is '3':
                 print('字典存放路径:$HOME/.Tools/Tools_list/dict')
                 print('如果存放好了字典，请输入字典名字...')
                 print(helps2)
                 ipt1 = input('Url>')
                 ipt2 = input('Dict>')
-                c3 = self.commands_(cmd=['python3 subdns/subdns.py -u {} -d {}'.format(ipt1,ipt2)])
+                c3 = self.commands__(cmd=['python3 subdns/subdns.py -u {} -d {}'.format(ipt1,ipt2)])
             if c2 is '0':
+                exit(0)
+    
+    def Run_DiscoverTarget(self):
+        content = """
+#######
+URL采集
+#######
+1.查看帮助.
+2.输入关键字.
+0.返回上一级.
+        """
+        helps1 = """
+Usage: 
+      _____  _                          _______                   _   
+     |  __ \(_)                        |__   __|                 | |  
+     | |  | |_ ___  ___ _____   _____ _ __| | __ _ _ __ __ _  ___| |_ 
+     | |  | | / __|/ __/ _ \ \ / / _ \ '__| |/ _` | '__/ _` |/ _ \ __|
+     | |__| | \__ \ (_| (_) \ V /  __/ |  | | (_| | | | (_| |  __/ |_ 
+     |_____/|_|___/\___\___/ \_/ \___|_|  |_|\__,_|_|  \__, |\___|\__|
+                                                        __/ |         
+                                                       |___/         
+                                        Coded By Coco413 (v1.0 RELEASE) 
+    
+
+Options:
+  --version             show program's version number and exit
+  -h, --help            show this help message and exit
+  -S SHODAN, --shodan=SHODAN
+                        使用shodan空间搜索引擎
+  -F FOFA, --fofa=FOFA  FOFA空间搜索引擎
+  -Z ZOOMEYE, --zoomeye=ZOOMEYE
+                        使用ZOOMEYE空间搜索引擎
+  -C CENSYS, --censys=CENSYS
+                        使用censys空间搜索引擎
+  -B B3G, --b3g=B3G     传统搜索引擎使用百度360谷歌
+
+例子: python DiscoverTarget.py -S Apache-Tomcat -F app="Apache-Tomcat" -Z
+app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
+
+"""
+        c1 = self.Install_DiscoverTarget()
+        if c1:
+            print(content)
+            ipt1 = input('>')
+            if ipt1 is '1':
+                print(helps1)
+                c2 = self.commands_(cmd=['python2 DiscoverTarget/DiscoverTarget.py --help'])
+            if ipt1 is '2':
+                keywords = input('>')
+                c2 = self.commands__(cmd=['python2 DiscoverTarget/DiscoverTarget.py -B {}'.format(keywords)])
+            if ipt1 is '0':
                 exit(0)
 
 
@@ -163,3 +248,4 @@ optional arguments:
 r = Run()
 # r.test()
 r.Run_subdns()
+
