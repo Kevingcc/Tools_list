@@ -254,6 +254,8 @@ app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
         """
         print(content1)
         ipt1 = input('>')
+        if not ipt1:
+            self.main()
         if ipt1 is '1':
             content2 = """
 1.子域名爆破.
