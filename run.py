@@ -142,7 +142,7 @@ class Run(Libs):
 1.查看帮助.
 2.输入url.
 3.自定义字典.
-0.返回上一级.
+0.返回菜单.
         """
         helps1 = """
 使用: subdns.py [-h] [-v] [-d 字典] [-u 域名] [-s 深度] [-n 字典]
@@ -169,6 +169,7 @@ optional arguments:
                 print('')
                 print("##############################################################################################")
                 print(helps1)
+                self.main()
             if c2 is '2':
                 print(helps2)
                 ipt1 = input('Url>')
@@ -181,7 +182,7 @@ optional arguments:
                 ipt2 = input('Dict>')
                 c3 = self.commands__(cmd=['python3 subdns/subdns.py -u {} -d {}'.format(ipt1,ipt2)])
             if c2 is '0':
-                exit(0)
+                self.main()
     
     def Run_DiscoverTarget(self):
         content = """
@@ -190,7 +191,7 @@ URL采集
 #######
 1.查看帮助.
 2.输入关键字.
-0.返回上一级.
+0.返回菜单.
         """
         helps1 = """
 Usage: 
@@ -228,13 +229,36 @@ app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
             if ipt1 is '1':
                 print(helps1)
                 c2 = self.commands_(cmd=['python2 DiscoverTarget/DiscoverTarget.py --help'])
+                self.main()
             if ipt1 is '2':
                 keywords = input('>')
                 c2 = self.commands__(cmd=['python2 DiscoverTarget/DiscoverTarget.py -B {}'.format(keywords)])
             if ipt1 is '0':
-                exit(0)
+                self.main()
 
-
+    def main(self):
+        content1 = """
+1.信息收集.
+0.退出.
+        """
+        print(content1)
+        ipt1 = input('>')
+        if ipt1 is '1':
+            content2 = """
+1.子域名爆破.
+2.URL采集.
+0.返回菜单.
+            """
+            print(content2)
+            ipt2 = input('>')
+            if ipt2 is '1':
+                self.Run_subdns()
+            if ipt2 is '2':
+                self.Run_DiscoverTarget()
+            if ipt2 is '0':
+                self.main()
+        if ipt1 is '0':
+            exit(0)
 
     def test(self):
         # c = self.commands_(cmd=['ls'])
@@ -247,5 +271,5 @@ app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
 
 r = Run()
 # r.test()
-r.Run_subdns()
+r.main()
 
