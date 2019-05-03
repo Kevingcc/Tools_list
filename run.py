@@ -142,6 +142,7 @@ class Run(Libs):
 1.查看帮助.
 2.输入url.
 3.自定义字典.
+4.查看结果.
 0.返回菜单.
         """
         helps1 = """
@@ -183,6 +184,8 @@ optional arguments:
                 ipt2 = input('Dict>')
                 c3 = self.commands__(cmd=['python3 subdns/subdns.py -u {} -d {}'.format(ipt1,ipt2)])
                 self.main()
+            if c2 is '4':
+                pass
             if c2 is '0':
                 self.main()
     
@@ -194,6 +197,7 @@ URL采集
 1.查看帮助.
 2.输入关键字.
 3.自定义命令.
+4.查看结果.
 0.返回菜单.
         """
         helps1 = """
@@ -243,6 +247,8 @@ app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
                 c3 = input('> ')
                 c4 = self.commands__(cmd='python2 DiscoverTarget/DiscoverTarget.py {}'.format(c3))
                 self.main()
+            if ipt1 is '4':
+                pass
             if ipt1 is '0':
                 self.main()
 
