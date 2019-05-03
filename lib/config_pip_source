@@ -1,0 +1,10 @@
+#!/bin/bash
+
+cd $HOME
+mkdir .pip
+cd .pip
+#echo -e "[global]" >> pip.conf
+echo -e "[global]" > pip.conf
+#echo -e "index-url = https://pypi.tuna.tsinghua.edu.cn/simple" >> pip.conf
+echo -e "index-url = https://pypi.tuna.tsinghua.edu.cn/simple" >> pip.conf
+

@@ -7,6 +7,13 @@ import uuid
 import logging
 import colorlog
 import argparse
+import sys
+import os
+
+sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
+# print(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+print(sys.path)
+
 '''
 set log this code is Useless
 log.debug  is white ,info is green ,warn is yellow ,error is red ,critical  red!
