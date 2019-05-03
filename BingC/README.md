@@ -1,3 +1,6 @@
+#参考项目
+项目来自：https://github.com/Xyntax
+
 # BingC
 基于Bing搜索引擎的 **IP->域名** 查询，多线程，支持`Bing API`，用于旁站及C段收集。  
   
