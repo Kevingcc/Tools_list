@@ -174,6 +174,7 @@ optional arguments:
                 print(helps2)
                 ipt1 = input('Url>')
                 c3 = self.commands__(cmd=['python3 subdns/subdns.py -u {} -d mini_names.txt'.format(ipt1)])
+                self.main()
             if c2 is '3':
                 print('字典存放路径:$HOME/.Tools/Tools_list/dict')
                 print('如果存放好了字典，请输入字典名字...')
@@ -181,6 +182,7 @@ optional arguments:
                 ipt1 = input('Url>')
                 ipt2 = input('Dict>')
                 c3 = self.commands__(cmd=['python3 subdns/subdns.py -u {} -d {}'.format(ipt1,ipt2)])
+                self.main()
             if c2 is '0':
                 self.main()
     
@@ -191,6 +193,7 @@ URL采集
 #######
 1.查看帮助.
 2.输入关键字.
+3.自定义命令.
 0.返回菜单.
         """
         helps1 = """
@@ -233,6 +236,13 @@ app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
             if ipt1 is '2':
                 keywords = input('>')
                 c2 = self.commands__(cmd=['python2 DiscoverTarget/DiscoverTarget.py -B {}'.format(keywords)])
+                self.main()
+            if ipt1 is '3':
+                print('例子1：> -B hello word')
+                print('例子2：> -Z app:"Apache-Tomcat"')
+                c3 = input('> ')
+                c4 = self.commands__(cmd='python2 DiscoverTarget/DiscoverTarget.py {}'.format(c3))
+                self.main()
             if ipt1 is '0':
                 self.main()
 
