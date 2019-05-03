@@ -239,6 +239,7 @@ app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
     def main(self):
         content1 = """
 1.信息收集.
+2.clear.
 0.退出.
         """
         print(content1)
@@ -257,6 +258,9 @@ app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
                 self.Run_DiscoverTarget()
             if ipt2 is '0':
                 self.main()
+        if ipt1 is '2':
+            self.commands__(cmd='clear')
+            self.main()
         if ipt1 is '0':
             exit(0)
 
