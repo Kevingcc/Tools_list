@@ -4,6 +4,7 @@ import os
 import sys
 import subprocess
 import traceback
+import re
 
 
 
@@ -160,11 +161,38 @@ class Libs(object):
         ips = []
         for filename2 in filename[0]:
             if ipt1 == str(i):
-                print('i -> ',i)
                 with open(filename2,'r') as r:
                     for line in r.readlines():
-                        pass
+                        data1 = line.split(' ')
+                        for data2 in data1:
+                            data3 = data2.strip().split('[')
+                            for data4 in data3:
+                                data5 = data4.strip().split(']')[0].strip()
+                                if '\'' in data5:
+                                    ip1 = data5.split('\'')
+                                    for ip2 in ip1:
+                                        if '\'' not in ip2 and ip2 and ',' not in ip2:
+                                            print('')
+                                            print('存活的IP地址...')
+                                            print('----------------------')
+                                            print(ip2.strip())
+                                            print('----------------------')
+                                            print('')
+                                            ips.append(ip2.strip())
+                                if '\'' not in data5:
+                                    print('')
+                                    print('存活的域名...')
+                                    print('----------------------')
+                                    print(data5)
+                                    print('----------------------')
+                                    print('')
+                                    domains.append(data5)
+                            
             i += 1
+        return (domains,ips)
+
+    def Select_Files__(self):
+        pass
 
 
         
