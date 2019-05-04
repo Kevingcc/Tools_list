@@ -10,7 +10,6 @@
 
 import os
 import sys
-
 from gevent import monkey
 monkey.patch_all()
 from lib.controller.engine import run
@@ -19,8 +18,11 @@ from lib.core.data import cmdLineOptions, conf, paths
 from lib.core.option import initOptions
 from lib.parse.cmdline import cmdLineParser
 
-
-
+sys.dont_write_bytecode = True
+# print(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0,os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# print(sys.path)
+# print(os.getcwd())
 
 def main():
     """
@@ -31,7 +33,8 @@ def main():
     banner() 
 
     # set paths of project 
-    paths.ROOT_PATH = os.getcwd() 
+    # paths.ROOT_PATH = os.getcwd()
+    paths.ROOT_PATH = os.getcwd()+'/dirmap'
     setPaths()
     
     # received command >> cmdLineOptions

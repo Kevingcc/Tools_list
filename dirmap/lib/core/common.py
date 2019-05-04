@@ -46,6 +46,7 @@ def setPaths():
     设置全局绝对路径
     """
     # 根目录
+    # root_path = ''
     root_path = paths.ROOT_PATH
     # datapath
     paths.DATA_PATH = os.path.join(root_path, "data")

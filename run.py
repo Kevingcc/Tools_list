@@ -5,8 +5,17 @@ import sys
 import subprocess
 import traceback
 import re
+from lib.datatype import AttribDict
 
+# 获取当前文件绝对路径.
+# os.getcwd()
 
+# python 设置环境变量
+# print(os.path.dirname(os.path.abspath(__file__))+'/test')
+# sys.path.insert(0,os.path.dirname(os.path.abspath(__file__))+'/test')
+
+# pyc文件清理
+# find ./ -name "*.pyc" | xargs rm -rf
 
 class Libs(object):
     
@@ -125,6 +134,21 @@ class Libs(object):
                 return False
             else:
                 print('DiscoverTarget.py 正在运行...')
+                return True
+
+    def Install_dirmap(self):
+        if self.vle:
+            c1 = self.commands_(cmd=['python3 dirmap/dirmap.py --help'])
+            if not c1:
+                print('dirmap.py 没有安装依赖项...')
+                print('dirmap.py 正在安装依赖项...')
+                c2 = self.commands__(cmd=['python3 -m pip install -r dirmap/requirement2.txt'])
+                if c2:
+                    print('dirmap.py 依赖项安装完成...')
+                
+                return False
+            else:
+                print('dirmap.py 正在运行...')
                 return True
 
     def Result_subdns(self):
@@ -332,7 +356,7 @@ app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
             ipt1 = input('>')
             if ipt1 is '1':
                 print(helps1)
-                c2 = self.commands_(cmd=['python2 DiscoverTarget/DiscoverTarget.py --help'])
+                c2 = self.commands__(cmd=['python2 DiscoverTarget/DiscoverTarget.py --help'])
                 self.Run_DiscoverTarget()
             if ipt1 is '2':
                 keywords = input('>')
@@ -349,6 +373,65 @@ app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
                 self.Run_DiscoverTarget()
             if ipt1 is '0':
                 self.main()
+
+    def Run_dirmap(self):
+        content = """
+###########
+web目录扫描
+###########
+1.查看帮助.
+2.输入URL.
+3.尝试批量扫描，请输入文件名.
+4.自定义命令.
+        """
+        helps1 = """
+                     #####  # #####  #    #   ##   #####
+                     #    # # #    # ##  ##  #  #  #    #
+                     #    # # #    # # ## # #    # #    #
+                     #    # # #####  #    # ###### #####
+                     #    # # #   #  #    # #    # #
+                     #####  # #    # #    # #    # #   v1.0
+
+使用: python3 dirmap.py -iU https://target.com -lcf
+
+可选参数:
+  -h, --help            show this help message and exit
+
+引擎:
+  引擎配置
+
+  -t THREAD_NUM, --thread THREAD_NUM
+                        线程数, default 30
+
+目标:
+  Target config
+
+  -iU TARGET            扫描单个目标 (e.g. http://target.com)
+  -iF FILE              从目标文件加载目标 (e.g. urls.txt)
+  -iR START-END         从int（开始）到int（结束）的数组 (e.g.
+                        192.168.1.1-192.168.2.100)
+  -iN IP/MASK           通过IP/掩码生成IP. (e.g. 192.168.1.0/24)
+
+Bruter:
+  Bruter config
+
+  -lcf, --加载配置文件
+                        通过配置文件加载配置
+  --debug               打印有效载荷并退出
+
+        """
+        c1 = self.Install_dirmap()
+        if c1:
+            print(content)
+            ipt1 = input('>')
+            if ipt1 is '1':
+                print(helps1)
+                c2 = self.commands__(cmd='python3 dirmap/dirmap.py --help')
+                self.Run_dirmap()
+            if ipt1 is '2':
+                ipt2 = input('Url>')
+                c2 = self.commands__(cmd='python3 dirmap.py -iU {} -t 30 -lcf --debug'.format(ipt2))
+                self.Run_dirmap()
 
     def main(self):
         content1 = """
@@ -391,8 +474,9 @@ app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
 
 r = Run()
 # r.test()
-r.main()
+# r.Install_dirmap()
 # r.Select_Files__()
+r.Run_dirmap()
 
 
 
