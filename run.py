@@ -472,11 +472,25 @@ Bruter:
     def Run_DirBrute(self):
         pass
         
+    def Run_xwaf(self):
+        print("""
+1.查看帮助.
+2.输入url.
+3.输入url,post参数.
+4.选择headerfile,输入参数,设置攻击向量level大小.
+0.返回菜单.
+        """)
+        helps1 = """
+1.python3 xwaf.py -u "http://www.baidu.com/1.php?id=1"
+2.python3 xwaf.py -u "http://www.baidu.com/1.php" --data="postdata" -p xxx
+3.python3 xwaf.py -r /tmp/headerfile -p xxx --level 5
+        """
 
     def main(self):
         content1 = """
 1.信息收集.
-2.clear.
+2.web程序.
+c.clear.
 0.退出.
         """
         print(content1)
@@ -485,6 +499,9 @@ Bruter:
             self.main()
         if ipt1 is '1':
             content2 = """
+########
+信息收集
+########
 1.子域名爆破.
 2.URL采集.
 3.web目录扫描.
@@ -521,7 +538,18 @@ Bruter:
                 self.Run_xcdn()
             if ipt2 is '0':
                 self.main()
+        
         if ipt1 is '2':
+            print("""
+########
+web程序
+#######
+1.xwaf waf自动化绕过工具.
+            """)
+            ipt2 = input('>')
+            if ipt2 is '1':
+                self.Run_xwaf()
+        if ipt1 is 'c':
             self.commands__(cmd='clear')
             self.main()
         if ipt1 is '0':
