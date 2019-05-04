@@ -453,6 +453,25 @@ Bruter:
                 pass
             if ipt1 is '0':
                 self.main()
+    
+    def Run_xcdn(self):
+        print("""
+1.输入url.
+0.返回菜单.
+        """)
+        ipt1 = input('>')
+        if not ipt1:
+            self.Run_xcdn()
+        if ipt1 is '1':
+            ipt2 = input('Url>')
+            c1 = self.commands__(cmd='python3 xcdn/xcdn.py {}'.format(ipt2))
+            self.Run_xcdn()
+        if ipt1 is '0':
+            self.main()
+
+    def Run_DirBrute(self):
+        pass
+        
 
     def main(self):
         content1 = """
@@ -469,16 +488,37 @@ Bruter:
 1.子域名爆破.
 2.URL采集.
 3.web目录扫描.
+4.尝试找出cdn背后的真实ip.
 0.返回菜单.
             """
             print(content2)
             ipt2 = input('>')
+            if not ipt2:
+                self.main()
             if ipt2 is '1':
                 self.Run_subdns()
             if ipt2 is '2':
                 self.Run_DiscoverTarget()
             if ipt2 is '3':
-                self.Run_dirmap()
+                print("""
+#######
+选择工具
+#######
+1.dirmap.
+2.DirBrute.
+0.返回菜单.
+                """)
+                ipt3 = input('>')
+                if not ipt3:
+                    self.main()
+                if ipt3 is '1':
+                    self.Run_dirmap()
+                if ipt3 is '2':
+                    pass
+                if ipt3 is '0':
+                    self.main()
+            if ipt2 is '4':
+                self.Run_xcdn()
             if ipt2 is '0':
                 self.main()
         if ipt1 is '2':
