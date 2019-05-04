@@ -146,7 +146,7 @@ class Libs(object):
 
     def Select_Files_(self):
         """
-        Select the "subdns" tool log and read it.
+        获取“subdns”工具日志的域名和ip地址。
         """
         filename = self.Result_subdns()
         i = 0
