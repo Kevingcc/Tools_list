@@ -65,7 +65,7 @@ class Libs(object):
         else:
             print('.pip目录正常...')
             if not os.path.exists(c1+'/.pip/pip.conf'):
-                cmd = ['sudo chmod +x lib/config_pip_source','lib/config_pip_source']
+                cmd = ['sudo chmod +x lib/config_pip_source','bash lib/config_pip_source']
                 c = self.commands_(cmd=cmd)
                 if c:
                     print('pip 源配置完成...')
@@ -95,7 +95,7 @@ class Libs(object):
             if not c2:
                 print('subdns.py 没有安装依赖项...')
                 print('subdns.py 正在安装依赖项...')
-                c3 = self.commands_(cmd=['python3 -m pip install aiodns==2.0.0 colorlog==4.0.2'])
+                c3 = self.commands__(cmd=['python3 -m pip install aiodns==2.0.0 colorlog==4.0.2'])
                 if c3:
                     print('subdns.py 依赖项安装完成...')
                 
@@ -106,7 +106,7 @@ class Libs(object):
 
     def Install_DiscoverTarget(self):
         if self.vle:
-            c1 = self.commands_(cmd=['python2 DiscoverTarget/DiscoverTarget.py --help'])
+            c1 = self.commands__(cmd=['python2 DiscoverTarget/DiscoverTarget.py --help'])
             if not c1:
                 print('DiscoverTarget.py 没有安装依赖项...')
                 print('DiscoverTarget.py 正在安装依赖项...')
@@ -119,7 +119,54 @@ class Libs(object):
                 print('DiscoverTarget.py 正在运行...')
                 return True
 
-    
+    def Result_subdns(self):
+        catalog = "output"
+        filename1 = []
+        filename2 = []
+        for root,dirs,files in os.walk(catalog):
+            for files in files:
+                filename1.append(root+'/'+files)
+                filename2.append(files)
+        
+        return (filename1,filename2)
+
+    def Result_DiscoverTarget(self):
+        catalog = "DiscoverTarget"
+        filename = []
+        for root,dirs,files in os.walk(catalog):
+            if 'URL.txt' in files:
+                for files in files:
+                    filename.append(root+'/'+files)
+                    filename.append(files)
+            
+        if 'DiscoverTarget/URL.txt' not in filename:
+            return False
+        
+        return (filename[0],filename[1])
+
+    def Select_Files_(self):
+        """
+        Select the "subdns" tool log and read it.
+        """
+        filename = self.Result_subdns()
+        i = 0
+        for filename1 in filename[0]:
+            print('查看的文件 | {}.{}'.format(i,filename1))
+            i += 1
+        
+        ipt1 = input('文件编号>')
+        i = 0
+        domains = []
+        ips = []
+        for filename2 in filename[0]:
+            if ipt1 == str(i):
+                print('i -> ',i)
+                with open(filename2,'r') as r:
+                    for line in r.readlines():
+                        pass
+            i += 1
+
+
         
 
 
@@ -136,9 +183,9 @@ class Run(Libs):
 
     def Run_subdns(self):
         content = """
-########
+#########
 子域名爆破
-########
+#########
 1.查看帮助.
 2.输入url.
 3.自定义字典.
@@ -164,18 +211,20 @@ optional arguments:
         if c1:
             print(content)
             c2 = input('>')
+            if not c2:
+                self.Run_subdns()
             if c2 is '1':
                 c3 = self.commands__(cmd=['python3 subdns/subdns.py --help'])
                 print(c3)
                 print('')
                 print("##############################################################################################")
                 print(helps1)
-                self.main()
+                self.Run_subdns()
             if c2 is '2':
                 print(helps2)
                 ipt1 = input('Url>')
                 c3 = self.commands__(cmd=['python3 subdns/subdns.py -u {} -d mini_names.txt'.format(ipt1)])
-                self.main()
+                self.Run_subdns()
             if c2 is '3':
                 print('字典存放路径:$HOME/.Tools/Tools_list/dict')
                 print('如果存放好了字典，请输入字典名字...')
@@ -183,9 +232,10 @@ optional arguments:
                 ipt1 = input('Url>')
                 ipt2 = input('Dict>')
                 c3 = self.commands__(cmd=['python3 subdns/subdns.py -u {} -d {}'.format(ipt1,ipt2)])
-                self.main()
+                self.Run_subdns()
             if c2 is '4':
-                pass
+                self.Select_Files_()
+                self.Run_subdns()
             if c2 is '0':
                 self.main()
     
@@ -294,4 +344,6 @@ app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
 r = Run()
 # r.test()
 r.main()
+
+
 

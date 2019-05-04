@@ -16,4 +16,4 @@
 
 ### 下载
     推荐：百度云盘 https://pan.baidu.com/s/1g_qBZhC1oajd0zH5SGVouQ 提取码: bpcz
-    推荐：git clone ... 速度有点慢.
+    不推荐：git clone ... 速度有点慢.
