@@ -107,11 +107,11 @@ class Libs(object):
 
     def Install_DiscoverTarget(self):
         if self.vle:
-            c1 = self.commands__(cmd=['python2 DiscoverTarget/DiscoverTarget.py --help'])
+            c1 = self.commands_(cmd=['python2 DiscoverTarget/DiscoverTarget.py --help'])
             if not c1:
                 print('DiscoverTarget.py 没有安装依赖项...')
                 print('DiscoverTarget.py 正在安装依赖项...')
-                c2 = self.commands_(cmd=['python2 -m pip install fofa==1.0.1 shodan==1.13.0 gevent==1.4.0 lxml==4.3.3 bs4==0.0.1'])
+                c2 = self.commands__(cmd=['python2 -m pip install fofa==1.0.1 shodan==1.13.0 gevent==1.4.0 lxml==4.3.3 bs4==0.0.1'])
                 if c2:
                     print('DiscoverTarget.py 依赖项安装完成...')
                 
@@ -192,7 +192,19 @@ class Libs(object):
         return (domains,ips)
 
     def Select_Files__(self):
-        pass
+        domains = []
+        filename = self.Result_DiscoverTarget()[0]
+        with open(filename,'r') as r:
+            print('收集的域名...')
+            for line in r.readlines():
+                print('')
+                print('----------------------')
+                print(line)
+                print('----------------------')
+                print('')
+                domains.append(line)
+        return domains
+                
 
 
         
@@ -314,19 +326,20 @@ app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
             if ipt1 is '1':
                 print(helps1)
                 c2 = self.commands_(cmd=['python2 DiscoverTarget/DiscoverTarget.py --help'])
-                self.main()
+                self.Run_DiscoverTarget()
             if ipt1 is '2':
                 keywords = input('>')
                 c2 = self.commands__(cmd=['python2 DiscoverTarget/DiscoverTarget.py -B {}'.format(keywords)])
-                self.main()
+                self.Run_DiscoverTarget()
             if ipt1 is '3':
                 print('例子1：> -B hello word')
                 print('例子2：> -Z app:"Apache-Tomcat"')
                 c3 = input('> ')
                 c4 = self.commands__(cmd='python2 DiscoverTarget/DiscoverTarget.py {}'.format(c3))
-                self.main()
+                self.Run_DiscoverTarget()
             if ipt1 is '4':
-                pass
+                self.Select_Files__()
+                self.Run_DiscoverTarget()
             if ipt1 is '0':
                 self.main()
 
@@ -372,6 +385,7 @@ app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
 r = Run()
 # r.test()
 r.main()
+# r.Select_Files__()
 
 
 
