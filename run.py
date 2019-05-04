@@ -21,7 +21,7 @@ class Libs(object):
     def commands(self,cmd):
         try:
             """
-            这是一个命令解析方法.
+            这是一个命令行解析方法.
             return <content or False>
             """
             c = subprocess.check_output(cmd,shell=True)
@@ -31,6 +31,10 @@ class Libs(object):
             return False
 
     def commands_(self,cmd=[],decodes_='utf-8'):
+        """
+            这是一个命令行解析方法.
+            return <content or False>
+        """
         try:
             cc = []
             c = subprocess.check_output(cmd,shell=True)
@@ -46,6 +50,9 @@ class Libs(object):
             return False    
         
     def commands__(self,cmd='',decodes_='utf-8'):
+        """
+            这是一个命令解析方法.
+        """
         try:
             cc = []
             c = subprocess.call(cmd,shell=True)
@@ -198,11 +205,11 @@ class Libs(object):
             print('收集的域名...')
             for line in r.readlines():
                 print('')
-                print('----------------------')
-                print(line)
-                print('----------------------')
+                print('---------------------------------------------------')
+                print(line.strip())
+                print('---------------------------------------------------')
                 print('')
-                domains.append(line)
+                domains.append(line.strip())
         return domains
                 
 
