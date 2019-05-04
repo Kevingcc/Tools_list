@@ -20,6 +20,7 @@ from lib.datatype import AttribDict
 class Libs(object):
     
     def __init__(self):
+    
         self.config_pip_source()
         c1 = self.Inspect_pip()
         if c1:
@@ -242,15 +243,14 @@ class Libs(object):
 
 
 
-            
-
-
 
 class Run(Libs):
     
     def __init__(self,cmd=''):
         self.cmd = cmd
         super(Run,self).__init__()
+        self.commands__(cmd=['sudo chmod +x lib/pyc_clear && bash lib/pyc_clear'])
+
 
     def Run_subdns(self):
         content = """
@@ -383,6 +383,7 @@ web目录扫描
 2.输入URL.
 3.尝试批量扫描，请输入文件名.
 4.自定义命令.
+5.返回菜单.
         """
         helps1 = """
                      #####  # #####  #    #   ##   #####
@@ -424,14 +425,31 @@ Bruter:
         if c1:
             print(content)
             ipt1 = input('>')
+            if not ipt1:
+                self.Run_dirmap()
             if ipt1 is '1':
                 print(helps1)
                 c2 = self.commands__(cmd='python3 dirmap/dirmap.py --help')
                 self.Run_dirmap()
             if ipt1 is '2':
+                print('例子：Url>https://www.baidu.com/index.php?id=1')
                 ipt2 = input('Url>')
-                c2 = self.commands__(cmd='python3 dirmap.py -iU {} -t 30 -lcf --debug'.format(ipt2))
+                c2 = self.commands__(cmd='python3 dirmap/dirmap.py -iU {} -t 30 -lcf --debug'.format(ipt2))
                 self.Run_dirmap()
+            if ipt1 is '3':
+                print('例子: Filename> DiscoverTarget/URL.txt')
+                ipt2 = input('Filename> ')
+                c2 = self.commands__(cmd='python3 dirmap/dirmap.py -iF {} -t 30 -lcf --debug'.format(ipt2))
+                self.Run_dirmap()
+            if ipt1 is '4':
+                print('输入选项...')
+                print('例子1: > --help')
+                print('例子2: > --iN xxx')
+                ipt2 = input('> ')
+                c2 = self.commands__(cmd='python3 dirmap/dirmap.py {}'.format(ipt2))
+                self.Run_dirmap()
+            if ipt1 is '5':
+                self.main()
 
     def main(self):
         content1 = """
@@ -447,6 +465,7 @@ Bruter:
             content2 = """
 1.子域名爆破.
 2.URL采集.
+3.web目录扫描.
 0.返回菜单.
             """
             print(content2)
@@ -455,12 +474,15 @@ Bruter:
                 self.Run_subdns()
             if ipt2 is '2':
                 self.Run_DiscoverTarget()
+            if ipt2 is '3':
+                self.Run_dirmap()
             if ipt2 is '0':
                 self.main()
         if ipt1 is '2':
             self.commands__(cmd='clear')
             self.main()
         if ipt1 is '0':
+            self.commands__(cmd=['sudo chmod +x lib/pyc_clear && bash lib/pyc_clear'])
             exit(0)
 
     def test(self):
@@ -476,7 +498,9 @@ r = Run()
 # r.test()
 # r.Install_dirmap()
 # r.Select_Files__()
-r.Run_dirmap()
+# r.Run_dirmap()
+r.main()
+
 
 
 
