@@ -383,7 +383,8 @@ web目录扫描
 2.输入URL.
 3.尝试批量扫描，请输入文件名.
 4.自定义命令.
-5.返回菜单.
+5.查看结果.
+0.返回菜单.
         """
         helps1 = """
                      #####  # #####  #    #   ##   #####
@@ -449,6 +450,8 @@ Bruter:
                 c2 = self.commands__(cmd='python3 dirmap/dirmap.py {}'.format(ipt2))
                 self.Run_dirmap()
             if ipt1 is '5':
+                pass
+            if ipt1 is '0':
                 self.main()
 
     def main(self):
