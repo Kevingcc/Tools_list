@@ -183,8 +183,10 @@ class Libs(object):
                 print('fsociety安装成功...')
             else:
                 print('fsociety安装失败...')
+            return False
         else:
             print('fsociety 正在运行...')
+            return True
 
     def Install_dnsfind(self):
         c1 = self.commands_(cmd=['python2 {}dnsfind/run.py --help'.format(self.root)])
@@ -586,11 +588,26 @@ web目录扫描.
         if ipt1 is '0':
             self.main()
 
+    def Run_fsociety(self):
+        print("""
+1.Run Fsociety
+0.返回菜单.
+        """)
+        c1 = self.Install_fsociety()
+        if c1:
+            ipt1 = input('>')
+            if ipt1 is '1':
+                self.commands__(cmd='fsociety')
+                self.Run_fsociety()
+            if ipt1 is '0':
+                self.main()
+
 
     def main(self):
         content1 = """
 1.信息收集.
 2.web程序.
+3.黑盒测试工具包.
 c.clear.
 0.退出.
         """
@@ -653,6 +670,18 @@ web程序
                 self.Run_xwaf()
             if ipt2 is '0':
                 self.main()
+        if ipt1 is '3':
+            print("""
+1.Fsociety.
+0.返回菜单.
+            """)
+            ipt2 = input('>')
+            if not ipt2:
+                self.main()
+            if ipt2 is '1':
+                self.Run_fsociety()
+            if ipt2 is '0':
+                self.main()
         if ipt1 is 'c':
             self.commands__(cmd='clear')
             self.main()
@@ -675,7 +704,7 @@ r = Run()
 # r.Install_dirmap()
 # r.Select_Files__()
 # r.Run_dirmap()
-r.Install_fsociety()
+r.main()
 
 
 
