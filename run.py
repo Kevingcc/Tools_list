@@ -283,7 +283,19 @@ class Libs(object):
                 print('')
                 domains.append(line.strip())
         return domains
-                
+
+    def Get_Filename(self,path):
+        """
+        获取指定目录下的所有文件绝对路径.
+        """
+        pathname = []
+        catalog = path
+        for (dirpath, dirnames, filenames) in os.walk(catalog):     
+            for filename in filenames:  
+                pathname += [os.path.join(dirpath, filename)]
+        
+        return pathname
+
 
 
         
@@ -544,8 +556,13 @@ web目录扫描.
             print(helps1)
             self.Run_DirBrute()
         if ipt1 is '2':
+            dictnames = self.Get_Filename('{}DirBrute/dics/'.format(self.root))
             ipt2 = input('Url>')
-            self.commands__(cmd='python2 {}DirBrute/dirbrute.py {} -e php -t 10'.format(self.root,ipt2))
+            print('选择字典...')
+            for dictname in dictnames:
+                print(dictname)
+            ipt3 = input('DictPath>')
+            self.commands__(cmd='python2 {}DirBrute/dirbrute.py {} -e php -t 10 -d {}'.format(self.root,ipt2,ipt3))
             self.Run_DirBrute()
         if ipt1 is '0':
             self.main()
