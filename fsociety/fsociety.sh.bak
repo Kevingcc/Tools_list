@@ -1,0 +1,4 @@
+#!/bin/bash
+#路径：/usr/local/bin/fsociety
+#路径：$HOME/.fsociety
+python /home/remix/.fsociety/fsociety.py ${1+"$@"}
