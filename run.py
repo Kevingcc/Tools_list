@@ -159,6 +159,17 @@ class Libs(object):
         else:
             print('fsociety安装失败...')
 
+    def Install_dnsfind(self):
+        c1 = self.commands_(cmd=['python2 {}dnsfind/run.py --help'.format(self.root)])
+        if not c1:
+            c2 = self.commands__(cmd='python2 -m pip install -r {}dnsfind/reqs.txt'.format(self.root))
+            if c2:
+                print('dnsfind 安装成功...')
+            else:
+                print('dnsfind 安装失败...')
+        else:
+            print('dnsfind 正在运行...')
+
     def Result_subdns(self):
         catalog = "{}output".format(self.root)
         filename1 = []
@@ -478,8 +489,37 @@ Bruter:
 
     def Run_DirBrute(self):
         print("""
-
+###########
+web目录扫描.
+###########
+1.查看帮助.
+2.输入url.
+0.返回菜单.
         """)
+        helps1 = """
+用法: dirbrute.py target [options] 
+例子: python dirbrute.py www.cdxy.me -e php -t 10
+         python dirbrute.py www.cdxy.me -t 10 -d ./dics/ASP/uniq
+
+选项:
+  -h, --help            show this help message and exit
+  -e EXT, --ext=EXT     选择扩展名: php asp aspx jsp...
+  -t THREADS_NUM, --threads=线程数
+                        线程数. default = 10
+  -d DIC_PATH, --dic=字典路径.
+                        默认字典: ./dics/dirs.txt
+
+        """
+        ipt1 = input('>')
+        if ipt1 is '1':
+            print(helps1)
+            self.Run_DirBrute()
+        if ipt1 is '2':
+            ipt2 = input('Url>')
+            self.commands__(cmd='python2 {}DirBrute/dirbrute.py {} -e php -t 10'.format(self.root,ipt2))
+            self.Run_DirBrute()
+        if ipt1 is '0':
+            self.main()
         
     def Run_xwaf(self):
         print("""
