@@ -1,4 +1,13 @@
+# -*- coding: UTF-8 -*-
+
 #!/usr/bin/env python2
+
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
+
+
+
 #    ______              _      _           _______
 #   |  ____|            (_)    | |         |__   __|
 #   | |__ ___  ___   ___ _  ___| |_ _   _     | | ___  __ _ _ __ ___
@@ -45,7 +54,7 @@ from optparse import OptionParser
 from time import gmtime, strftime, sleep
 
 '''
-Common Functions
+常用功能
 '''
 
 
@@ -71,7 +80,7 @@ def yesOrNo():
 
 
 '''
-Config
+配置
 '''
 installDir = os.path.dirname(os.path.abspath(__file__)) + '/'
 configFile = installDir + "/fsociety.cfg"
@@ -97,25 +106,25 @@ alreadyInstalled = "Already Installed"
 continuePrompt = "\nClick [Return] to continue"
 
 termsAndConditions = color.NOTICE + '''
-I shall not use fsociety to:
-(i) upload or otherwise transmit, display or distribute any
-content that infringes any trademark, trade secret, copyright
-or other proprietary or intellectual property rights of any
-person; (ii) upload or otherwise transmit any material that contains
-software viruses or any other computer code, files or programs
-designed to interrupt, destroy or limit the functionality of any
-computer software or hardware or telecommunications equipment;
+我不应使用fsociety来：
+（i）上传或以其他方式传输、显示或分发
+侵犯任何商标、商业秘密的内容, 版权
+或其他专有或知识产权任何人的财产权
+的人；（二）上传或另有 传输任何包含
+软件病毒或任何其他计算机代码, 文件或程序
+设计用于中断, 破坏或限制任何
+计算机软件或硬件或电信设备;
 ''' + color.END
 
 
 '''
-Starts Menu Classes
+开始菜单类
 '''
 def agreement():
     while not config.getboolean("fsociety", "agreement"):
         clearScr()
         print(termsAndConditions)
-        agree = raw_input("You must agree to our terms and conditions first (Y/n) ").lower()
+        agree = raw_input("你必须先同意我们的条款和条件 (Y/n) ").lower()
         if agree in yes:
             config.set('fsociety', 'agreement', 'true')
 
@@ -124,20 +133,20 @@ class fsociety:
         clearScr()
         self.createFolders()
         print (fsocietylogo + color.RED + '''
-       }--------------{+} Coded By Manisso {+}--------------{
+       }--------------{+} 由Manisso编码 {+}--------------{
        }--------{+}  GitHub.com/Manisso/fsociety {+}--------{
     ''' + color.END + '''
-       {1}--Information Gathering
-       {2}--Password Attacks
-       {3}--Wireless Testing
-       {4}--Exploitation Tools
-       {5}--Sniffing & Spoofing
-       {6}--Web Hacking
-       {7}--Private Web Hacking
-       {8}--Post Exploitation
-       {0}--INSTALL & UPDATE
-       {11}-CONTRIBUTORS
-       {99}-EXIT\n
+       {1}--信息收集
+       {2}--密码攻击
+       {3}--无线测试
+       {4}--开发工具
+       {5}--嗅探和欺骗
+       {6}--网络黑客攻击
+       {7}--私人网络黑客
+       {8}--Post Exploitation（漏洞利用）
+       {0}--安装和更新
+       {11}-贡献者
+       {99}-退出\n
      ''')
         choice = raw_input(fsocietyPrompt)
         clearScr()
@@ -195,7 +204,7 @@ class fsociety:
             os.makedirs(logDir)
 
     def completed(self):
-        raw_input("Completed, click return to go back")
+        raw_input("完成，单击“返回”返回")
         self.__init__()
 
     def update(self):
@@ -216,12 +225,12 @@ class sniffingSpoofingMenu:
         clearScr()
         print(self.menuLogo)
         print(
-            "   {1}--SEToolkit - Tool aimed at penetration testing around Social-Engineering")
-        print("   {2}--SSLtrip - MITM tool that implements SSL stripping  attacks")
+            "   {1}--SEToolkit - 旨在围绕社会工程进行渗透测试的工具")
+        print("   {2}--SSLtrip - 实现SSL剥离攻击的MITM工具")
         print(
-            "   {3}--pyPISHER - Tool to create a mallicious website for password pishing")
-        print("   {4}--SMTP Mailer - Tool to send SMTP mail\n ")
-        print("   {99}-Back To Main Menu \n")
+            "   {3}--pyPISHER - 创建恶意网站以获取密码的工具")
+        print("   {4}--SMTP Mailer - 发送SMTP邮件的工具\n ")
+        print("   {99}-返回主菜单 \n")
         choice6 = raw_input(fsocietyPrompt)
         clearScr()
         if choice6 == "1":
@@ -239,7 +248,7 @@ class sniffingSpoofingMenu:
         self.completed()
 
     def completed(self):
-        raw_input("Completed, click return to go back")
+        raw_input("完成，单击“返回”返回")
         self.__init__()
 
 
@@ -255,19 +264,32 @@ class webHackingMenu:
         clearScr()
         print(self.menuLogo)
         print("   {1}--Drupal Hacking ")
+        print("   {1}--德鲁巴黑客攻击 ")
         print("   {2}--Inurlbr")
+        print("   {2}--Inurlbr 待翻译")
         print("   {3}--Wordpress & Joomla Scanner")
+        print("   {3}--Wordpress & Joomla 扫描仪")
         print("   {4}--Gravity Form Scanner")
+        print("   {4}--深度扫描仪")
         print("   {5}--File Upload Checker")
+        print("   {5}--文件上载检查器")
         print("   {6}--Wordpress Exploit Scanner")
+        print("   {6}--WordPress漏洞利用扫描程序")
         print("   {7}--Wordpress Plugins Scanner")
+        print("   {7}--Wordpress 插件 扫描仪")
         print("   {8}--Shell and Directory Finder")
+        print("   {8}--Shell and 目录查找器")
         print("   {9}--Joomla! 1.5 - 3.4.5 remote code execution")
+        print("   {9}--Joomla! 1.5 - 3.4.5 远程代码执行")
         print("   {10}-Vbulletin 5.X remote code execution")
+        print("   {10}-Vbulletin 5.X 远程代码执行")
         print(
             "   {11}-BruteX - Automatically brute force all services running on a target")
+        print(
+            "   {11}-BruteX - 自动强制目标上运行的所有服务")
         print("   {12}-Arachni - Web Application Security Scanner Framework \n ")
-        print("   {99}-Back To Main Menu \n")
+        print("   {12}-Arachni - Web应用程序安全扫描程序框架 \n ")
+        print("   {99}-返回主菜单 \n")
         choiceweb = raw_input(fsocietyPrompt)
         clearScr()
         if choiceweb == "1":
@@ -301,7 +323,7 @@ class webHackingMenu:
         self.completed()
 
     def completed(self):
-        raw_input("Completed, click return to go back")
+        raw_input("完成，单击“返回”返回")
         self.__init__()
 
 
@@ -316,12 +338,12 @@ class privateWebHacking:
     def __init__(self):
         clearScr()
         print(self.menuLogo)
-        target = raw_input("Enter Target IP: ")
+        target = raw_input("输入目标 IP: ")
         Fscan(target)
         self.completed()
 
     def completed(self):
-        raw_input("Completed, click return to go back")
+        raw_input("完成，单击“返回”返回")
         self.__init__()
 
 
@@ -337,9 +359,12 @@ class postExploitationMenu:
         clearScr()
         print(self.menuLogo)
         print("   {1}--Shell Checker")
+        print("   {1}--Shell Checker 待翻译")
         print("   {2}--POET")
+        print("   {2}--POET 待翻译")
         print("   {3}--Phishing Framework \n")
-        print("   {99}-Return to main menu \n ")
+        print("   {3}--网络钓鱼框架 \n")
+        print("   {99}-返回主菜单 \n ")
         choice11 = raw_input(fsocietyPrompt)
         clearScr()
         if choice11 == "1":
@@ -355,12 +380,12 @@ class postExploitationMenu:
         self.completed()
 
     def completed(self):
-        raw_input("Completed, click return to go back")
+        raw_input("完成，单击“返回”返回")
         self.__init__()
 
 
 '''
-Information Gathering Tools Classes
+信息收集工具类
 '''
 
 
@@ -377,14 +402,22 @@ class informationGatheringMenu:
         print(self.menuLogo)
 
         print("  {1}--Nmap - Network Mapper")
+        print("  {1}--Nmap - 网络映射器")
         print("  {2}--Setoolkit")
+        print("  {2}--Setoolkit 待翻译")
         print("  {3}--Host To IP")
+        print("  {3}--主机到 IP")
         print("  {4}--WPScan")
+        print("  {4}--WPScan 待翻译")
         print("  {5}--CMSmap")
+        print("  {5}--CMSmap 待翻译")
         print("  {6}--XSStrike")
+        print("  {6}--XSStrike Xss漏洞扫描器")
         print("  {7}--Doork")
+        print("  {7}--Doork 待翻译")
         print("  {8}--Crips\n  ")
-        print("  {99}-Back To Main Menu \n")
+        print("  {8}--Crips\n  待翻译")
+        print("  {99}-返回主菜单 \n")
         choice2 = raw_input(fsocietyPrompt)
         clearScr()
         if choice2 == "1":
@@ -410,7 +443,7 @@ class informationGatheringMenu:
         self.completed()
 
     def completed(self):
-        raw_input("Completed, click return to go back")
+        raw_input("完成，单击“返回”返回")
         self.__init__()
 
 
@@ -426,7 +459,7 @@ class nmap:
         self.installDir = toolDir + "nmap"
         self.gitRepo = "https://github.com/nmap/nmap.git"
 
-        self.targetPrompt = "   Enter Target IP/Subnet/Range/Host: "
+        self.targetPrompt = "   输入目标 IP/子网/范围/主机: "
 
         if not self.installed():
             self.install()
@@ -452,11 +485,11 @@ class nmap:
     def menu(self, target):
         clearScr()
         print(self.nmapLogo)
-        print("   Nmap scan for: %s\n" % target)
-        print("   {1}--Simple Scan [-sV]")
-        print("   {2}--Port Scan [-Pn]")
-        print("   {3}--Operating System Detection [-A]\n")
-        print("   {99}-Return to information gathering menu \n")
+        print("   NMAP扫描: %s\n" % target)
+        print("   {1}--简单扫描 [-sV]")
+        print("   {2}--端口扫描 [-Pn]")
+        print("   {3}--操作系统检测 [-A]\n")
+        print("   {99}-返回信息收集菜单 \n")
         response = raw_input("nmap ~# ")
         clearScr()
         logPath = "logs/nmap-" + strftime("%Y-%m-%d_%H:%M:%S", gmtime())
@@ -516,7 +549,7 @@ class host2ip:
     def __init__(self):
         clearScr()
         print(self.host2ipLogo)
-        host = raw_input("   Enter a Host: ")
+        host = raw_input("   输入主机: ")
         ip = socket.gethostbyname(host)
         print("   %s has the IP of %s" % (host, ip))
         response = raw_input(continuePrompt)
@@ -538,7 +571,7 @@ class wpscan:
             self.install()
         clearScr()
         print(self.wpscanLogo)
-        target = raw_input("   Enter a Target: ")
+        target = raw_input("   输入目标: ")
         self.menu(target)
 
     def installed(self):

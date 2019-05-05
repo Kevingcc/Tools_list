@@ -62,7 +62,7 @@ else
 
 fi
 
-echo "[✔] Checking directories...";
+echo "[✔] 正在检查目录...";
 
 if [ -d "$INSTALL_DIR" ]; then
 
@@ -82,7 +82,7 @@ if [ -d "$INSTALL_DIR" ]; then
 
 fi
 
-echo "[✔] Cleaning up old directories...";
+echo "[✔] 清除旧目录...";
 
 if [ -d "$ETC_DIR/Manisso" ]; then
 
@@ -104,4 +104,4 @@ clear
 
 clear
 
-echo "[✔] all good!"
+echo "[✔] 完成了!"
