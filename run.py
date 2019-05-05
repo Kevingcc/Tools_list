@@ -1,5 +1,29 @@
 #coding:utf-8
 
+
+
+
+logo = """
+                                   
+#######
+#          ##     ####   #       ######
+#         #  #   #    #  #       #
+#####    #    #  #       #       #####
+#        ######  #  ###  #       #
+#        #    #  #    #  #       #
+#######  #    #   ####   ######  ######
+
+-----------------------------------------
+
+@Author:Remix
+@Date:2019-4-25
+
+
+"""
+
+logo = '\033[1;33m' +'{}'.format(logo)+ '\033[0m'
+
+
 import os
 import sys
 import subprocess
@@ -152,12 +176,15 @@ class Libs(object):
                 return True
 
     def Install_fsociety(self):
-
-        c1 = self.commands__(cmd='sudo chmod 777 -R {}fsociety && bash {}fsociety/install.sh'.format(self.root,self.root))
-        if c1:
-            print('fsociety安装成功...')
+        c1 = self.commands_(cmd=['echo "99" | fsociety'])
+        if not c1:
+            c2 = self.commands__(cmd='sudo chmod 777 -R {}fsociety && bash {}fsociety/install.sh'.format(self.root,self.root))
+            if c2:
+                print('fsociety安装成功...')
+            else:
+                print('fsociety安装失败...')
         else:
-            print('fsociety安装失败...')
+            print('fsociety 正在运行...')
 
     def Install_dnsfind(self):
         c1 = self.commands_(cmd=['python2 {}dnsfind/run.py --help'.format(self.root)])
@@ -641,13 +668,14 @@ web程序
         
 
 
-
+print(logo)
+print('')
 r = Run()
 # r.test()
 # r.Install_dirmap()
 # r.Select_Files__()
 # r.Run_dirmap()
-r.main()
+r.Install_fsociety()
 
 
 
