@@ -21,6 +21,7 @@ class Libs(object):
     
     def __init__(self):
     
+        self.root = os.getcwd()+'/'
         self.config_pip_source()
         c1 = self.Inspect_pip()
         if c1:
@@ -28,17 +29,17 @@ class Libs(object):
         else:
             self.vle = False
 
-    def commands(self,cmd):
-        try:
-            """
-            这是一个命令行解析方法.
-            return <content or False>
-            """
-            c = subprocess.check_output(cmd,shell=True)
-            return c
-        except Exception as e:
-            #处理不存的命令
-            return False
+    # def commands(self,cmd):
+    #     try:
+    #         """
+    #         这是一个命令行解析方法.
+    #         return <content or False>
+    #         """
+    #         c = subprocess.check_output(cmd,shell=True)
+    #         return c
+    #     except Exception as e:
+    #         #处理不存的命令
+    #         return False
 
     def commands_(self,cmd=[],decodes_='utf-8'):
         """
@@ -62,16 +63,14 @@ class Libs(object):
     def commands__(self,cmd='',decodes_='utf-8'):
         """
             这是一个命令解析方法.
+            return <True or False>
         """
         try:
-            cc = []
             c = subprocess.call(cmd,shell=True)
-            cc.append(c)
-            for value in cc:
-                if value:
-                    return value
-                else:
-                    return False
+            if int(c) == 0:
+                return True
+            else:
+                return False
         except Exception as e:
             # print(traceback.format_exc())
             return False   
@@ -93,8 +92,8 @@ class Libs(object):
 
 
     def Inspect_pip(self):
-        c1 = self.commands('python3 -m pip')
-        c2 = self.commands('python2 -m pip')
+        c1 = self.commands_('python3 -m pip')
+        c2 = self.commands_('python2 -m pip')
         if c1 and c2:
             print('pip3 pip2 运行正常...')
             return True
@@ -151,6 +150,14 @@ class Libs(object):
             else:
                 print('dirmap.py 正在运行...')
                 return True
+
+    def Install_fsociety(self):
+
+        c1 = self.commands__(cmd='sudo chmod 777 -R {}fsociety && bash {}fsociety/install.sh'.format(self.root,self.root))
+        if c1:
+            print('fsociety安装成功...')
+        else:
+            print('fsociety安装失败...')
 
     def Result_subdns(self):
         catalog = "output"
@@ -485,6 +492,30 @@ Bruter:
 2.python3 xwaf.py -u "http://www.baidu.com/1.php" --data="postdata" -p xxx
 3.python3 xwaf.py -r /tmp/headerfile -p xxx --level 5
         """
+        ipt1 = input('>')
+        if not ipt1:
+            self.Run_xwaf()
+        if ipt1 is '1':
+            print(helps1)
+            self.Run_xwaf()
+        if ipt1 is '2':
+            ipt2 = input('Url>')
+            self.commands__(cmd='python3 bypass_waf/xwaf.py -u "{}"'.format(ipt2))
+            self.Run_xwaf()
+        if ipt1 is '3':
+            ipt2 = input('Url>')
+            ipt3 = input('Data>')
+            ipt4 = input('Post parameter>')
+            self.commands__(cmd='python3 bypass_waf/xwaf.py -u "{}" --data="{}" -p {}'.format(ipt2,ipt3,ipt4))
+            self.Run_xwaf()
+        if ipt1 is '4':
+            ipt2 = input('1>')
+            ipt3 = input('2>')
+            ipt4 = input('3>')
+            self.commands__(cmd='python3 bypass_waf/xwaf.py -r {} -p {} --level {}'.format(ipt2,ipt3,ipt4))
+            self.Run_xwaf()
+        if ipt1 is '0':
+            self.main()
 
     def main(self):
         content1 = """
@@ -545,10 +576,13 @@ c.clear.
 web程序
 #######
 1.xwaf waf自动化绕过工具.
+0.返回菜单.
             """)
             ipt2 = input('>')
             if ipt2 is '1':
                 self.Run_xwaf()
+            if ipt2 is '0':
+                self.main()
         if ipt1 is 'c':
             self.commands__(cmd='clear')
             self.main()
@@ -570,7 +604,7 @@ r = Run()
 # r.Install_dirmap()
 # r.Select_Files__()
 # r.Run_dirmap()
-r.main()
+r.Install_fsociety()
 
 
 
