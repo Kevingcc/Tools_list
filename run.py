@@ -20,8 +20,8 @@ from lib.datatype import AttribDict
 class Libs(object):
     
     def __init__(self):
-    
-        self.root = os.getcwd()+'/'
+        root = self.commands_(cmd=['echo $HOME'])
+        self.root = '{}/.Tools/Tools_list/'.format(root)
         self.config_pip_source()
         c1 = self.Inspect_pip()
         if c1:
@@ -82,7 +82,7 @@ class Libs(object):
         else:
             print('.pip目录正常...')
             if not os.path.exists(c1+'/.pip/pip.conf'):
-                cmd = ['sudo chmod +x lib/config_pip_source','bash lib/config_pip_source']
+                cmd = ['sudo chmod +x {}lib/config_pip_source'.format(self.root),'bash {}lib/config_pip_source'.format(self.root)]
                 c = self.commands_(cmd=cmd)
                 if c:
                     print('pip 源配置完成...')
@@ -108,7 +108,7 @@ class Libs(object):
     
     def Install_subdns(self):
         if self.vle:
-            c2 = self.commands_(cmd=['python3 subdns/subdns.py --help'])
+            c2 = self.commands_(cmd=['python3 {}subdns/subdns.py --help'.format(self.root)])
             if not c2:
                 print('subdns.py 没有安装依赖项...')
                 print('subdns.py 正在安装依赖项...')
@@ -123,7 +123,7 @@ class Libs(object):
 
     def Install_DiscoverTarget(self):
         if self.vle:
-            c1 = self.commands_(cmd=['python2 DiscoverTarget/DiscoverTarget.py --help'])
+            c1 = self.commands_(cmd=['python2 {}DiscoverTarget/DiscoverTarget.py --help'.format(self.root)])
             if not c1:
                 print('DiscoverTarget.py 没有安装依赖项...')
                 print('DiscoverTarget.py 正在安装依赖项...')
@@ -138,7 +138,7 @@ class Libs(object):
 
     def Install_dirmap(self):
         if self.vle:
-            c1 = self.commands_(cmd=['python3 dirmap/dirmap.py --help'])
+            c1 = self.commands_(cmd=['python3 {}dirmap/dirmap.py --help'.format(self.root)])
             if not c1:
                 print('dirmap.py 没有安装依赖项...')
                 print('dirmap.py 正在安装依赖项...')
@@ -160,7 +160,7 @@ class Libs(object):
             print('fsociety安装失败...')
 
     def Result_subdns(self):
-        catalog = "output"
+        catalog = "{}output".format(self.root)
         filename1 = []
         filename2 = []
         for root,dirs,files in os.walk(catalog):
@@ -171,7 +171,7 @@ class Libs(object):
         return (filename1,filename2)
 
     def Result_DiscoverTarget(self):
-        catalog = "DiscoverTarget"
+        catalog = "{}DiscoverTarget".format(self.root)
         filename = []
         for root,dirs,files in os.walk(catalog):
             if 'URL.txt' in files:
@@ -179,7 +179,7 @@ class Libs(object):
                     filename.append(root+'/'+files)
                     filename.append(files)
             
-        if 'DiscoverTarget/URL.txt' not in filename:
+        if '{}DiscoverTarget/URL.txt'.format(self.root) not in filename:
             return False
         
         return (filename[0],filename[1])
@@ -256,7 +256,7 @@ class Run(Libs):
     def __init__(self,cmd=''):
         self.cmd = cmd
         super(Run,self).__init__()
-        self.commands__(cmd=['sudo chmod +x lib/pyc_clear && bash lib/pyc_clear'])
+        self.commands__(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
 
 
     def Run_subdns(self):
@@ -292,7 +292,7 @@ optional arguments:
             if not c2:
                 self.Run_subdns()
             if c2 is '1':
-                c3 = self.commands__(cmd=['python3 subdns/subdns.py --help'])
+                c3 = self.commands__(cmd=['python3 {}subdns/subdns.py --help'.format(self.root)])
                 print(c3)
                 print('')
                 print("##############################################################################################")
@@ -301,7 +301,7 @@ optional arguments:
             if c2 is '2':
                 print(helps2)
                 ipt1 = input('Url>')
-                c3 = self.commands__(cmd=['python3 subdns/subdns.py -u {} -d mini_names.txt'.format(ipt1)])
+                c3 = self.commands__(cmd=['python3 {}subdns/subdns.py -u {} -d mini_names.txt'.format(self.root,ipt1)])
                 self.Run_subdns()
             if c2 is '3':
                 print('字典存放路径:$HOME/.Tools/Tools_list/dict')
@@ -309,7 +309,7 @@ optional arguments:
                 print(helps2)
                 ipt1 = input('Url>')
                 ipt2 = input('Dict>')
-                c3 = self.commands__(cmd=['python3 subdns/subdns.py -u {} -d {}'.format(ipt1,ipt2)])
+                c3 = self.commands__(cmd=['python3 {}subdns/subdns.py -u {} -d {}'.format(self.root,ipt1,ipt2)])
                 self.Run_subdns()
             if c2 is '4':
                 self.Select_Files_()
@@ -363,17 +363,17 @@ app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
             ipt1 = input('>')
             if ipt1 is '1':
                 print(helps1)
-                c2 = self.commands__(cmd=['python2 DiscoverTarget/DiscoverTarget.py --help'])
+                c2 = self.commands__(cmd=['python2 {}DiscoverTarget/DiscoverTarget.py --help'.format(self.root)])
                 self.Run_DiscoverTarget()
             if ipt1 is '2':
                 keywords = input('>')
-                c2 = self.commands__(cmd=['python2 DiscoverTarget/DiscoverTarget.py -B {}'.format(keywords)])
+                c2 = self.commands__(cmd=['python2 {}DiscoverTarget/DiscoverTarget.py -B {}'.format(self.root,keywords)])
                 self.Run_DiscoverTarget()
             if ipt1 is '3':
                 print('例子1：> -B hello word')
                 print('例子2：> -Z app:"Apache-Tomcat"')
                 c3 = input('> ')
-                c4 = self.commands__(cmd='python2 DiscoverTarget/DiscoverTarget.py {}'.format(c3))
+                c4 = self.commands__(cmd='python2 {}DiscoverTarget/DiscoverTarget.py {}'.format(self.root,c3))
                 self.Run_DiscoverTarget()
             if ipt1 is '4':
                 self.Select_Files__()
@@ -437,24 +437,24 @@ Bruter:
                 self.Run_dirmap()
             if ipt1 is '1':
                 print(helps1)
-                c2 = self.commands__(cmd='python3 dirmap/dirmap.py --help')
+                c2 = self.commands__(cmd='python3 {}dirmap/dirmap.py --help'.format(self.root))
                 self.Run_dirmap()
             if ipt1 is '2':
                 print('例子：Url>https://www.baidu.com/index.php?id=1')
                 ipt2 = input('Url>')
-                c2 = self.commands__(cmd='python3 dirmap/dirmap.py -iU {} -t 30 -lcf --debug'.format(ipt2))
+                c2 = self.commands__(cmd='python3 {}dirmap/dirmap.py -iU {} -t 30 -lcf --debug'.format(self.root,ipt2))
                 self.Run_dirmap()
             if ipt1 is '3':
                 print('例子: Filename> DiscoverTarget/URL.txt')
                 ipt2 = input('Filename> ')
-                c2 = self.commands__(cmd='python3 dirmap/dirmap.py -iF {} -t 30 -lcf --debug'.format(ipt2))
+                c2 = self.commands__(cmd='python3 {}dirmap/dirmap.py -iF {} -t 30 -lcf --debug'.format(self.root,ipt2))
                 self.Run_dirmap()
             if ipt1 is '4':
                 print('输入选项...')
                 print('例子1: > --help')
                 print('例子2: > --iN xxx')
                 ipt2 = input('> ')
-                c2 = self.commands__(cmd='python3 dirmap/dirmap.py {}'.format(ipt2))
+                c2 = self.commands__(cmd='python3 {}dirmap/dirmap.py {}'.format(self.root,ipt2))
                 self.Run_dirmap()
             if ipt1 is '5':
                 pass
@@ -471,13 +471,15 @@ Bruter:
             self.Run_xcdn()
         if ipt1 is '1':
             ipt2 = input('Url>')
-            c1 = self.commands__(cmd='python3 xcdn/xcdn.py {}'.format(ipt2))
+            c1 = self.commands__(cmd='python3 {}xcdn/xcdn.py {}'.format(self.root,ipt2))
             self.Run_xcdn()
         if ipt1 is '0':
             self.main()
 
     def Run_DirBrute(self):
-        pass
+        print("""
+
+        """)
         
     def Run_xwaf(self):
         print("""
@@ -500,22 +502,23 @@ Bruter:
             self.Run_xwaf()
         if ipt1 is '2':
             ipt2 = input('Url>')
-            self.commands__(cmd='python3 bypass_waf/xwaf.py -u "{}"'.format(ipt2))
+            self.commands__(cmd='python3 {}bypass_waf/xwaf.py -u "{}"'.format(self.root,ipt2))
             self.Run_xwaf()
         if ipt1 is '3':
             ipt2 = input('Url>')
             ipt3 = input('Data>')
             ipt4 = input('Post parameter>')
-            self.commands__(cmd='python3 bypass_waf/xwaf.py -u "{}" --data="{}" -p {}'.format(ipt2,ipt3,ipt4))
+            self.commands__(cmd='python3 {}bypass_waf/xwaf.py -u "{}" --data="{}" -p {}'.format(self.root,ipt2,ipt3,ipt4))
             self.Run_xwaf()
         if ipt1 is '4':
             ipt2 = input('1>')
             ipt3 = input('2>')
             ipt4 = input('3>')
-            self.commands__(cmd='python3 bypass_waf/xwaf.py -r {} -p {} --level {}'.format(ipt2,ipt3,ipt4))
+            self.commands__(cmd='python3 {}bypass_waf/xwaf.py -r {} -p {} --level {}'.format(self.root,ipt2,ipt3,ipt4))
             self.Run_xwaf()
         if ipt1 is '0':
             self.main()
+
 
     def main(self):
         content1 = """
@@ -562,7 +565,7 @@ c.clear.
                 if ipt3 is '1':
                     self.Run_dirmap()
                 if ipt3 is '2':
-                    pass
+                    self.Run_DirBrute()
                 if ipt3 is '0':
                     self.main()
             if ipt2 is '4':
@@ -587,7 +590,7 @@ web程序
             self.commands__(cmd='clear')
             self.main()
         if ipt1 is '0':
-            self.commands__(cmd=['sudo chmod +x lib/pyc_clear && bash lib/pyc_clear'])
+            self.commands__(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
             exit(0)
 
     def test(self):
@@ -604,7 +607,7 @@ r = Run()
 # r.Install_dirmap()
 # r.Select_Files__()
 # r.Run_dirmap()
-r.Install_fsociety()
+r.main()
 
 
 
