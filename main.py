@@ -44,8 +44,8 @@ from lib.datatype import AttribDict
 class Libs(object):
     
     def __init__(self):
-        root = self.commands_(cmd=['echo $HOME'])
-        self.root = '{}/.Tools/Tools_list/'.format(root)
+        self.root_ = self.commands_(cmd=['echo $HOME'])
+        self.root = '{}/.Tools/Tools_list/'.format(self.root_)
         self.config_pip_source()
         c1 = self.Inspect_pip()
         if c1:
@@ -716,12 +716,12 @@ web程序
 
 # print(logo)
 # print('')
-# r = Run()
+r = Run()
 # r.test()
 # r.Install_dirmap()
 # r.Select_Files__()
 # r.Run_dirmap()
-# r.main()
+r.main()
 
 
 
