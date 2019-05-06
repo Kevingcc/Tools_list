@@ -1,6 +1,9 @@
 
 <img src="https://raw.githubusercontent.com/3xp10it/pic/master/xwafWhite.png">
 
+# 参考项目
+项目来自：https://github.com/3xp10it
+
 # xwaf
 
 <a href="https://github.com/3xp10it/bypass_waf/blob/master/xwaf.py">xwaf</a>是一个python写的waf自动绕过工具,上一个版本是<a href="https://github.com/3xp10it/bypass_waf/blob/master/bypass_waf.py">bypass_waf</a>,xwaf相比bypass_waf更智能,可无人干预,自动暴破waf
