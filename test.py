@@ -69,7 +69,7 @@ class selenium_(Libs):
         print('复制插件id...')
         print('点击详细信息后，即可查看id...')
         print('例子：chrome://extensions/?id=mcholjcecoiejoamfejfaadoefkcodok')
-        print('如果已输入id则跳过此步骤...')
+        print('如果已输入id则跳过此步骤,按回车即可跳过...')
         ipt1 = input('Id>')
         if ipt1:
             data1 = {'id':'{}'.format(ipt1)}
