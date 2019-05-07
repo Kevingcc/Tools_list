@@ -1,0 +1,6 @@
+#!/bin/bash
+
+rm -rf ./login.json
+touch ./login.json
+rm -rf ./id.json
+touch ./id.json

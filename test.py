@@ -115,6 +115,8 @@ class selenium_(Libs):
         self.Login_Google_CRX()
         
 
+        
+
 
     def run(self):
         # mutex.release()
@@ -134,7 +136,7 @@ class selenium_(Libs):
 
 s = selenium_()
 # s.Kill_chromedriver()
-s.Login_Google_CRX()
+s.run()
 
 
 
