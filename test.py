@@ -113,7 +113,8 @@ class selenium_(Libs):
 
     def requests_(self):
         self.Login_Google_CRX()
-        
+        time.sleep(10)
+        self.browser.get('https://www.google.com')
 
         
 
