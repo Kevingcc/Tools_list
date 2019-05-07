@@ -29,6 +29,7 @@ import sys
 import subprocess
 import traceback
 import re
+import json
 from lib.datatype import AttribDict
 
 # 获取当前文件绝对路径.
@@ -64,6 +65,20 @@ class Libs(object):
     #     except Exception as e:
     #         #处理不存的命令
     #         return False
+
+    def Save_json(self,data={},filename='id.json'):
+        with open('{}lib/{}'.format(self.root,filename),'a+') as w:
+            json.dump(data,w)
+            w.write('\n')
+            print('保存文件完成...')
+
+    def Read_json(self,filename='id.json'):
+        lines = []
+        with open('{}lib/{}'.format(self.root,filename),'r') as r:
+            for line in r.readlines():
+                lines.append(line.strip())
+        return lines
+            
 
     def commands_(self,cmd=[],decodes_='utf-8'):
         """
@@ -716,12 +731,12 @@ web程序
 
 # print(logo)
 # print('')
-r = Run()
+# r = Run()
 # r.test()
 # r.Install_dirmap()
 # r.Select_Files__()
 # r.Run_dirmap()
-r.main()
+# r.main()
 
 
 
