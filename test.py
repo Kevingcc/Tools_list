@@ -5,6 +5,7 @@ import re
 import threading
 import json
 import time
+import os
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
@@ -75,58 +76,46 @@ class selenium_(Libs):
                     ipt1 = input('Id>')
                     data1 = {'id':'{}'.format(ipt1)}
                     self.Save_json(data=data1)
-                    break
                 else:
                     data3 = json.loads(data3)
-                    print('插件id：{}'.format(data3['id']))
+                    # print('插件id：{}'.format(data3['id']))
                     return data3['id']
                 
             i += 1
 
-    def extract_cookie(self):
-        self.browser.get(self.login_url)
-        denglu = self.browser.find_element_by_xpath('//*[@id="submit"]')
-        action = ActionChains(self.browser)
-        denglu.click()
-        curpage_url = self.browser.current_url 
+    def Login_Google_CRX(self):
+        if os.path.getsize('{}lib/login.json'.format(self.root)) == 0:
+            email = input('Email>')
+            password = input('Password>')
+            data1 = {'email':email,'password':password}
+            self.Save_json(data=data1,filename='login.json')
+
+        time.sleep(2)
         data2 = self.Read_json(filename='login.json')
+        self.browser.get(self.login_url)
+
         i = 0
         for line in data2:
-            if not line.strip():
-                email = input('Email>')
-                password = input('Password>')
-                data1 = {'email':email,'password':password}
-                self.Save_json(data=data1,filename='login.json')
-            else:
-                print('插件登入成功...')
-            i += 1
-        data3 = self.Read_json(filename='login.json')
-        i = 0
-        for line in data3:
             if i == 0:
-                email = json.loads(line['email'])
-                password = json.loads(line['password'])
-                log_email = self.browser.find_element_by_id('email')
-                log_password = self.browser.find_element_by_id('password')
-                log_email.clear()
-                log_email.send_keys(email)
-                time.sleep(3)
-                log_password.clear()
-                log_password.send_keys(password)
-                login_in_xpath = '//*[@id="submit"]'
-                login_in = self.browser.find_element_by_xpath(login_in_xpath)
-                login_in.click()
-                
+                line = json.loads(line)
+                # print('line -> ',line)
+                email = line['email']
+                password = line['password']
+                time.sleep(10)
+                log_email = self.browser.find_element_by_id('email').send_keys(email)
+                log_password = self.browser.find_element_by_id('password').send_keys(password)
+                log_password = self.browser.find_element_by_id('password').send_keys(Keys.ENTER)
+                print('登入成功...')
+
             i += 1
 
+    def requests_(self):
+        pass
 
 
 
 
-        # i = input('>')
 
-        
-        
 
 
     def run(self):
@@ -144,7 +133,7 @@ class selenium_(Libs):
 
 s = selenium_()
 # s.Kill_chromedriver()
-s.extract_cookie()
+s.Login_Google_CRX()
 
 
 
@@ -162,6 +151,12 @@ browser = webdriver.Chrome(
 )
 browser.get('http://ip138.com')
 """
+
+# Browser.find_element_by_id('password').send_keys(Keys.ENTER)
+# log_email.clear()
+# login_in_xpath = '//*[@id="submit"]'
+# login_in = self.browser.find_element_by_xpath(login_in_xpath)
+# login_in.click()
 
 
 
