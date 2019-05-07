@@ -64,27 +64,30 @@ class selenium_(Libs):
         # browser_driver.get("https://www.baidu.com")
         # browser.get('http://ip138.com')
         data2 = self.Read_json()
+        print('正在打开URL：chrome://extensions/')
+        self.browser.get('chrome://extensions/')
+        print('复制插件id...')
+        print('点击详细信息后，即可查看id...')
+        print('例子：chrome://extensions/?id=mcholjcecoiejoamfejfaadoefkcodok')
+        print('如果已输入id则跳过此步骤...')
+        ipt1 = input('Id>')
+        if ipt1:
+            data1 = {'id':'{}'.format(ipt1)}
+            self.Save_json(data=data1)
+            print('Id保存成功...')
+
         i = 0
         for data3 in data2:
             if i == 0:
-                if not data3:
-                    print('正在打开URL：chrome://extensions/')
-                    self.browser.get('chrome://extensions/')
-                    print('复制插件id...')
-                    print('点击详细信息后，即可查看id.')
-                    print('例子：chrome://extensions/?id=mcholjcecoiejoamfejfaadoefkcodok')
-                    ipt1 = input('Id>')
-                    data1 = {'id':'{}'.format(ipt1)}
-                    self.Save_json(data=data1)
-                else:
+                if not os.path.getsize('{}lib/id.json'.format(self.root)) <= 0:
                     data3 = json.loads(data3)
                     # print('插件id：{}'.format(data3['id']))
                     return data3['id']
-                
             i += 1
-
+    
     def Login_Google_CRX(self):
-        if os.path.getsize('{}lib/login.json'.format(self.root)) < 1:
+        self.browser.get(self.login_url)
+        if os.path.getsize('{}lib/login.json'.format(self.root)) <= 0:
             email = input('Email>')
             password = input('Password>')
             data1 = {'email':email,'password':password}
@@ -92,7 +95,6 @@ class selenium_(Libs):
 
         time.sleep(2)
         data2 = self.Read_json(filename='login.json')
-        self.browser.get(self.login_url)
 
         i = 0
         for line in data2:
