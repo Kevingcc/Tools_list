@@ -29,7 +29,7 @@ class selenium_(Libs):
         self.login_url = 'chrome-extension://{}/login.html'.format(id_)
 
     def Kill_chromedriver(self):
-        mutex.acquire()
+        # mutex.acquire()
         c1 = self.commands_(cmd=['ps -aux |grep chromedriver | cut -c 10-14'])
         c2 = c1.strip().split('\n')
         for c3 in c2:
@@ -84,7 +84,7 @@ class selenium_(Libs):
             i += 1
 
     def Login_Google_CRX(self):
-        if os.path.getsize('{}lib/login.json'.format(self.root)) == 0:
+        if os.path.getsize('{}lib/login.json'.format(self.root)) < 1:
             email = input('Email>')
             password = input('Password>')
             data1 = {'email':email,'password':password}
@@ -110,22 +110,21 @@ class selenium_(Libs):
             i += 1
 
     def requests_(self):
-        pass
-
-
-
-
-
+        self.Login_Google_CRX()
+        
 
 
     def run(self):
-        thread2 = threading.Thread(target=self.Config_chromedriver())
-        # thread3 = threading.Thread(target=self.test)
-        thread1 = threading.Thread(target=self.Kill_chromedriver())
-        thread2.start()
-        # thread3.start()
-        mutex.release()
-        thread1.start()
+        # mutex.release()
+        # thread2 = threading.Thread(target=self.requests_,args=())
+        # thread1 = threading.Thread(target=self.Config_chromedriver())
+        # thread2 = threading.Thread(target=self.requests_())
+        # thread1.start()
+        # thread2.start()
+        self.Config_chromedriver()
+        self.requests_()
+
+
 
 
 
