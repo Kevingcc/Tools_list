@@ -111,12 +111,12 @@ class selenium_(Libs):
 
             i += 1
 
-    def requests_(self):
+    def requests_(self,content):
         self.Login_Google_CRX()
         time.sleep(10)
         self.browser.get('https://www.google.com')
-
-        
+        Search_G = self.browser.find_element_by_xpath('//*[@id="tsf"]/div[2]/div/div[1]/div/div[1]/input').send_keys(content)
+        Search_ENTER = self.browser.find_element_by_xpath('//*[@id="tsf"]/div[2]/div/div[1]/div/div[1]/input').send_keys(Keys.ENTER)
 
 
     def run(self):
@@ -127,7 +127,7 @@ class selenium_(Libs):
         # thread1.start()
         # thread2.start()
         self.Config_chromedriver()
-        self.requests_()
+        self.requests_('hello word')
 
 
 
