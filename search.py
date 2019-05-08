@@ -120,7 +120,11 @@ class selenium_(Libs):
         Search_ENTER = self.browser.find_element_by_xpath('//*[@id="tsf"]/div[2]/div/div[1]/div/div[1]/input').send_keys(Keys.ENTER)
 
 
-    def run(self,keyword):
+    def run(self,keyword,number=26):
+        """
+        keyword：Search keyword.
+        number：Page number.
+        """
         # mutex.release()
         # thread2 = threading.Thread(target=self.requests_,args=())
         # thread1 = threading.Thread(target=self.Config_chromedriver())
@@ -138,14 +142,19 @@ class selenium_(Libs):
                 
                 if i+1 < 27:
                     if i != 0:
-                        # print('i+1 -> ',i+1)
-                        time.sleep(2)
-                        elements = self.browser.find_element_by_xpath('//*[@id="pnnext"]/span[2]')
-                        time.sleep(1)
-                        elements.click()
-                        time.sleep(3)
+                        if i+1 == number+1:
+                            time.sleep(2)
+                            elements = self.browser.find_element_by_xpath('//*[@id="pnnext"]/span[2]')
+                            time.sleep(1)
+                            elements.click()
+                            time.sleep(3)
                 
+                if i+1 == number+1:
+                    self.browser.close()
+                    break
+
                 if i+1 == 27:
+                    self.browser.close()
                     break
                 
                 for i2 in range(1,11):
@@ -158,7 +167,7 @@ class selenium_(Libs):
                         # print('i2 -> ',i2)
                         print(elements1.text)
                         print(elements2.text)
-                        result1.append([elements1,elements2])
+                        result1.append([elements1.text,elements2.text])
                 
                     except Exception as e:
                         # print(traceback.format_exc())
@@ -180,9 +189,9 @@ class selenium_(Libs):
 
 
 
-s = selenium_()
-# s.Kill_chromedriver()
-s.run()
+# s = selenium_()
+# # s.Kill_chromedriver()
+# s.run()
 
 
 
