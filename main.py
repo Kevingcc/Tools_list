@@ -47,6 +47,7 @@ class Libs(object):
     def __init__(self):
         self.root_ = self.commands_(cmd=['echo $HOME'])
         self.root = '{}/.Tools/Tools_list/'.format(self.root_)
+        self.commands__(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
         self.config_pip_source()
         c1 = self.Inspect_pip()
         if c1:
@@ -323,7 +324,7 @@ class Run(Libs):
     def __init__(self,cmd=''):
         self.cmd = cmd
         super(Run,self).__init__()
-        self.commands__(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
+        
 
 
     def Run_subdns(self):

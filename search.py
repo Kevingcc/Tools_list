@@ -143,7 +143,7 @@ class selenium_(Libs):
                 
                 if i+1 < 27:
                     if i != 0:
-                        if i+1 == number+1:
+                        if i+1 < number+1:
                             time.sleep(2)
                             elements = self.browser.find_element_by_xpath('//*[@id="pnnext"]/span[2]')
                             time.sleep(1)

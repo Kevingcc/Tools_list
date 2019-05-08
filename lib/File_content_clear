@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sudo chmod +x pyc_clear && bash pyc_clear
+
 rm -rf ./login.json
 touch ./login.json
 rm -rf ./id.json
