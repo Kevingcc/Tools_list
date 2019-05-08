@@ -14,7 +14,7 @@ class test(selenium_):
 
     def __init__(self):
         super(test,self).__init__()
-        self.Search = self.run
+        self.Search = self.Google_Search
 
     def test(self):
         Searchs = self.Search('hello word')

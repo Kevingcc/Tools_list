@@ -120,7 +120,20 @@ class selenium_(Libs):
         Search_ENTER = self.browser.find_element_by_xpath('//*[@id="tsf"]/div[2]/div/div[1]/div/div[1]/input').send_keys(Keys.ENTER)
 
 
-    def run(self,keyword,number=26):
+    def Sqli_Search(self):
+        pass
+
+    def Ftp_Search(self):
+        pass
+
+    def Cve_Search(self):
+        pass
+
+    def Xss_Search(self):
+        pass
+
+
+    def Google_Search(self,keyword,number=26):
         """
         keyword：Search keyword.
         number：Page number.
