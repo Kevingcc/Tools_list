@@ -120,7 +120,7 @@ class selenium_(Libs):
         Search_ENTER = self.browser.find_element_by_xpath('//*[@id="tsf"]/div[2]/div/div[1]/div/div[1]/input').send_keys(Keys.ENTER)
 
 
-    def run(self):
+    def run(self,keyword):
         # mutex.release()
         # thread2 = threading.Thread(target=self.requests_,args=())
         # thread1 = threading.Thread(target=self.Config_chromedriver())
@@ -129,7 +129,7 @@ class selenium_(Libs):
         # thread2.start()
         result1 = []
         self.Config_chromedriver()
-        self.requests_('hello word')
+        self.requests_(keyword)
         try:
             i = 0
             while True:
