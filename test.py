@@ -24,6 +24,9 @@ class test(selenium_):
             print('Title -> ',Title)
             print('Link -> ',Link)
 
+    def contents(self):
+        pass
+
 
 t = test()
 
