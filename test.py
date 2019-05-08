@@ -6,6 +6,7 @@ import threading
 import json
 import time
 import os
+import traceback
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
@@ -126,8 +127,52 @@ class selenium_(Libs):
         # thread2 = threading.Thread(target=self.requests_())
         # thread1.start()
         # thread2.start()
+        result1 = []
         self.Config_chromedriver()
         self.requests_('hello word')
+        try:
+            i = 0
+            while True:
+            # for i1 in range(2,12):
+                print('第{}页'.format(i+1))    
+                
+                if i+1 < 27:
+                    if i != 0:
+                        # print('i+1 -> ',i+1)
+                        time.sleep(2)
+                        elements = self.browser.find_element_by_xpath('//*[@id="pnnext"]/span[2]')
+                        time.sleep(1)
+                        elements.click()
+                        time.sleep(3)
+                
+                if i+1 == 27:
+                    break
+                
+                for i2 in range(1,11):
+                    try:
+                        time.sleep(0.5)
+                        #Title
+                        elements1 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]/h3'.format(i2))
+                        #link
+                        elements2 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]/div/cite'.format(i2))
+                        # print('i2 -> ',i2)
+                        print(elements1.text)
+                        print(elements2.text)
+                        result1.append([elements1,elements2])
+                
+                    except Exception as e:
+                        # print(traceback.format_exc())
+                        pass
+                
+                print('下一页...')
+                i += 1
+            
+            return result1
+                
+        except Exception as e:
+            print(traceback.format_exc())
+            pass
+
 
 
 

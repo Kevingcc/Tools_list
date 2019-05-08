@@ -1,0 +1,36 @@
+链接... 
+//*[@id="rso"]/div/div/div/div/div/div[1]/a[1]/h3
+
+
+
+//*[@id="nav"]/tbody/tr/td[2]/a
+//*[@id="nav"]/tbody/tr/td/a
+
+上
+//*[@id="nav"]/tbody/tr/td[1]/a
+
+1
+//*[@id="nav"]/tbody/tr/td[2]/a
+
+2
+//*[@id="nav"]/tbody/tr/td[3]/a
+
+10
+//*[@id="nav"]/tbody/tr/td[11]/a
+
+下
+//*[@id="nav"]/tbody/tr/td[12]/a
+
+
+26
+//*[@id="nav"]/tbody/tr/td[11]/a
+
+
+26页
+
+
+
+1-11
+for i in range(2,12): 
+   ...:     s1 = '//*[@id="nav"]/tbody/tr/td[{}]/a'.format(i) 
+   ...:     print(s1) 
