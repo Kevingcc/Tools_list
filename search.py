@@ -51,7 +51,7 @@ class selenium_(Libs):
 
 
     def Install_selenium(self):
-        c1 = self.commands__(cmd='python3 -m pip install selenium')
+        c1 = self.commands__(cmd='python3 -m pip install selenium==3.141.0')
         if c1:
             print('selenium 安装成功...')
         else:
@@ -132,6 +132,7 @@ class selenium_(Libs):
         # thread1.start()
         # thread2.start()
         result1 = []
+        self.Install_selenium()
         self.Config_chromedriver()
         self.requests_(keyword)
         try:
