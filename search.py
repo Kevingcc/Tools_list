@@ -21,10 +21,15 @@ mutex = threading.Lock()
 class selenium_(Libs):
     def __init__(self):
         super(selenium_,self).__init__()
-        self.chrome_options = webdriver.ChromeOptions()
-        self.chrome_options.add_argument('--load-extension={}lib/ghelper'.format(self.root))
+        self.chrome_options1 = webdriver.ChromeOptions()
+        self.chrome_options1.add_argument('--load-extension={}lib/ghelper'.format(self.root))
+        self.chrome_options2 = webdriver.ChromeOptions()
+        self.chrome_options2.add_argument('--load-extension={}lib/ReplaceGoogleCDN/chrome'.format(self.root))
         self.browser = webdriver.Chrome(
-            chrome_options=self.chrome_options
+            chrome_options=self.chrome_options1
+        )
+        self.browser_ = webdriver.Chrome(
+            chrome_options=self.chrome_options2
         )
         id_ = self.Getting_plug_ins_id()
         self.login_url = 'chrome-extension://{}/login.html'.format(id_)
@@ -57,6 +62,8 @@ class selenium_(Libs):
         else:
             print('selenium 安装失败...')
 
+    def Install_Replace_GCDN(self):
+        pass
 
     def Getting_plug_ins_id(self):
         # chrome_options = webdriver.ChromeOptions()
@@ -64,19 +71,21 @@ class selenium_(Libs):
         # browser_driver = webdriver.Chrome()
         # browser_driver.get("https://www.baidu.com")
         # browser.get('http://ip138.com')
-        data2 = self.Read_json()
-        print('正在打开URL：chrome://extensions/')
-        self.browser.get('chrome://extensions/')
-        print('复制插件id...')
-        print('点击详细信息后，即可查看id...')
-        print('例子：chrome://extensions/?id=mcholjcecoiejoamfejfaadoefkcodok')
-        print('如果已输入id则跳过此步骤,按回车即可跳过...')
-        ipt1 = input('Id>')
-        if ipt1:
-            data1 = {'id':'{}'.format(ipt1)}
-            self.Save_json(data=data1)
-            print('Id保存成功...')
+        if os.path.getsize('{}lib/id.json'.format(self.root)) <= 0:
+            print('正在打开URL：chrome://extensions/')
+            self.browser.get('chrome://extensions/')
+            print('复制插件id...')
+            print('点击详细信息后，即可查看id...')
+            print('例子：chrome://extensions/?id=mcholjcecoiejoamfejfaadoefkcodok')
+            print('如果已输入id则跳过此步骤,按回车即可跳过...')
+            ipt1 = input('Id>')
+            if ipt1:
+                data1 = {'id':'{}'.format(ipt1)}
+                self.Save_json(data=data1)
+                print('Id保存成功...')
 
+        print('Id已存在...')
+        data2 = self.Read_json()
         i = 0
         for data3 in data2:
             if i == 0:
@@ -119,6 +128,58 @@ class selenium_(Libs):
         Search_G = self.browser.find_element_by_xpath('//*[@id="tsf"]/div[2]/div/div[1]/div/div[1]/input').send_keys(content)
         Search_ENTER = self.browser.find_element_by_xpath('//*[@id="tsf"]/div[2]/div/div[1]/div/div[1]/input').send_keys(Keys.ENTER)
 
+    
+    def GHack_Page_num(self):
+        pass
+
+
+    def GHack(self,keyword,number=315):
+
+        # next page number 315
+        # //*[@id="exploits-table_next"]/a
+
+        # 1-15
+        # //*[@id="exploits-table"]/tbody/tr[{}]/td[2]/a
+        self.browser.close()
+        element = []
+        self.Install_selenium()
+        self.Config_chromedriver()
+        time.sleep(10)
+        self.browser_.get('https://www.exploit-db.com/google-hacking-database')
+        time.sleep(10)
+        self.browser_.find_element_by_xpath('//*[@id="exploits-table_filter"]/label/input').send_keys(keyword)
+        self.browser_.find_element_by_xpath('//*[@id="exploits-table_filter"]/label/input').send_keys(Keys.ENTER)
+        time.sleep(3)
+        
+        for page in range(1,number+1):
+            try:
+                if page == 1:
+                    print('第{}页'.format(page))
+
+                    for num in range(1,16):
+                        elements = self.browser_.find_element_by_xpath('//*[@id="exploits-table"]/tbody/tr[{}]/td[2]/a'.format(num)).text
+                        print(elements)
+                        element.append(elements)
+
+                if page != 1:
+                    print('第{}页'.format(page))
+                    time.sleep(4)
+                    self.browser_.find_element_by_xpath('//*[@id="exploits-table_next"]/a').click()
+                    time.sleep(4)
+
+                    for num in range(1,16):
+                        elements = self.browser_.find_element_by_xpath('//*[@id="exploits-table"]/tbody/tr[{}]/td[2]/a'.format(num)).text
+                        print(elements)
+                        element.append(elements)
+
+
+            except Exception as e:
+                break
+            
+        print('GHack爬取完毕...')
+        return element
+
+
 
     def Sqli_Search(self):
         pass
@@ -131,6 +192,11 @@ class selenium_(Libs):
 
     def Xss_Search(self):
         pass
+
+    def test(self):
+        datas = self.GHack('ftp')
+        for data in datas:
+            print(data)
 
 
     def Google_Search(self,keyword,number=26):

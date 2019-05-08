@@ -16,7 +16,7 @@ class test(selenium_):
         super(test,self).__init__()
         self.Search = self.Google_Search
 
-    def test(self):
+    def test__(self):
         Searchs = self.Search('hello word')
         for Search in Searchs:
             Title = Search[0]
@@ -27,9 +27,12 @@ class test(selenium_):
     def contents(self):
         pass
 
+    def test_(self):
+        self.test()
+
 
 t = test()
 
-t.test()
+t.test_()
 
 
