@@ -78,13 +78,13 @@ class selenium_(Libs):
             print('点击详细信息后，即可查看id...')
             print('例子：chrome://extensions/?id=mcholjcecoiejoamfejfaadoefkcodok')
             print('如果已输入id则跳过此步骤,按回车即可跳过...')
-            ipt1 = input('Id>')
+            ipt1 = input('ID>')
             if ipt1:
                 data1 = {'id':'{}'.format(ipt1)}
                 self.Save_json(data=data1)
-                print('Id保存成功...')
+                print('ID保存成功...')
 
-        print('Id已存在...')
+        print('ID已存在...')
         data2 = self.Read_json()
         i = 0
         for data3 in data2:
@@ -133,13 +133,16 @@ class selenium_(Libs):
         pass
 
 
-    def GHack(self,keyword,number=315):
+    def GHack(self,keyword):
 
         # next page number 315
         # //*[@id="exploits-table_next"]/a
 
         # 1-15
         # //*[@id="exploits-table"]/tbody/tr[{}]/td[2]/a
+
+        # //*[@id="exploits-table_paginate"]/ul/li[3]/a -> 1
+
         self.browser.close()
         element = []
         self.Install_selenium()
@@ -150,7 +153,28 @@ class selenium_(Libs):
         self.browser_.find_element_by_xpath('//*[@id="exploits-table_filter"]/label/input').send_keys(keyword)
         self.browser_.find_element_by_xpath('//*[@id="exploits-table_filter"]/label/input').send_keys(Keys.ENTER)
         time.sleep(3)
-        
+
+        number = 1
+        while True:
+            number += 1
+            try:
+                if number == 1:
+                    element1 = self.browser_.find_element_by_xpath('//*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2))
+                    print('Find1 -> //*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2))
+                if number != 1:
+                    element1 = self.browser_.find_element_by_xpath('//*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2)).text
+                    if element1 in ['FIRST','PREVIOUS','NEXT','LAST']:
+                        print('总页数：{}'.format(number-1))
+                        print('Find -> //*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2))
+                        number = number-1
+                        break
+            except Exception as e:
+                print(traceback.format_exc())
+                print('总页数：{}'.format(number-1))
+                number = number-1
+                break
+
+
         for page in range(1,number+1):
             try:
                 if page == 1:
@@ -158,26 +182,28 @@ class selenium_(Libs):
 
                     for num in range(1,16):
                         elements = self.browser_.find_element_by_xpath('//*[@id="exploits-table"]/tbody/tr[{}]/td[2]/a'.format(num)).text
-                        print(elements)
+                        # print(elements)
                         element.append(elements)
 
-                if page != 1:
+                if page != 1 and page-1:
                     print('第{}页'.format(page))
                     time.sleep(4)
                     self.browser_.find_element_by_xpath('//*[@id="exploits-table_next"]/a').click()
                     time.sleep(4)
 
+                
                     for num in range(1,16):
                         elements = self.browser_.find_element_by_xpath('//*[@id="exploits-table"]/tbody/tr[{}]/td[2]/a'.format(num)).text
-                        print(elements)
+                        # print(elements)
                         element.append(elements)
 
 
             except Exception as e:
+                # print(traceback.format_exc())
                 break
             
         print('GHack爬取完毕...')
-        return element
+        return element.pop()
 
 
 
