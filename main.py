@@ -54,6 +54,8 @@ class Libs(object):
             self.vle = True
         else:
             self.vle = False
+        self.Install_selenium()
+        self.Config_chromedriver()
 
     # def commands(self,cmd):
     #     try:
@@ -118,17 +120,25 @@ class Libs(object):
     def config_pip_source(self):
         c1 = self.commands_(cmd=['echo $HOME'])
         if not os.path.exists(c1+'/.pip'):
-            c2 = self.commands_(cmd=['mkdir $HOME/.pip'])
-        else:
-            print('.pip目录正常...')
-            if not os.path.exists(c1+'/.pip/pip.conf'):
-                cmd = ['sudo chmod +x {}lib/config_pip_source'.format(self.root),'bash {}lib/config_pip_source'.format(self.root)]
-                c = self.commands_(cmd=cmd)
-                if c:
-                    print('pip 源配置完成...')
+            c2 = self.commands__(cmd='mkdir $HOME/.pip')
+            cmd = 'sudo chmod +x {}lib/config_pip_source && bash {}lib/config_pip_source'.format(self.root,self.root)
+            c = self.commands__(cmd=cmd)
+            if c:
+                print('pip 源配置完成...')
             else:
                 print('pip.conf文件正常...')
 
+    
+    def Config_chromedriver(self):
+        c1 = self.commands__(cmd=['hash chromedriver'])
+        if not c1:
+            print('正在配置 chromedriver...')
+            c1 = self.commands__(cmd='sudo ln -s {}Chromedriver/chromedriver_70.0.3538.67 /usr/bin/chromedriver'.format(self.root))
+            c2 = self.commands__(cmd='sudo chmod +x /usr/bin/chromedriver')
+            if c1 and c2:
+                print('chromedriver 配置完成...')
+        else:
+            print('chromedriver 正在运行...')
 
 
     def Inspect_pip(self):
@@ -140,12 +150,19 @@ class Libs(object):
         else:
             print('pip3命令运行失败...')
             print('正在执行安装sudo apt-get install python3-pip')
-            self.commands_('sudo apt-get install python3-pip')
+            self.commands__('sudo apt-get -y install python3-pip')
             print('pip2命令运行失败...')
             print('正在执行安装sudo apt-get install python-pip')
-            self.commands_('sudo apt-get install python-pip')
+            self.commands__('sudo apt-get -y install python-pip')
             return False
     
+    def Install_selenium(self):
+        c1 = self.commands__(cmd='python3 -m pip install selenium==3.141.0')
+        if c1:
+            print('selenium 安装成功...')
+        else:
+            print('selenium 安装失败...')
+
     def Install_subdns(self):
         if self.vle:
             c2 = self.commands_(cmd=['python3 {}subdns/subdns.py --help'.format(self.root)])

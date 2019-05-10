@@ -7,9 +7,14 @@ import json
 import time
 import os
 import traceback
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
+
+try:
+    from selenium import webdriver
+    from selenium.webdriver.common.keys import Keys
+    from selenium.webdriver.common.action_chains import ActionChains
+except Exception as e:
+    pass
+
 from main import Libs
 
 
@@ -18,9 +23,13 @@ mutex = threading.Lock()
 # python3 -m pip install selenium
 # json.load(r) 
 
+
+
+
 class selenium_(Libs):
     def __init__(self):
         super(selenium_,self).__init__()
+        self.element = []
         self.chrome_options1 = webdriver.ChromeOptions()
         self.chrome_options1.add_argument('--load-extension={}lib/ghelper'.format(self.root))
         self.chrome_options2 = webdriver.ChromeOptions()
@@ -40,30 +49,7 @@ class selenium_(Libs):
         c2 = c1.strip().split('\n')
         for c3 in c2:
             c4 = self.commands__(cmd='sudo kill {}'.format(c3))
-        
-            
 
-    def Config_chromedriver(self):
-        c1 = self.commands__(cmd=['hash chromedriver'])
-        if not c1:
-            print('正在配置 chromedriver...')
-            c1 = self.commands__(cmd='sudo ln -s {}Chromedriver/chromedriver_70.0.3538.67 /usr/bin/chromedriver'.format(self.root))
-            c2 = self.commands__(cmd='sudo chmod +x /usr/bin/chromedriver')
-            if c1 and c2:
-                print('chromedriver 配置完成...')
-        else:
-            print('chromedriver 正在运行...')
-
-
-    def Install_selenium(self):
-        c1 = self.commands__(cmd='python3 -m pip install selenium==3.141.0')
-        if c1:
-            print('selenium 安装成功...')
-        else:
-            print('selenium 安装失败...')
-
-    def Install_Replace_GCDN(self):
-        pass
 
     def Getting_plug_ins_id(self):
         # chrome_options = webdriver.ChromeOptions()
@@ -144,9 +130,8 @@ class selenium_(Libs):
         # //*[@id="exploits-table_paginate"]/ul/li[3]/a -> 1
 
         self.browser.close()
-        element = []
-        self.Install_selenium()
-        self.Config_chromedriver()
+        # self.Install_selenium()
+        # self.Config_chromedriver()
         time.sleep(10)
         self.browser_.get('https://www.exploit-db.com/google-hacking-database')
         time.sleep(10)
@@ -165,7 +150,7 @@ class selenium_(Libs):
                     element1 = self.browser_.find_element_by_xpath('//*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2)).text
                     if element1 in ['FIRST','PREVIOUS','NEXT','LAST']:
                         print('总页数：{}'.format(number-1))
-                        print('Find -> //*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2))
+                        # print('Find -> //*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2))
                         number = number-1
                         break
             except Exception as e:
@@ -182,8 +167,7 @@ class selenium_(Libs):
 
                     for num in range(1,16):
                         elements = self.browser_.find_element_by_xpath('//*[@id="exploits-table"]/tbody/tr[{}]/td[2]/a'.format(num)).text
-                        # print(elements)
-                        element.append(elements)
+                        print(elements)
 
                 if page != 1 and page-1:
                     print('第{}页'.format(page))
@@ -194,8 +178,7 @@ class selenium_(Libs):
                 
                     for num in range(1,16):
                         elements = self.browser_.find_element_by_xpath('//*[@id="exploits-table"]/tbody/tr[{}]/td[2]/a'.format(num)).text
-                        # print(elements)
-                        element.append(elements)
+                        print(elements)
 
 
             except Exception as e:
@@ -203,7 +186,7 @@ class selenium_(Libs):
                 break
             
         print('GHack爬取完毕...')
-        return element.pop()
+        return self.element
 
 
 
@@ -221,8 +204,7 @@ class selenium_(Libs):
 
     def test(self):
         datas = self.GHack('ftp')
-        for data in datas:
-            print(data)
+        print(datas)
 
 
     def Google_Search(self,keyword,number=26):
@@ -236,9 +218,10 @@ class selenium_(Libs):
         # thread2 = threading.Thread(target=self.requests_())
         # thread1.start()
         # thread2.start()
+        self.browser_.close()
         result1 = []
-        self.Install_selenium()
-        self.Config_chromedriver()
+        # self.Install_selenium()
+        # self.Config_chromedriver()
         self.requests_(keyword)
         try:
             i = 0
