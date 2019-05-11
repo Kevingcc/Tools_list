@@ -28,14 +28,18 @@ class test(selenium_):
         pass
 
     def test_(self):
-        data = self.test()
-        print(data)
+        self.test()
 
 
-t = test()
+# t = test()
 
-t.test_()
+# t.test_()
 
 
 # r = Run()
 # r.main()
+
+
+
+
+

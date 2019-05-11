@@ -30,6 +30,7 @@ import subprocess
 import traceback
 import re
 import json
+import sqlite3
 from lib.datatype import AttribDict
 
 # 获取当前文件绝对路径.
@@ -56,18 +57,58 @@ class Libs(object):
             self.vle = False
         self.Install_selenium()
         self.Config_chromedriver()
+        
+        self.conn = sqlite3.connect('{}lib/GHack'.format(self.root))
+        self.c = self.conn.cursor()
 
-    # def commands(self,cmd):
-    #     try:
-    #         """
-    #         这是一个命令行解析方法.
-    #         return <content or False>
-    #         """
-    #         c = subprocess.check_output(cmd,shell=True)
-    #         return c
-    #     except Exception as e:
-    #         #处理不存的命令
-    #         return False
+
+
+    def Query_Data(self,type_):
+        """
+        查询数据.
+        data[0] = id
+        漏洞类型
+        data[1] = type
+        标题
+        data[2] = title
+        内容
+        data[3] = content
+        """
+        data = []
+        cursor = self.c.execute(r"""SELECT id,type,title,content FROM "Exploit" WHERE "type" LIKE '{}'""".format(type_))
+        for row in cursor:
+            id_ = 'id = ',row[0]
+            type_ = 'type = ',row[1]
+            title = 'title = ',row[2]
+            name = 'name = ',row[3]
+            data.append([].append(id_,type_,title,name))
+            
+        return data
+
+        # print('查询成功...')
+
+
+    def Write_Data(self,id_,type_,title,content):
+        """
+        写入数据.
+        """
+        expression = r"""INSERT INTO "Exploit" ("id","type","title","content") VALUES ('{}','{}','{}','{}')""".format(id_,type_,title,content)
+        # print(expression)
+        self.c.execute(expression)
+        # print('写入数据成功...')
+        self.conn.commit()
+        return True
+
+
+    def Delet_Data(self,id_):
+        """
+        删除数据.
+        """
+        # DELETE FROM "Exploit" WHERE ("rowid" = 2)
+        self.c.execute(r"""DELETE FROM "Exploit" WHERE ("rowid" = {})""".format(id_))
+        self.conn.commit()
+        return True
+
 
     def Save_json(self,data={},filename='id.json'):
         with open('{}lib/{}'.format(self.root,filename),'a+') as w:
