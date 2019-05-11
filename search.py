@@ -193,19 +193,6 @@ class selenium_(Libs):
         self.browser_.close()
 
 
-
-    def Sqli_Search(self):
-        pass
-
-    def Ftp_Search(self):
-        pass
-
-    def Cve_Search(self):
-        pass
-
-    def Xss_Search(self):
-        pass
-
     def test(self):
         self.GHack('ftp','ftp','ftp')
         
@@ -276,6 +263,35 @@ class selenium_(Libs):
             pass
 
 
+
+
+
+class Exploit_Search(object):
+    """
+    通过Google hack 搜索可利用的漏洞.
+    """
+    def __init__(self):
+        pass
+
+    def CVE_Exploit(self):
+        """
+        收集存在CVE漏洞的站点.
+        """
+        pass
+
+    def FTP_Exploit(self):
+        """
+        收集存在FTP漏洞的站点.
+        """
+        pass
+
+    def WEB_Frame_Exploit(self):
+        """
+        收集指定版本的WEB框架存在漏洞的站点.
+        """
+        pass
+
+    
 
 
 
