@@ -6,3 +6,6 @@ rm -rf ./login.json
 touch ./login.json
 rm -rf ./id.json
 touch ./id.json
+
+echo -e "login.json 初始化完毕...";
+echo -e "id.json 初始化完毕...";

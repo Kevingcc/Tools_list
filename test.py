@@ -34,9 +34,9 @@ class test(selenium_):
         pass
 
 
-# t = test()
+t = test()
 
-# t.test__()
+t.test_()
 
 
 # r = Run()

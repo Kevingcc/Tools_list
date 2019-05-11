@@ -29,7 +29,6 @@ mutex = threading.Lock()
 class selenium_(Libs):
     def __init__(self):
         super(selenium_,self).__init__()
-        self.element = []
         self.chrome_options1 = webdriver.ChromeOptions()
         self.chrome_options1.add_argument('--load-extension={}lib/ghelper'.format(self.root))
         self.chrome_options2 = webdriver.ChromeOptions()
@@ -119,7 +118,7 @@ class selenium_(Libs):
         pass
 
 
-    def GHack(self,keyword):
+    def GHack(self,keyword,type_,title):
 
         # next page number 315
         # //*[@id="exploits-table_next"]/a
@@ -167,8 +166,9 @@ class selenium_(Libs):
 
                     for num in range(1,16):
                         elements = self.browser_.find_element_by_xpath('//*[@id="exploits-table"]/tbody/tr[{}]/td[2]/a'.format(num)).text
-                        print(elements)
-                        # self.Write_Data(id_=)
+                        # print(elements)
+                        if not self.Write_Data(id_=str(page)+'0'+str(num),page=page,type_=type_,title=title,content=elements):
+                            self.Write_Data(id_=str(page)+'0'+str(num),page=page,type_=type_,title=title,content=elements)
 
                 if page != 1 and page-1:
                     print('第{}页'.format(page))
@@ -179,15 +179,18 @@ class selenium_(Libs):
                 
                     for num in range(1,16):
                         elements = self.browser_.find_element_by_xpath('//*[@id="exploits-table"]/tbody/tr[{}]/td[2]/a'.format(num)).text
-                        print(elements)
+                        # print(elements)
+                        if not self.Write_Data(id_=str(page)+'0'+str(num),page=page,type_=type_,title=title,content=elements):
+                            self.Write_Data(id_=str(page)+'0'+str(num),page=page,type_=type_,title=title,content=elements)
 
 
             except Exception as e:
-                # print(traceback.format_exc())
+                print(traceback.format_exc())
+                self.browser_.close()
                 break
             
         print('GHack爬取完毕...')
-        return self.element
+        self.browser_.close()
 
 
 
@@ -204,8 +207,8 @@ class selenium_(Libs):
         pass
 
     def test(self):
-        datas = self.GHack('ftp')
-        print(datas)
+        self.GHack('ftp','ftp','ftp')
+        
 
 
     def Google_Search(self,keyword,number=26):

@@ -92,22 +92,29 @@ class Libs(object):
         """
         写入数据.
         """
-        expression = r"""INSERT INTO "Exploit" ("id","page","type","title","content") VALUES ('{}','{}','{}','{}','{}')""".format(id_,page,type_,title,content)
-        # print(expression)
-        self.c.execute(expression)
-        # print('写入数据成功...')
-        self.conn.commit()
-        return True
+        try:
+            expression = r"""INSERT INTO "Exploit" ("id","page","type","title","content") VALUES ('{}','{}','{}','{}','{}')""".format(id_,page,type_,title,content)
+            # print(expression)
+            self.c.execute(expression)
+            # print('写入数据成功...')
+            self.conn.commit()
+            return True
+        except Exception as e:
+            self.Delet_Data(id_=id_)
+            return False
 
 
     def Delet_Data(self,id_):
         """
         删除数据.
         """
-        # DELETE FROM "Exploit" WHERE ("rowid" = 2)
-        self.c.execute(r"""DELETE FROM "Exploit" WHERE ("id" = {})""".format(id_))
-        self.conn.commit()
-        return True
+        try:
+            # DELETE FROM "Exploit" WHERE ("rowid" = 2)
+            self.c.execute(r"""DELETE FROM "Exploit" WHERE ("id" = {})""".format(id_))
+            self.conn.commit()
+            return True
+        except Exception as e:
+            pass
 
 
     def Save_json(self,data={},filename='id.json'):
