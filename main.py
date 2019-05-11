@@ -77,11 +77,11 @@ class Libs(object):
         data = []
         cursor = self.c.execute(r"""SELECT id,type,title,content FROM "Exploit" WHERE "type" LIKE '{}'""".format(type_))
         for row in cursor:
-            id_ = 'id = ',row[0]
-            type_ = 'type = ',row[1]
-            title = 'title = ',row[2]
-            name = 'name = ',row[3]
-            data.append([].append(id_,type_,title,name))
+            id_ = row[0]
+            type_ = row[1]
+            title = row[2]
+            name = row[3]
+            data.append([id_,type_,title,name])
             
         return data
 
