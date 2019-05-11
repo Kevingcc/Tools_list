@@ -43,13 +43,13 @@ class test(selenium_):
 # r.main()
 
 
-l = Libs()
-# l.Write_Data(1,'sqli','sqli_','sqli__')
-# l.Write_Data(2,'sqli','sqli_','sqli__')
-Data = l.Query_Data('sqli')
+# l = Libs()
+# # l.Write_Data(1,'sqli','sqli_','sqli__')
+# # l.Write_Data(2,'sqli','sqli_','sqli__')
+# Data = l.Query_Data('sqli')
 
-for Data_ in Data:
-    print(Data_)
+# for Data_ in Data:
+#     print(Data_)
 
-l.conn.close()
+# l.conn.close()
 
