@@ -168,6 +168,7 @@ class selenium_(Libs):
                     for num in range(1,16):
                         elements = self.browser_.find_element_by_xpath('//*[@id="exploits-table"]/tbody/tr[{}]/td[2]/a'.format(num)).text
                         print(elements)
+                        # self.Write_Data(id_=)
 
                 if page != 1 and page-1:
                     print('第{}页'.format(page))

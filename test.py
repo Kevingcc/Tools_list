@@ -44,10 +44,10 @@ class test(selenium_):
 
 
 # l = Libs()
-# # l.Write_Data(1,'sqli','sqli_','sqli__')
-# # l.Write_Data(2,'sqli','sqli_','sqli__')
+# l.Write_Data(1,'sqli','sqli_','sqli__')
+# l.Write_Data(2,2,'sqli','sqli_','sqli__')
+# l.Delet_Data(2)
 # Data = l.Query_Data('sqli')
-
 # for Data_ in Data:
 #     print(Data_)
 
