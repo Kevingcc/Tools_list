@@ -6,6 +6,7 @@ from main import Libs
 from main import Run
 from search import selenium_
 from main import Libs
+from search import Exploit_Search
 
 # self.commands__(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
 
@@ -15,6 +16,8 @@ class test(selenium_):
     def __init__(self):
         super(test,self).__init__()
         self.Search = self.Google_Search
+        self.Exploit_Search = Exploit_Search()
+        self.sqli = self.Exploit_Search.Sqli_Exploit
 
     def test__(self):
         Searchs = self.Search('hello word')
@@ -29,15 +32,24 @@ class test(selenium_):
 
     def test_(self):
         self.test()
+        self.browser.quit()
+        self.browser_.quit()
 
     def test___(self):
-        pass
+        result1 = self.sqli()
+        if result1:
+            print('test___ 方法测试成功...')
+            self.browser.quit()
+            self.browser_.quit()
 
 
 
-# t = test()
+
+t = test()
 
 # t.test_()
+# t.test__()
+t.test___()
 
 
 # r = Run()

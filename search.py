@@ -33,14 +33,22 @@ class selenium_(Libs):
         self.chrome_options1.add_argument('--load-extension={}lib/ghelper'.format(self.root))
         self.chrome_options2 = webdriver.ChromeOptions()
         self.chrome_options2.add_argument('--load-extension={}lib/ReplaceGoogleCDN/chrome'.format(self.root))
+        #配置代理.
+        # self.chrome_options2.add_argument('--proxy-server=http://202.20.16.82:10152')
+        # self.chrome_options2.add_argument('window-size=1000x1000')
         self.browser = webdriver.Chrome(
             chrome_options=self.chrome_options1
         )
         self.browser_ = webdriver.Chrome(
             chrome_options=self.chrome_options2
         )
+        self.browser.minimize_window()
+        self.browser_.minimize_window()
+        # self.browser.close()
+        # self.browser_.close()
         id_ = self.Getting_plug_ins_id()
         self.login_url = 'chrome-extension://{}/login.html'.format(id_)
+        # print('self.login_url = ',self.login_url)
 
     def Kill_chromedriver(self):
         # mutex.acquire()
@@ -81,30 +89,36 @@ class selenium_(Libs):
             i += 1
     
     def Login_Google_CRX(self):
-        self.browser.get(self.login_url)
-        if os.path.getsize('{}lib/login.json'.format(self.root)) <= 0:
-            email = input('Email>')
-            password = input('Password>')
-            data1 = {'email':email,'password':password}
-            self.Save_json(data=data1,filename='login.json')
+        try:
+            self.browser.get(self.login_url)
+            self.browser.minimize_window()
+            if os.path.getsize('{}lib/login.json'.format(self.root)) <= 0:
+                print('谷歌访问助手插件的账号及密码登入...')
+                email = input('Email>')
+                password = input('Password>')
+                data1 = {'email':email,'password':password}
+                self.Save_json(data=data1,filename='login.json')
 
-        time.sleep(2)
-        data2 = self.Read_json(filename='login.json')
+            time.sleep(2)
+            data2 = self.Read_json(filename='login.json')
 
-        i = 0
-        for line in data2:
-            if i == 0:
-                line = json.loads(line)
-                # print('line -> ',line)
-                email = line['email']
-                password = line['password']
-                time.sleep(10)
-                log_email = self.browser.find_element_by_id('email').send_keys(email)
-                log_password = self.browser.find_element_by_id('password').send_keys(password)
-                log_password = self.browser.find_element_by_id('password').send_keys(Keys.ENTER)
-                print('登入成功...')
+            i = 0
+            for line in data2:
+                if i == 0:
+                    line = json.loads(line)
+                    # print('line -> ',line)
+                    email = line['email']
+                    password = line['password']
+                    time.sleep(10)
+                    log_email = self.browser.find_element_by_id('email').send_keys(email)
+                    log_password = self.browser.find_element_by_id('password').send_keys(password)
+                    log_password = self.browser.find_element_by_id('password').send_keys(Keys.ENTER)
+                    print('登入成功...')
 
-            i += 1
+                i += 1
+        except Exception as e:
+            print('Login_Google_CRX = ',traceback.format_exc())
+            pass
 
     def requests_(self,content):
         self.Login_Google_CRX()
@@ -128,69 +142,72 @@ class selenium_(Libs):
 
         # //*[@id="exploits-table_paginate"]/ul/li[3]/a -> 1
 
-        self.browser.close()
-        # self.Install_selenium()
-        # self.Config_chromedriver()
-        time.sleep(10)
-        self.browser_.get('https://www.exploit-db.com/google-hacking-database')
-        time.sleep(10)
-        self.browser_.find_element_by_xpath('//*[@id="exploits-table_filter"]/label/input').send_keys(keyword)
-        self.browser_.find_element_by_xpath('//*[@id="exploits-table_filter"]/label/input').send_keys(Keys.ENTER)
-        time.sleep(3)
+        # self.browser.quit()
+        try:
+            time.sleep(10)
+            self.browser_.get('https://www.exploit-db.com/google-hacking-database')
+            self.browser_.minimize_window()
+            time.sleep(10)
+            self.browser_.find_element_by_xpath('//*[@id="exploits-table_filter"]/label/input').send_keys(keyword)
+            self.browser_.find_element_by_xpath('//*[@id="exploits-table_filter"]/label/input').send_keys(Keys.ENTER)
+            time.sleep(3)
 
-        number = 1
-        while True:
-            number += 1
-            try:
-                if number == 1:
-                    element1 = self.browser_.find_element_by_xpath('//*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2))
-                    print('Find1 -> //*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2))
-                if number != 1:
-                    element1 = self.browser_.find_element_by_xpath('//*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2)).text
-                    if element1 in ['FIRST','PREVIOUS','NEXT','LAST']:
-                        print('总页数：{}'.format(number-1))
-                        # print('Find -> //*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2))
-                        number = number-1
-                        break
-            except Exception as e:
-                print(traceback.format_exc())
-                print('总页数：{}'.format(number-1))
-                number = number-1
-                break
+            number = 1
+            while True:
+                number += 1
+                try:
+                    if number == 1:
+                        element1 = self.browser_.find_element_by_xpath('//*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2))
+                        print('Find1 -> //*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2))
+                    if number != 1:
+                        element1 = self.browser_.find_element_by_xpath('//*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2)).text
+                        if element1 in ['FIRST','PREVIOUS','NEXT','LAST']:
+                            print('总页数：{}'.format(number-1))
+                            # print('Find -> //*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2))
+                            number = number-1
+                            break
+                except Exception as e:
+                    # print(traceback.format_exc())
+                    print('总页数：{}'.format(number-1))
+                    number = number-1
+                    break
 
 
-        for page in range(1,number+1):
-            try:
-                if page == 1:
-                    print('第{}页'.format(page))
+            for page in range(1,number+1):
+                try:
+                    if page == 1:
+                        print('第{}页'.format(page))
 
-                    for num in range(1,16):
-                        elements = self.browser_.find_element_by_xpath('//*[@id="exploits-table"]/tbody/tr[{}]/td[2]/a'.format(num)).text
-                        # print(elements)
-                        if not self.Write_Data(id_=str(page)+'0'+str(num),page=page,type_=type_,title=title,content=elements):
-                            self.Write_Data(id_=str(page)+'0'+str(num),page=page,type_=type_,title=title,content=elements)
+                        for num in range(1,16):
+                            elements = self.browser_.find_element_by_xpath('//*[@id="exploits-table"]/tbody/tr[{}]/td[2]/a'.format(num)).text
+                            # print(elements)
+                            if not self.Write_Data(id_=str(page)+'0'+str(num),page=page,type_=type_,title=title,content=elements):
+                                self.Write_Data(id_=str(page)+'0'+str(num),page=page,type_=type_,title=title,content=elements)
 
-                if page != 1 and page-1:
-                    print('第{}页'.format(page))
-                    time.sleep(4)
-                    self.browser_.find_element_by_xpath('//*[@id="exploits-table_next"]/a').click()
-                    time.sleep(4)
+                    if page != 1 and page-1:
+                        print('第{}页'.format(page))
+                        time.sleep(4)
+                        self.browser_.find_element_by_xpath('//*[@id="exploits-table_next"]/a').click()
+                        time.sleep(4)
 
+                    
+                        for num in range(1,16):
+                            elements = self.browser_.find_element_by_xpath('//*[@id="exploits-table"]/tbody/tr[{}]/td[2]/a'.format(num)).text
+                            # print(elements)
+                            if not self.Write_Data(id_=str(page)+'0'+str(num),page=page,type_=type_,title=title,content=elements):
+                                self.Write_Data(id_=str(page)+'0'+str(num),page=page,type_=type_,title=title,content=elements)
+
+
+                except Exception as e:
+                    # print(traceback.format_exc())
+                    # self.browser_.close()
+                    break
                 
-                    for num in range(1,16):
-                        elements = self.browser_.find_element_by_xpath('//*[@id="exploits-table"]/tbody/tr[{}]/td[2]/a'.format(num)).text
-                        # print(elements)
-                        if not self.Write_Data(id_=str(page)+'0'+str(num),page=page,type_=type_,title=title,content=elements):
-                            self.Write_Data(id_=str(page)+'0'+str(num),page=page,type_=type_,title=title,content=elements)
-
-
-            except Exception as e:
-                print(traceback.format_exc())
-                self.browser_.close()
-                break
-            
-        print('GHack爬取完毕...')
-        self.browser_.close()
+            print('GHack爬取完毕...')
+            # self.browser_.quit()
+        except Exception as e:
+            # print(traceback.format_exc())
+            pass
 
 
     def test(self):
@@ -202,6 +219,8 @@ class selenium_(Libs):
         """
         keyword：Search keyword.
         number：Page number.
+        data[0] = Title
+        data[1] = Link
         """
         # mutex.release()
         # thread2 = threading.Thread(target=self.requests_,args=())
@@ -209,58 +228,62 @@ class selenium_(Libs):
         # thread2 = threading.Thread(target=self.requests_())
         # thread1.start()
         # thread2.start()
-        self.browser_.close()
-        result1 = []
-        # self.Install_selenium()
-        # self.Config_chromedriver()
-        self.requests_(keyword)
         try:
-            i = 0
-            while True:
-            # for i1 in range(2,12):
-                print('第{}页'.format(i+1))    
-                
-                if i+1 < 27:
-                    if i != 0:
-                        if i+1 < number+1:
-                            time.sleep(2)
-                            elements = self.browser.find_element_by_xpath('//*[@id="pnnext"]/span[2]')
-                            time.sleep(1)
-                            elements.click()
-                            time.sleep(3)
-                
-                if i+1 == number+1:
-                    self.browser.close()
-                    break
+            # self.browser_.quit()
+            result1 = []
+            self.requests_(keyword)
+            self.browser.minimize_window()
+            try:
+                i = 0
+                while True:
+                # for i1 in range(2,12):
+                    print('第{}页'.format(i+1))    
+                    
+                    if i+1 < 27:
+                        if i != 0:
+                            if i+1 < number+1:
+                                time.sleep(2)
+                                elements = self.browser.find_element_by_xpath('//*[@id="pnnext"]/span[2]')
+                                time.sleep(1)
+                                elements.click()
+                                time.sleep(3)
+                    
+                    if i+1 == number+1:
+                        # self.browser.close()
+                        break
 
-                if i+1 == 27:
-                    self.browser.close()
-                    break
+                    if i+1 == 27:
+                        # self.browser.close()
+                        break
+                    
+                    for i2 in range(1,11):
+                        try:
+                            time.sleep(0.5)
+                            #Title
+                            elements1 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]/h3'.format(i2))
+                            #link
+                            elements2 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]/div/cite'.format(i2))
+                            # print('i2 -> ',i2)
+                            print(elements1.text)
+                            print(elements2.text)
+                            result1.append([elements1.text,elements2.text])
+                    
+                        except Exception as e:
+                            # print(traceback.format_exc())
+                            pass
+                    
+                    print('下一页...')
+                    i += 1
                 
-                for i2 in range(1,11):
-                    try:
-                        time.sleep(0.5)
-                        #Title
-                        elements1 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]/h3'.format(i2))
-                        #link
-                        elements2 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]/div/cite'.format(i2))
-                        # print('i2 -> ',i2)
-                        print(elements1.text)
-                        print(elements2.text)
-                        result1.append([elements1.text,elements2.text])
-                
-                    except Exception as e:
-                        # print(traceback.format_exc())
-                        pass
-                
-                print('下一页...')
-                i += 1
-            
-            return result1
-                
+                # self.browser.quit()
+                return result1
+                    
+            except Exception as e:
+                # print(traceback.format_exc())
+                pass
         except Exception as e:
-            print(traceback.format_exc())
-            pass
+            # print(traceback.format_exc())
+            pass        
 
 
 
@@ -271,7 +294,12 @@ class Exploit_Search(object):
     通过Google hack 搜索可利用的漏洞.
     """
     def __init__(self):
-        pass
+        self.selenium_ = selenium_()
+        self.google_search = self.selenium_.Google_Search
+        self.query = self.selenium_.Query_Data
+        self.GHack = self.selenium_.GHack
+        self.Save_text = self.selenium_.Save_text
+        self.Read_text = self.selenium_.Read_text
 
     def CVE_Exploit(self):
         """
@@ -295,7 +323,15 @@ class Exploit_Search(object):
         """
         收集存在sqli的站点.
         """
-        pass
+        result1 = self.Sqli_Search(keyword='sqli',filename='sqli1.txt')
+        if result1:
+            print('Sqli 站点收集完成...')
+        
+        result2 = self.Sqli_Search(keyword='sql',filename='sqli2.txt')
+        if result2:
+            print('Sqli 站点收集完成...')
+
+        return True
     
     def Xss_Exploit(self):
         """
@@ -308,6 +344,23 @@ class Exploit_Search(object):
         收集存在CSRF的站点.
         """
         pass
+
+    def Sqli_Search(self,keyword,filename):
+        try:
+            self.GHack(keyword=keyword,type_='sqli',title='sqli')
+            query = self.query(type_='sqli')
+            for query_ in query:
+                content = query_[4]
+                google_search = self.google_search(keyword=content,number=3)
+                for google_search_ in google_search:
+                    title = google_search_[0]
+                    link = google_search_[1]
+                    self.Save_text(filename=filename,content=link)
+            return True
+        except Exception as e:
+            pass
+        
+                
 
 
 

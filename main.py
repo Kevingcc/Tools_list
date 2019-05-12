@@ -31,6 +31,7 @@ import traceback
 import re
 import json
 import sqlite3
+import requests
 from lib.datatype import AttribDict
 
 # 获取当前文件绝对路径.
@@ -56,6 +57,7 @@ class Libs(object):
         else:
             self.vle = False
         self.Install_selenium()
+        self.Install_requests()
         self.Config_chromedriver()
         
         self.conn = sqlite3.connect('{}lib/GHack'.format(self.root))
@@ -67,21 +69,24 @@ class Libs(object):
         """
         查询数据.
         data[0] = id
+        页数
+        data[1] = page
         漏洞类型
-        data[1] = type
+        data[2] = type
         标题
-        data[2] = title
+        data[3] = title
         内容
-        data[3] = content
+        data[4] = content
         """
         data = []
         cursor = self.c.execute(r"""SELECT id,page,type,title,content FROM "Exploit" WHERE "type" LIKE '{}'""".format(type_))
         for row in cursor:
             id_ = row[0]
-            type_ = row[1]
-            title = row[2]
-            name = row[3]
-            data.append([id_,type_,title,name])
+            page = row[1]
+            type_ = row[2]
+            title = row[3]
+            content = row[4]
+            data.append([id_,page,type_,title,content])
             
         return data
 
@@ -129,7 +134,34 @@ class Libs(object):
             for line in r.readlines():
                 lines.append(line.strip())
         return lines
+
+
+    def Save_text(self,filename,content):
+        try:
+            with open('{}lib/{}'.format(self.root,filename),'a+') as w:
+                if 'https' not in content or 'http' not in content:
+                    content1 = 'http://'+content.strip()
+                    content2 = 'https://'+content.strip()
+                    r1 = requests.get(content1)
+                    r2 = requests.get(content2)
+                    if r1 == 200:
+                        content = content1
+                    elif r2 == 200:
+                        content = content2
+
+                w.write(content.strip()+'\n')
+        except Exception as e:
+            # print(traceback.format_exc())
+            pass
             
+
+    def Read_text(self,filename):
+        lines = []
+        with open('{}lib/{}'.format(self.root,filename),'r') as r:
+            for line in r.readlines():
+                lines.append(line.strip())
+        return lines
+
 
     def commands_(self,cmd=[],decodes_='utf-8'):
         """
@@ -203,6 +235,13 @@ class Libs(object):
             print('正在执行安装sudo apt-get install python-pip')
             self.commands__('sudo apt-get -y install python-pip')
             return False
+
+    def Install_requests(self):
+        c1 = self.commands__(cmd='python3 -m pip install requests==2.21.0')
+        if c1:
+            print('requests 安装成功...')
+        else:
+            print('requests 安装失败...')
     
     def Install_selenium(self):
         c1 = self.commands__(cmd='python3 -m pip install selenium==3.141.0')
