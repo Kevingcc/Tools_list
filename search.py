@@ -291,8 +291,23 @@ class Exploit_Search(object):
         """
         pass
 
+    def Sqli_Exploit(self):
+        """
+        收集存在sqli的站点.
+        """
+        pass
     
+    def Xss_Exploit(self):
+        """
+        收集存在xss的站点.
+        """
+        pass
 
+    def CSRF_Exploit(self):
+        """
+        收集存在CSRF的站点.
+        """
+        pass
 
 
 
