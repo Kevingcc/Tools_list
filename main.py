@@ -142,8 +142,8 @@ class Libs(object):
                 if 'https' not in content or 'http' not in content:
                     content1 = 'http://'+content.strip()
                     content2 = 'https://'+content.strip()
-                    r1 = requests.get(content1)
-                    r2 = requests.get(content2)
+                    r1 = requests.get(content1).status_code
+                    r2 = requests.get(content2).status_code
                     if r1 == 200:
                         content = content1
                     elif r2 == 200:
