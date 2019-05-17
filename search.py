@@ -48,7 +48,9 @@ class selenium_(Libs):
         # self.browser_.close()
         id_ = self.Getting_plug_ins_id()
         self.login_url = 'chrome-extension://{}/login.html'.format(id_)
-        # print('self.login_url = ',self.login_url)
+
+        self.Filter_List = ['not a robot','人机','验证']
+
 
     def Kill_chromedriver(self):
         # mutex.acquire()
@@ -215,6 +217,18 @@ class selenium_(Libs):
         
 
 
+    def Verification_Handle(self,htmldoc):
+        for Filter in self.Filter_List:
+            pattern = re.compile(Filter+'*')
+            if pattern.findall(htmldoc):
+                print('发现google验证...')
+                elements = self.browser.find_element_by_xpath('//*[@id="recaptcha-anchor"]/div[1]')
+                elements.click()
+                return False
+        
+        return True
+        
+
     def Google_Search(self,keyword,number=26):
         """
         keyword：Search keyword.
@@ -233,54 +247,58 @@ class selenium_(Libs):
             result1 = []
             self.requests_(keyword)
             self.browser.minimize_window()
-            try:
-                i = 0
-                while True:
-                # for i1 in range(2,12):
-                    print('第{}页'.format(i+1))    
-                    
-                    if i+1 < 27:
-                        if i != 0:
-                            if i+1 < number+1:
-                                time.sleep(2)
-                                elements = self.browser.find_element_by_xpath('//*[@id="pnnext"]/span[2]')
-                                time.sleep(1)
-                                elements.click()
-                                time.sleep(3)
-                    
-                    if i+1 == number+1:
-                        # self.browser.close()
-                        break
+            htmldoc1 = self.browser.find_element_by_xpath("//*").get_attribute("outerHTML")
+            if self.Verification_Handle(htmldoc1):
+                try:
+                    i = 0
+                    while True:
+                    # for i1 in range(2,12):
+                        print('第{}页'.format(i+1))    
+                        
+                        if i+1 < 27:
+                            if i != 0:
+                                if i+1 < number+1:
+                                    time.sleep(2)
+                                    elements = self.browser.find_element_by_xpath('//*[@id="pnnext"]/span[2]')
+                                    time.sleep(1)
+                                    elements.click()
+                                    time.sleep(3)
+                                    htmldoc2 = self.browser.find_element_by_xpath("//*").get_attribute("outerHTML")
+                                    self.Verification_Handle(htmldoc2)
 
-                    if i+1 == 27:
-                        # self.browser.close()
-                        break
+                        if i+1 == number+1:
+                            # self.browser.close()
+                            break
+
+                        if i+1 == 27:
+                            # self.browser.close()
+                            break
+                        
+                        for i2 in range(1,11):
+                            try:
+                                time.sleep(0.5)
+                                #Title
+                                elements1 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]/h3'.format(i2))
+                                #link
+                                elements2 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]/div/cite'.format(i2))
+                                # print('i2 -> ',i2)
+                                print(elements1.text)
+                                print(elements2.text)
+                                result1.append([elements1.text,elements2.text])
+                        
+                            except Exception as e:
+                                # print(traceback.format_exc())
+                                pass
+                        
+                        print('下一页...')
+                        i += 1
                     
-                    for i2 in range(1,11):
-                        try:
-                            time.sleep(0.5)
-                            #Title
-                            elements1 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]/h3'.format(i2))
-                            #link
-                            elements2 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]/div/cite'.format(i2))
-                            # print('i2 -> ',i2)
-                            print(elements1.text)
-                            print(elements2.text)
-                            result1.append([elements1.text,elements2.text])
-                    
-                        except Exception as e:
-                            # print(traceback.format_exc())
-                            pass
-                    
-                    print('下一页...')
-                    i += 1
-                
-                # self.browser.quit()
-                return result1
-                    
-            except Exception as e:
-                # print(traceback.format_exc())
-                pass
+                    # self.browser.quit()
+                    return result1
+                        
+                except Exception as e:
+                    # print(traceback.format_exc())
+                    pass
         except Exception as e:
             # print(traceback.format_exc())
             pass        

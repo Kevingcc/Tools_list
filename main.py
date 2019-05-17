@@ -58,6 +58,7 @@ class Libs(object):
             self.vle = False
         self.Install_selenium()
         self.Install_requests()
+        # self.Install_mechanize()
         self.Config_chromedriver()
         
         self.conn = sqlite3.connect('{}lib/GHack'.format(self.root))
@@ -220,6 +221,12 @@ class Libs(object):
         else:
             print('chromedriver 正在运行...')
 
+    # def Install_mechanize(self):
+    #     c1 = self.commands__(cmd='python3 -m pip install mechanize==0.4.2')
+    #     if c1:
+    #         print('mechanize 安装成功...')
+    #     else:
+    #         print('mechanize 安装失败...')
 
     def Inspect_pip(self):
         c1 = self.commands_('python3 -m pip')
