@@ -163,6 +163,10 @@ class Libs(object):
                 lines.append(line.strip())
         return lines
 
+    def Save_text_(self,filename,content):
+        with open('{}lib/{}'.format(self.root,filename),'a+') as w:
+            w.write(str(content)+'\n')
+            print('写入完毕...')
 
     def commands_(self,cmd=[],decodes_='utf-8'):
         """

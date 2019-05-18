@@ -7,6 +7,7 @@ import json
 import time
 import os
 import traceback
+import random
 
 try:
     from selenium import webdriver
@@ -49,7 +50,9 @@ class selenium_(Libs):
         id_ = self.Getting_plug_ins_id()
         self.login_url = 'chrome-extension://{}/login.html'.format(id_)
 
-        self.Filter_List = ['not a robot','人机','验证']
+        self.Filter_List = ['not a robot','人机','验证','身份']
+
+        self.cookie = ''
 
 
     def Kill_chromedriver(self):
@@ -124,7 +127,17 @@ class selenium_(Libs):
 
     def requests_(self,content):
         self.Login_Google_CRX()
+        if not os.path.getsize('{}lib/cookies.txt'.format(self.root)) <= 0:
+            cookies = self.Read_text('cookies.txt')
+            for cookie in cookies:
+                cookie = eval(cookie.strip())
+                if cookie:
+                    self.cookie = random.choice(cookie)
+                    print('cookie = ',self.cookie)
+
         time.sleep(10)
+        self.browser.get('https://www.google.com')
+        self.browser.add_cookie(self.cookie)
         self.browser.get('https://www.google.com')
         Search_G = self.browser.find_element_by_xpath('//*[@id="tsf"]/div[2]/div/div[1]/div/div[1]/input').send_keys(content)
         Search_ENTER = self.browser.find_element_by_xpath('//*[@id="tsf"]/div[2]/div/div[1]/div/div[1]/input').send_keys(Keys.ENTER)
@@ -222,12 +235,19 @@ class selenium_(Libs):
             pattern = re.compile(Filter+'*')
             if pattern.findall(htmldoc):
                 print('发现google验证...')
-                elements = self.browser.find_element_by_xpath('//*[@id="recaptcha-anchor"]/div[1]')
-                elements.click()
-                return False
-        
-        return True
-        
+                if os.path.getsize('{}lib/cookies.txt'.format(self.root)) <= 3000:
+                    ipt1 = input('手动验证完成[y|n]')
+                    if ipt1:
+                        if ipt1 is 'y':
+                            cookies = self.browser.get_cookies()
+                            print('cookies = ',cookies)
+                            self.Save_text_('cookies.txt',cookies)
+                            print('继续爬取数据...')
+                        if ipt1 is 'n':
+                            pass
+                    return False
+            return True
+            
 
     def Google_Search(self,keyword,number=26):
         """
@@ -246,8 +266,9 @@ class selenium_(Libs):
             # self.browser_.quit()
             result1 = []
             self.requests_(keyword)
-            self.browser.minimize_window()
             htmldoc1 = self.browser.find_element_by_xpath("//*").get_attribute("outerHTML")
+            # self.browser.minimize_window() 
+            # print('htmldoc1 = ',htmldoc1)           
             if self.Verification_Handle(htmldoc1):
                 try:
                     i = 0
@@ -280,11 +301,11 @@ class selenium_(Libs):
                                 #Title
                                 elements1 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]/h3'.format(i2))
                                 #link
-                                elements2 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]/div/cite'.format(i2))
-                                # print('i2 -> ',i2)
-                                print(elements1.text)
-                                print(elements2.text)
-                                result1.append([elements1.text,elements2.text])
+                                elements2 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]'.format(i2)).get_attribute('href')
+                                
+                                print('title = ',elements1.text)
+                                print('link = ',elements2)
+                                result1.append([elements1.text,elements2])
                         
                             except Exception as e:
                                 # print(traceback.format_exc())
@@ -300,7 +321,7 @@ class selenium_(Libs):
                     # print(traceback.format_exc())
                     pass
         except Exception as e:
-            # print(traceback.format_exc())
+            print(traceback.format_exc())
             pass        
 
 
@@ -318,6 +339,8 @@ class Exploit_Search(object):
         self.GHack = self.selenium_.GHack
         self.Save_text = self.selenium_.Save_text
         self.Read_text = self.selenium_.Read_text
+        self.browser = self.selenium_.browser
+        self.browser_ = self.selenium_.browser_
 
     def CVE_Exploit(self):
         """
@@ -343,10 +366,14 @@ class Exploit_Search(object):
         """
         result1 = self.Sqli_Search(keyword='sqli',filename='sqli1.txt')
         if result1:
+            self.browser.quit()
+            self.browser_.quit()
             print('Sqli 站点收集完成...')
         
         result2 = self.Sqli_Search(keyword='sql',filename='sqli2.txt')
         if result2:
+            self.browser.quit()
+            self.browser_.quit()
             print('Sqli 站点收集完成...')
 
         return True
@@ -388,7 +415,9 @@ class Exploit_Search(object):
 # # s.Kill_chromedriver()
 # s.run()
 
-
+# driver.back() 
+# driver.forward() 
+# driver.refresh()
 
 
 

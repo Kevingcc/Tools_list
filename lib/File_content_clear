@@ -1,11 +1,16 @@
 #!/bin/bash
 
-sudo chmod +x pyc_clear && bash pyc_clear
+HOME_="$HOME/.Tools/Tools_list/lib";
 
-rm -rf ./login.json
-touch ./login.json
-rm -rf ./id.json
-touch ./id.json
+sudo chmod +x "$HOME_/pyc_clear" && bash "$HOME_/pyc_clear"
+
+rm -rf "$HOME_/login.json"
+touch "$HOME_/login.json"
+rm -rf "$HOME_/id.json"
+touch "$HOME_/id.json"
+rm -rf "$HOME_/cookies.txt"
+touch "$HOME_/cookies.txt"
 
 echo -e "login.json 初始化完毕...";
 echo -e "id.json 初始化完毕...";
+echo -e "cookies.txt 初始化完毕...";
