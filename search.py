@@ -137,7 +137,10 @@ class selenium_(Libs):
 
         time.sleep(10)
         self.browser.get('https://www.google.com')
-        self.browser.add_cookie(self.cookie)
+        
+        if self.cookie:
+            self.browser.add_cookie(self.cookie)
+        
         self.browser.get('https://www.google.com')
         Search_G = self.browser.find_element_by_xpath('//*[@id="tsf"]/div[2]/div/div[1]/div/div[1]/input').send_keys(content)
         Search_ENTER = self.browser.find_element_by_xpath('//*[@id="tsf"]/div[2]/div/div[1]/div/div[1]/input').send_keys(Keys.ENTER)
@@ -271,6 +274,8 @@ class selenium_(Libs):
             # print('htmldoc1 = ',htmldoc1)           
             if self.Verification_Handle(htmldoc1):
                 try:
+                    htmldoc2 = self.browser.find_element_by_xpath("//*").get_attribute("outerHTML")
+                    self.Verification_Handle(htmldoc2)
                     i = 0
                     while True:
                     # for i1 in range(2,12):
@@ -284,8 +289,8 @@ class selenium_(Libs):
                                     time.sleep(1)
                                     elements.click()
                                     time.sleep(3)
-                                    htmldoc2 = self.browser.find_element_by_xpath("//*").get_attribute("outerHTML")
-                                    self.Verification_Handle(htmldoc2)
+                                    htmldoc3 = self.browser.find_element_by_xpath("//*").get_attribute("outerHTML")
+                                    self.Verification_Handle(htmldoc3)
 
                         if i+1 == number+1:
                             # self.browser.close()
