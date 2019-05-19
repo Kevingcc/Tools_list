@@ -50,9 +50,10 @@ class selenium_(Libs):
         id_ = self.Getting_plug_ins_id()
         self.login_url = 'chrome-extension://{}/login.html'.format(id_)
 
-        self.Filter_List = ['not a robot','人机','验证','身份']
+        # self.Filter_List = ['not a robot','人机','验证','身份']
 
         self.cookie = ''
+        self.option_ = ''
 
 
     def Kill_chromedriver(self):
@@ -126,24 +127,31 @@ class selenium_(Libs):
             pass
 
     def requests_(self,content):
-        self.Login_Google_CRX()
-        if not os.path.getsize('{}lib/cookies.txt'.format(self.root)) <= 0:
-            cookies = self.Read_text('cookies.txt')
-            for cookie in cookies:
-                cookie = eval(cookie.strip())
-                if cookie:
-                    self.cookie = random.choice(cookie)
-                    print('cookie = ',self.cookie)
+        try:
+            self.Login_Google_CRX()
+            
+            if not os.path.getsize('{}lib/cookies.txt'.format(self.root)) == 0:
+                cookies = self.Read_text('cookies.txt')
+                for cookie in cookies:
+                    cookie = eval(cookie.strip())
+                    if cookie:
+                        self.cookie = random.choice(cookie)
+                        print('cookie = ',self.cookie)
 
-        time.sleep(10)
-        self.browser.get('https://www.google.com')
-        
-        if self.cookie:
-            self.browser.add_cookie(self.cookie)
-        
-        self.browser.get('https://www.google.com')
-        Search_G = self.browser.find_element_by_xpath('//*[@id="tsf"]/div[2]/div/div[1]/div/div[1]/input').send_keys(content)
-        Search_ENTER = self.browser.find_element_by_xpath('//*[@id="tsf"]/div[2]/div/div[1]/div/div[1]/input').send_keys(Keys.ENTER)
+            time.sleep(10)
+            self.browser.get('https://www.google.com')
+            
+            if self.cookie:
+                print('cookie2 = ',self.cookie)
+                self.browser.add_cookie(self.cookie)
+            
+            self.browser.get('https://www.google.com')
+            Search_G = self.browser.find_element_by_xpath('//*[@id="tsf"]/div[2]/div/div[1]/div/div[1]/input').send_keys(content)
+            Search_ENTER = self.browser.find_element_by_xpath('//*[@id="tsf"]/div[2]/div/div[1]/div/div[1]/input').send_keys(Keys.ENTER)
+        except Exception as e:
+            # print(traceback.format_exc())
+            if self.option_ != 'n':
+                self.Verification_Handle()
 
     
     def GHack_Page_num(self):
@@ -151,7 +159,7 @@ class selenium_(Libs):
 
 
     def GHack(self,keyword,type_,title):
-
+        # clear
         # next page number 315
         # //*[@id="exploits-table_next"]/a
 
@@ -166,6 +174,7 @@ class selenium_(Libs):
             self.browser_.get('https://www.exploit-db.com/google-hacking-database')
             self.browser_.minimize_window()
             time.sleep(10)
+            self.browser_.find_element_by_xpath('//*[@id="exploits-table_filter"]/label/input').clear()
             self.browser_.find_element_by_xpath('//*[@id="exploits-table_filter"]/label/input').send_keys(keyword)
             self.browser_.find_element_by_xpath('//*[@id="exploits-table_filter"]/label/input').send_keys(Keys.ENTER)
             time.sleep(3)
@@ -233,24 +242,21 @@ class selenium_(Libs):
         
 
 
-    def Verification_Handle(self,htmldoc):
-        for Filter in self.Filter_List:
-            pattern = re.compile(Filter+'*')
-            if pattern.findall(htmldoc):
-                print('发现google验证...')
-                if os.path.getsize('{}lib/cookies.txt'.format(self.root)) <= 3000:
-                    ipt1 = input('手动验证完成[y|n]')
-                    if ipt1:
-                        if ipt1 is 'y':
-                            cookies = self.browser.get_cookies()
-                            print('cookies = ',cookies)
-                            self.Save_text_('cookies.txt',cookies)
-                            print('继续爬取数据...')
-                        if ipt1 is 'n':
-                            pass
-                    return False
-            return True
-            
+    def Verification_Handle(self):
+        print('发现google验证...')
+        if os.path.getsize('{}lib/cookies.txt'.format(self.root)) <= 3000:
+            ipt1 = input('手动验证完成[y|n]')
+            if ipt1:
+                if ipt1 is 'y':
+                    cookies = self.browser.get_cookies()
+                    print('cookies = ',cookies)
+                    self.Save_text_('cookies.txt',cookies)
+                    print('继续爬取数据...')
+                if ipt1 is 'n':
+                    self.option_ = 'n'
+            return False
+        return True
+        
 
     def Google_Search(self,keyword,number=26):
         """
@@ -269,62 +275,63 @@ class selenium_(Libs):
             # self.browser_.quit()
             result1 = []
             self.requests_(keyword)
-            htmldoc1 = self.browser.find_element_by_xpath("//*").get_attribute("outerHTML")
-            # self.browser.minimize_window() 
-            # print('htmldoc1 = ',htmldoc1)           
-            if self.Verification_Handle(htmldoc1):
-                try:
-                    htmldoc2 = self.browser.find_element_by_xpath("//*").get_attribute("outerHTML")
-                    self.Verification_Handle(htmldoc2)
-                    i = 0
-                    while True:
-                    # for i1 in range(2,12):
-                        print('第{}页'.format(i+1))    
-                        
-                        if i+1 < 27:
-                            if i != 0:
-                                if i+1 < number+1:
+            try:
+                i = 0
+                while True:
+                # for i1 in range(2,12):
+                    print('第{}页'.format(i+1))    
+                    
+                    if i+1 < 27:
+                        if i != 0:
+                            if i+1 < number+1:
+                                try:
                                     time.sleep(2)
                                     elements = self.browser.find_element_by_xpath('//*[@id="pnnext"]/span[2]')
                                     time.sleep(1)
                                     elements.click()
                                     time.sleep(3)
-                                    htmldoc3 = self.browser.find_element_by_xpath("//*").get_attribute("outerHTML")
-                                    self.Verification_Handle(htmldoc3)
+                                except Exception as e:
+                                    try:
+                                        if self.option_ != 'n':
+                                            self.Verification_Handle()
+                                    except Exception as e:
+                                        pass
+                                        # print(traceback.format_exc())
+                                    # print(traceback.format_exc())
 
-                        if i+1 == number+1:
-                            # self.browser.close()
-                            break
+                    if i+1 == number+1:
+                        # self.browser.close()
+                        break
 
-                        if i+1 == 27:
-                            # self.browser.close()
-                            break
-                        
-                        for i2 in range(1,11):
-                            try:
-                                time.sleep(0.5)
-                                #Title
-                                elements1 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]/h3'.format(i2))
-                                #link
-                                elements2 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]'.format(i2)).get_attribute('href')
-                                
-                                print('title = ',elements1.text)
-                                print('link = ',elements2)
-                                result1.append([elements1.text,elements2])
-                        
-                            except Exception as e:
-                                # print(traceback.format_exc())
-                                pass
-                        
-                        print('下一页...')
-                        i += 1
+                    if i+1 == 27:
+                        # self.browser.close()
+                        break
                     
-                    # self.browser.quit()
-                    return result1
-                        
-                except Exception as e:
-                    # print(traceback.format_exc())
-                    pass
+                    for i2 in range(1,11):
+                        try:
+                            time.sleep(0.5)
+                            #Title
+                            elements1 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]/h3'.format(i2))
+                            #link
+                            elements2 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]'.format(i2)).get_attribute('href')
+                            
+                            print('title = ',elements1.text)
+                            print('link = ',elements2)
+                            result1.append([elements1.text,elements2])
+                    
+                        except Exception as e:
+                            # print(traceback.format_exc())
+                            pass
+                    
+                    print('下一页...')
+                    i += 1
+                
+                # self.browser.quit()
+                return result1
+                            
+            except Exception as e:
+                print(traceback.format_exc())
+                pass
         except Exception as e:
             print(traceback.format_exc())
             pass        
