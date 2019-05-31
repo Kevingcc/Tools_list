@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
 HOME_="$HOME/.Tools/Tools_list/lib";
+HOME__="$HOME/.Tools/Tools_list";
 
 sudo chmod +x "$HOME_/pyc_clear" && bash "$HOME_/pyc_clear"
 
@@ -10,7 +11,11 @@ rm -rf "$HOME_/id.json"
 touch "$HOME_/id.json"
 rm -rf "$HOME_/cookies.txt"
 touch "$HOME_/cookies.txt"
+rm -rf "$HOME_/GHack"
+cp -v "$HOME__/bak/GHack" "$HOME__/lib"
+
 
 echo -e "login.json 初始化完毕...";
 echo -e "id.json 初始化完毕...";
 echo -e "cookies.txt 初始化完毕...";
+echo -e "GHack 初始化完毕...";
