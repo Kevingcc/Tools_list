@@ -334,3 +334,14 @@ https://trello.com/b/OdCh62bq/psh
 https://trello.com/b/X90wOzsK/wwwsoftware-craftingcom
 https://trello.com/b/86YelLV6/querious-features
 https://trello.com/c/YO74NcdP/89-move-from-ec2-to-digital-ocean
+https://gitlab.dev.playkey.net/realzkh/realzkh_legacy/blob/master/configuration.php
+https://telekomhilft.telekom.de/riokc95758/attachments/riokc95758/173/50659/1/configuration%5Bphp%5D.pdf
+https://stackoverflow.com/questions/41552698/joomla-configuration-php-how-do-i-update-class-variables-using-function-and-assi
+https://gitlab.openquake.org/communication/glossary/blob/a50501bafe960c38bc1b017a9d7a5a76a1221447/joomla/configuration.php
+https://xp-dev.com/sc/139258/7/%2Ftrunk%2Fconfiguration.php
+https://et.fea.kpi.ua/Thumbr.php?x&action=edit&chdir=/var/www/et/&file=configuration.php~
+https://alessioangeloro.it/joomla-e-il-file-configuration-php-analizziamolo/
+https://www.sat12.net/configuration.php_
+https://gitlab.htl-leonding.ac.at/equipment-verleih/equipment-verleih/blob/463cfc2a3d1e71beb4b7a43937ac2ee688ab44b5/cms-part/Website_Joomla/configuration.php
+https://cienciaunemi.unemi.edu.ec/uno/configuration.php
+https://ana.gob.pa/tags.php?filesrc=/var/www/html/portal2/configuration.php&path=/var/www/html/portal2

@@ -13,9 +13,14 @@ rm -rf "$HOME_/cookies.txt"
 touch "$HOME_/cookies.txt"
 rm -rf "$HOME_/GHack"
 cp -v "$HOME__/bak/GHack" "$HOME__/lib"
+rm -rf "$HOME_/Search_Url.txt"
+touch "$HOME_/Search_Url.txt"
+rm -rf "$HOME_/Search_Url_.txt"
+touch "$HOME_/Search_Url_.txt"
 
 
 echo -e "login.json 初始化完毕...";
 echo -e "id.json 初始化完毕...";
 echo -e "cookies.txt 初始化完毕...";
 echo -e "GHack 初始化完毕...";
+echo -e "Search_Url.txt 初始化完毕..."

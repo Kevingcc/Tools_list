@@ -32,6 +32,9 @@ import re
 import json
 import sqlite3
 import requests
+import lxml
+from lxml import etree
+from setting import option_install
 from lib.datatype import AttribDict
 
 # 获取当前文件绝对路径.
@@ -50,21 +53,28 @@ class Libs(object):
         self.root_ = self.commands_(cmd=['echo $HOME'])
         self.root = '{}/.Tools/Tools_list/'.format(self.root_)
         self.commands__(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
-        self.config_pip_source()
-        c1 = self.Inspect_pip()
-        if c1:
-            self.vle = True
-        else:
-            self.vle = False
-        self.Install_selenium()
-        self.Install_requests()
-        # self.Install_mechanize()
-        self.Config_chromedriver()
+        
+        if option_install:
+            self.config_pip_source()
+            c1 = self.Inspect_pip()
+            if c1:
+                self.vle = True
+            else:
+                self.vle = False
+            self.Install_Basics()
         
         self.conn = sqlite3.connect('{}lib/GHack'.format(self.root))
         self.c = self.conn.cursor()
 
 
+    def etree_(self,xpath_,text):
+        html = etree.HTML(str(text),etree.HTMLParser())
+        return html.xpath(xpath_)
+
+    def repair_html(self,text):
+        html = etree.HTML(text)
+        result = etree.tostring(html,encoding='utf-8')
+        return result.decode('utf-8')
 
     def Query_Data(self,type_):
         """
@@ -246,6 +256,12 @@ class Libs(object):
             print('正在执行安装sudo apt-get install python-pip')
             self.commands__('sudo apt-get -y install python-pip')
             return False
+
+    def Install_Basics(self):
+        self.commands__(cmd='python3 -m pip install lxml==4.3.3')
+        self.Install_selenium()
+        self.Install_requests()
+        self.Config_chromedriver()
 
     def Install_requests(self):
         c1 = self.commands__(cmd='python3 -m pip install requests==2.21.0')
