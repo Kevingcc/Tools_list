@@ -122,6 +122,30 @@ class awvs(object):
 			#清空获取的任务列表
 			del self.task[:]
 
+
+	# def check_id_(self):
+	# 	#扫描任务ID选择
+	# 	try:
+	# 		r = self.request('/scans')
+	# 		response = json.loads(r.text)
+	# 		text = response['scans']
+	# 		if len(text)>0:
+	# 			for i in range(len(text)):
+	# 				self.task.append(text[i]['scan_id'])
+	# 				print(self.G+'['+str(i)+']',text[i]['target']['address']+self.W)
+	# 			# task_id = input(self.O+'[Awvs_Api/Set_Task_Id]>> '+self.W)
+	# 			task_id = i
+	# 			return self.task[int(task_id)]
+	# 		else:
+	# 			print(self.R+'[-] Ops, 当前无扫描任务...'+self.W)
+	# 			return
+	# 	except Exception as e:
+	# 		print(self.R+'[-] Ops, 输入有误...'+self.W)
+	# 	finally:
+	# 		#清空获取的任务列表
+	# 		del self.task[:]
+
+
 	def add(self):
 		#添加扫描对象
 		try:
@@ -252,6 +276,32 @@ class awvs(object):
 				timeout=10, verify=False, headers=self.header)
 			if r.status_code == 204:
 				print(self.G+'[-] OK, 已经删除任务...'+self.W)
+		except Exception as e:
+			pass
+
+	def delete_(self):
+    		#删除扫描任务
+		try:
+			try:
+				r = self.request('/scans')
+				response = json.loads(r.text)
+				text = response['scans']
+				if len(text)>0:
+					for i in range(len(text)):
+						self.task.append(text[i]['scan_id'])
+						print(self.G+'['+str(i)+']',text[i]['target']['address']+self.W)
+						r = requests.delete(url=self.server+'/scans/'+str(i), 
+							timeout=10, verify=False, headers=self.header)
+						if r.status_code == 204:
+							print(self.G+'[-] OK, 已经删除任务...'+self.W)
+				else:
+					print(self.R+'[-] Ops, 当前无扫描任务...'+self.W)
+					return
+			except Exception as e:
+				print(self.R+'[-] Ops, 输入有误...'+self.W)
+			finally:
+				#清空获取的任务列表
+				del self.task[:]
 		except Exception as e:
 			pass
 
