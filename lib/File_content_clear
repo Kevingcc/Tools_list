@@ -17,10 +17,12 @@ rm -rf "$HOME_/Search_Url.txt"
 touch "$HOME_/Search_Url.txt"
 rm -rf "$HOME_/Search_Url_.txt"
 touch "$HOME_/Search_Url_.txt"
-
+rm -rf "$HOME__/setting.py"
+cp -v "$HOME__/bak/setting.py" "$HOME__/setting.py"
 
 echo -e "login.json 初始化完毕...";
 echo -e "id.json 初始化完毕...";
 echo -e "cookies.txt 初始化完毕...";
 echo -e "GHack 初始化完毕...";
 echo -e "Search_Url.txt 初始化完毕..."
+echo -e "setting.py 初始化完毕..."

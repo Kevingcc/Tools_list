@@ -7,16 +7,19 @@ import json
 import time
 import requests
 import urllib.parse
+import setting
 import requests.packages.urllib3
 
+
 class awvs(object):
-	def __init__(self,server,apikey,target):
+	def __init__(self,target,rule):
 		self.task = []
 		# self.server = 'https://127.0.0.1:13443/api/v1'
-		self.server = server
-		self.apikey = apikey
+		self.server = setting.awvs_server
+		self.apikey = setting.awvs_apikey
 		self.header = {'X-Auth':self.apikey,'content-type':'application/json'}
 		self.target = target
+		self.rule = rule
 		#前6个为系统默认扫描策略，后面为自定义
 		self.scan_rule = {
 				"FS": "11111111-1111-1111-1111-111111111111",
@@ -72,14 +75,15 @@ class awvs(object):
 	def scan_type_(self):
     		#扫描策略选择
 		try:
-			l = '[0] Full Scan\n'
-			l += '[1] High Risk Vulnerabilities\n'
-			l += '[2] Cross-site Scripting Vulnerabilities\n'
-			l += '[3] SQL Injection Vulnerabilities\n'
-			l += '[4] Weak Passwords\n'
-			l += '[5] Crawl Only'
-			print(self.G+l+self.W)
-			rule = input(self.O+'[Awvs_Api/Set_Rule]>> '+self.W)
+			# l = '[0] 全扫描\n'
+			# l += '[1] 高风险漏洞\n'
+			# l += '[2] 跨站点脚本漏洞\n'
+			# l += '[3] SQL注入漏洞\n'
+			# l += '[4] 弱口令\n'
+			# l += '[5] 仅爬行'
+			# print(self.G+l+self.W)
+			# rule = input(self.O+'[Awvs_Api/Set_Rule]>> '+self.W)
+			rule = self.rule
 			if rule == '0':
 				return self.scan_rule['FS']
 			elif rule == '1':
@@ -165,7 +169,7 @@ class awvs(object):
 
 	def scan_(self):
     		#启动扫描任务
-		data = {'target_id':self.add_(),'profile_id':self.scan_type(),
+		data = {'target_id':self.add_(),'profile_id':self.scan_type_(),
 		'schedule':{'disable':False,'start_date':None, 'time_sensitive':False}}
 		try:
 			r = requests.post(url=self.server+'/scans', timeout=10, 
@@ -174,6 +178,7 @@ class awvs(object):
 				print(self.G+'[-] OK, 扫描任务已经启动...'+self.W)
 		except Exception as e:
 			print(e)
+
 
 	def stop(self):
 		#停止扫描任务

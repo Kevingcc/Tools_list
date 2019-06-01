@@ -9,6 +9,7 @@ import time
 import os
 import traceback
 import random
+import setting
 
 try:
     from selenium import webdriver
@@ -20,10 +21,16 @@ except Exception as e:
 from main import Libs
 
 
+
 mutex = threading.Lock()
 
-# python3 -m pip install selenium
-# json.load(r) 
+
+
+
+
+
+
+
 
 
 
@@ -419,6 +426,47 @@ class Exploit_Search(object):
             pass
         
                 
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

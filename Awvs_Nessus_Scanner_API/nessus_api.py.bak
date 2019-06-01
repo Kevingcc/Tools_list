@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 #coding:utf-8
 #Author:se55i0n
 #Nessus Api 7.0 扫描脚本
@@ -7,19 +7,18 @@ import re
 import json
 import time
 import requests
-import urllib.parse
+import urlparse
 import requests.packages.urllib3
 
 class nessus(object):
-	def __init__(self,server='',secretKey='',accessKey=''):
+	def __init__(self):
 		self.task = []
 		self._format = []
 		#api地址
-		# self.server = 'https://1.1.1.1:2222'
-		self.server = server
+		self.server = 'https://1.1.1.1:2222'
 		#api密钥
-		self.secretKey = secretKey
-		self.accessKey = accessKey
+		self.secretKey = ''
+		self.accessKey = ''
 		self.header = {'X-ApiKeys':'accessKey={}; secretKey={};'.format(self.accessKey,
 						self.secretKey), 'content-type':'application/json'}
 		self.scan_rule = {
@@ -67,16 +66,16 @@ class nessus(object):
 				return requests.get(url=self.server+path, timeout=10, 
 					verify=False, headers=self.header)
 		except Exception as e:
-			print(e)
+			print e
 
 	def scan_type(self):
 		#扫描策略选择
 		try:
 			i = 0
-			for k,v in self.scan_rule.items():
-				print(self.G+'[{}] {}'.format(i,k))
+			for k,v in self.scan_rule.iteritems():
+				print self.G+'[{}] {}'.format(i,k)
 				i += 1
-			rule = input(self.O+'[Nessus_Api/Set_Rule]>> '+self.W)
+			rule = raw_input(self.O+'[Nessus_Api/Set_Rule]>> '+self.W)
 			if rule == '0':
 				return self.scan_rule['Mobile Device Scan']
 			elif rule == '1':
@@ -120,21 +119,21 @@ class nessus(object):
 			elif rule == '20':
 				return self.scan_rule['WannaCry Ransomware']
 			else:
-				print(self.R+'[-] Ops, 输入有误...'+self.W)
+				print self.R+'[-] Ops, 输入有误...'+self.W
 		except Exception as e:
 			pass
 
 	def set_scan_name(self):
 		#设置扫描任务名
 		try:
-			return input(self.O+'[Nessus_Api/Set_Scan_Name]>> '+self.W)
+			return raw_input(self.O+'[Nessus_Api/Set_Scan_Name]>> '+self.W)
 		except Exception as e:
 			pass
 
 	def set_scan_target(self):
 		#设置扫描目标
 		try:
-			return input(self.O+'[Nessus_Api/Set_Target]>> '+self.W)
+			return raw_input(self.O+'[Nessus_Api/Set_Target]>> '+self.W)
 		except Exception as e:
 			pass
 
@@ -147,11 +146,11 @@ class nessus(object):
 			if text>0:
 				for i in range(len(text)):
 					self.task.append(text[i]['id'])
-					print(self.G+'['+str(i)+']',text[i]['name']+self.W)
-				task_id = input(self.O+'[Nessus_Api/Set_Task_Id]>> '+self.W)
+					print self.G+'['+str(i)+']',text[i]['name']+self.W
+				task_id = raw_input(self.O+'[Nessus_Api/Set_Task_Id]>> '+self.W)
 				return self.task[int(task_id)]
 			else:
-				print(self.R+'[-] Ops, 当前无扫描任务...'+self.W)
+				print self.R+'[-] Ops, 当前无扫描任务...'+self.W
 				return
 		except Exception as e:
 			pass
@@ -175,27 +174,27 @@ class nessus(object):
 			r = self.request(method='POST', path='/scans', data=json.dumps(data))
 			return json.loads(r.text)['scan']['id'] if r.status_code == 200 else None
 		except Exception as e:
-			print(e)
+			print e
 
 	def scan(self):
 		#启动扫描任务
 		try:
 			r = self.request(method='POST', path='/scans/{}/launch'.format(self.add()))
 			if r.status_code == 200:
-				print(self.G+'[-] OK, 扫描任务已经启动...'+self.W)
+				print self.G+'[-] OK, 扫描任务已经启动...'+self.W
 		except Exception as e:
-			print(e)
+			print e
 
 	def stop(self):
 		#停止扫描任务
 		try:
 			r = self.request(method='POST', path='/scans/{}/stop'.format(self.check_id()))
 			if r.status_code == 200:
-				print(self.G+'[-] OK, 扫描已经停止...'+self.W)
+				print self.G+'[-] OK, 扫描已经停止...'+self.W
 			elif r.status_code == 404:
-				print(self.R+'[-] Ops, 扫描任务不存在...'+self.W)
+				print self.R+'[-] Ops, 扫描任务不存在...'+self.W
 			elif r.status_code == 409:
-				print(self.R+'[-] Ops, 扫描任务未启动...'+self.W)
+				print self.R+'[-] Ops, 扫描任务未启动...'+self.W
 		except Exception as e:
 			pass
 
@@ -204,11 +203,11 @@ class nessus(object):
 		try:
 			r = self.request(method='POST', path='/scans/{}/pause'.format(self.check_id()))
 			if r.status_code == 200:
-				print(self.G+'[-] OK, 扫描已经暂停...'+self.W)
+				print self.G+'[-] OK, 扫描已经暂停...'+self.W
 			elif r.status_code == 404:
-				print(self.R+'[-] Ops, 扫描任务不存在...'+self.W)
+				print self.R+'[-] Ops, 扫描任务不存在...'+self.W
 			elif r.status_code == 409:
-				print(self.R+'[-] Ops, 扫描任务未启动...'+self.W)
+				print self.R+'[-] Ops, 扫描任务未启动...'+self.W
 		except Exception as e:
 			pass
 
@@ -222,13 +221,13 @@ class nessus(object):
 				for i in range(len(text)):
 					progress = text[i]['progress'].split('/')[i].split('-')
 					status = float(progress[0])/float(progress[1])*100
-					print(self.G+'[-] 扫描目标: {}'.format(text[i]['hostname']))
-					print('[-] 扫描进度: {}'.format(str(round(status,2))+' %'))
-					print('[-] 紧急漏洞: {}'.format(text[i]['critical']))
-					print('[-] 高危漏洞: {}'.format(text[i]['high']))
-					print('[-] 中危漏洞: {}'.format(text[i]['medium']))
-					print('[-] 低危漏洞: {}'.format(text[i]['low']))
-					print('[-] 信息提示: {}'.format(text[i]['info'])+self.W)
+					print self.G+u'[-] 扫描目标: {}'.format(text[i]['hostname'])
+					print u'[-] 扫描进度: {}'.format(str(round(status,2))+' %')
+					print u'[-] 紧急漏洞: {}'.format(text[i]['critical'])
+					print u'[-] 高危漏洞: {}'.format(text[i]['high'])
+					print u'[-] 中危漏洞: {}'.format(text[i]['medium'])
+					print u'[-] 低危漏洞: {}'.format(text[i]['low'])
+					print u'[-] 信息提示: {}'.format(text[i]['info'])+self.W
 		except Exception as e:
 			pass
 
@@ -236,24 +235,24 @@ class nessus(object):
 		try:
 			r = self.request(method='DELETE', path='/scans/{}'.format(self.check_id()))
 			if r.status_code == 200:
-				print(self.G+'[-] OK, 任务已经删除...'+self.W)
+				print self.G+'[-] OK, 任务已经删除...'+self.W
 			elif r.status_code == 500:
-				print(self.R+'[-] Ops, 任务删除失败...'+self.W)
+				print self.R+'[-] Ops, 任务删除失败...'+self.W
 		except Exception as e:
-			print(e)
+			print e
 
 	def set_format(self):
 		try:
 			_format = {'Nessus':'nessus','HTML':'html','CSV':'csv','Nessus DB':'db','PDF':'pdf'}
 			i = 0
-			for k,v in _format.items():
-				print(self.G+'[{}] '.format(i)+k+self.W)
+			for k,v in _format.iteritems():
+				print self.G+'[{}] '.format(i)+k+self.W
 				self._format.append(v)
 				i += 1
-			rule = input(self.O+'[Nessus_Api/Set_Report_Format]>> '+self.W)
+			rule = raw_input(self.O+'[Nessus_Api/Set_Report_Format]>> '+self.W)
 			return self._format[int(rule)]
 		except Exception as e:
-			print(e)
+			print e
 		finally:
 			#清空获取的文件格式列表
 			del self._format[:]
@@ -266,31 +265,31 @@ class nessus(object):
 				r = self.request(method='POST', path='/scans/{}/export'.format(scan_id),
 				 data=json.dumps({'format':self.set_format(),'chapters':'vuln_by_host'}))
 				if r.status_code == 200:
-					print(self.G+'[-] 报告生成中...'+self.W)
+					print self.G+'[-] 报告生成中...'+self.W
 					file_id = json.loads(r.text)['file']
 					while True:
 						time.sleep(5)
 						rs = self.request(method='GET', path='/scans/{}/export/{}/download'.format(
 							scan_id, file_id))
 						if rs.status_code == 200:
-							print(self.G+'[-] OK, 生成报告成功...'+self.W)
+							print self.G+'[-] OK, 生成报告成功...'+self.W
 							filename = re.findall(r'attachment; filename="(.*?)"',str(rs.headers))[0]
 							with open(filename,'wb') as f:
 								f.write(rs.content)
 							break
 				elif rs.status_code == 404:
-					print(self.R+'[-] 扫描任务不存在...'+self.W)
+					print self.R+'[-] 扫描任务不存在...'+self.W
 		except Exception as e:
-			print(e)
+			print e
 
 	def handle(self):
 		#任务调度
 		try:
 			self.banner()
 			self.usage()
-			print('-'*48)
+			print '-'*48
 			while True:
-				show = input(self.O+'[Nessus_Api]>> '+self.W)
+				show = raw_input(self.O+'[Nessus_Api]>> '+self.W)
 				if show == 'view':
 					self.view()
 				elif show == 'scan':
@@ -310,7 +309,7 @@ class nessus(object):
 				elif show == '':
 					pass
 				else:
-					print(self.R+'[-] Ops, 输入错误...'+self.W)
+					print self.R+'[-] Ops, 输入错误...'+self.W
 		except KeyboardInterrupt:
 			pass
 
@@ -324,7 +323,7 @@ class nessus(object):
 		s += '    view     查看扫描任务\n'
 		s += '    ?、help  查看扫描帮助\n'
 		s += '    exit     退出扫描任务'
-		print(self.B+s+self.W)
+		print self.B+s+self.W
 
 	def banner(self):
 		flag = '''
@@ -335,8 +334,8 @@ class nessus(object):
 /_/ |_/\___/____/____/\__,_/____/_/  |_/ .___/_/
                                       /_/'''
 		
-		print(self.O+flag+self.W+'\n')
-		print('-'*48)
+		print self.O+flag+self.W+'\n'
+		print '-'*48
 
 if __name__ == '__main__':
 	mynessus = nessus()
