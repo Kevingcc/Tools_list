@@ -1,5 +1,16 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
-# echo -e "test"
+
+echo "开始安装..."
+export ROOT="$HOME/.Tools/Tools_list"
+export PATH1="$HOME/.Tools"
+sudo mkdir $HOME/.Tools
+sudo cp -v -r ../Tools_list $PATH1
+sudo chmod +x -R $PATH1
+echo "安装完毕..."
+
+
+#sudo cp -v 
+
 
 
