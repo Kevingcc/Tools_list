@@ -10,17 +10,6 @@ from search import Exploit_Search
 from main import Libs
 
 
-
-class awvs_(awvs):
-    
-    def __init__(self,target,rule):
-        super(awvs_,self).__init__(target,rule)
-
-    def add_task(self):
-        self.scan_()
-
-    def delete(self):
-        self.delete_()
         
 
 
@@ -29,7 +18,7 @@ class awvs_(awvs):
 class Scann(object):
 
     def __init__(self):
-        self.awvs = awvs_
+        self.awvs = awvs
         self.libs = Libs()
         self.read_text = self.libs.Read_text
         self.option = True
@@ -37,7 +26,7 @@ class Scann(object):
     
     def add_task(self,target,rule):
         add = self.awvs(target=target,rule=rule)
-        add.add_task()
+        add.add_()
 
     
     def get_target_url(self):
@@ -60,14 +49,43 @@ class Scann(object):
 
 
     def delete_(self):
-        delete = self.awvs(target='',rule='')
-        delete.delete_()
+        delete_ = self.awvs(target='',rule='')
+        delete_.delete_()
 
+    def delete(self):
+        delete = self.awvs(target='',rule='')
+        delete.delete()
 
     def Sqli_Scann(self):
         datas = self.get_target_url()
-        self.delete_()
         
+        if self.option:
+            print("""
+    1.删除所有任务.
+    2.删除单个任务.
+    3.跳过.
+    0.Exit.
+            """)
+            ipt1 = input('>')
+            if ipt1 is '1':
+                self.delete_()
+                ipt2 = input('显示细节[y/n]>')
+                if ipt2 is 'y':
+                    pass
+                if ipt2 is 'n':
+                    self.option = False
+            if ipt1 is '2':
+                self.delete()
+                ipt2 = input('显示细节[y/n]>')
+                if ipt2 is 'y':
+                    pass
+                if ipt2 is 'n':
+                    self.option = False
+            if ipt1 is '3':
+                pass
+            if ipt1 is '0':
+                exit(0)
+
         i = 1
         for target1 in datas[0]:
             if i <= 5:
@@ -92,7 +110,6 @@ class Scann(object):
 
 
     def main(self):
-        self.option = True
         self.Sqli_Scann()
 
 

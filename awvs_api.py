@@ -8,6 +8,7 @@ import time
 import requests
 import urllib.parse
 import setting
+import traceback
 import requests.packages.urllib3
 
 
@@ -275,35 +276,27 @@ class awvs(object):
 			r = requests.delete(url=self.server+'/scans/'+self.check_id(), 
 				timeout=10, verify=False, headers=self.header)
 			if r.status_code == 204:
+				print('url = ',self.server+'/scans/'+self.check_id())
+				print('status_code = ',r.status_code)
 				print(self.G+'[-] OK, 已经删除任务...'+self.W)
 		except Exception as e:
 			pass
 
+
+
 	def delete_(self):
-    		#删除扫描任务
-		try:
-			try:
-				r = self.request('/scans')
-				response = json.loads(r.text)
-				text = response['scans']
-				if len(text)>0:
-					for i in range(len(text)):
-						self.task.append(text[i]['scan_id'])
-						print(self.G+'['+str(i)+']',text[i]['target']['address']+self.W)
-						r = requests.delete(url=self.server+'/scans/'+str(i), 
-							timeout=10, verify=False, headers=self.header)
-						if r.status_code == 204:
-							print(self.G+'[-] OK, 已经删除任务...'+self.W)
-				else:
-					print(self.R+'[-] Ops, 当前无扫描任务...'+self.W)
-					return
-			except Exception as e:
-				print(self.R+'[-] Ops, 输入有误...'+self.W)
-			finally:
-				#清空获取的任务列表
-				del self.task[:]
-		except Exception as e:
-			pass
+		c = 0
+		print("[*]开始清除任务")
+		while True:
+			result = requests.get(self.server+"/targets?c="+str(c),headers=self.header,timeout=30,verify=False)
+			results = json.loads(result.content)
+			c = c + 100
+			if results['targets'] == []:
+				return print("[*]任务全部清除完毕")
+			for s in results["targets"]:
+				r = requests.delete(url=self.server+'/targets/'+s['target_id'], timeout=10, verify=False, headers=self.header)
+				print("[-]当前删除 target_id:%s"%s['target_id'])
+
 
 	def handle(self):
 		#任务调度
