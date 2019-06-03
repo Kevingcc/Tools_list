@@ -7,7 +7,14 @@ import subprocess
 
 
 
-
+print('安装[y|n]>')
+ipt1 = input('>')
+if not ipt1:
+    exit(0)
+if ipt1 is 'y':
+    pass
+if ipt1 is 'n':
+    exit(0)
 
 
 
@@ -34,12 +41,12 @@ PATH1 = "$HOME/.Tools"
 CMD1 = "sudo mkdir $HOME/.Tools"
 CMD2 = "sudo cp -v -r ../Tools_list {}".format(PATH1)
 CMD3 = "sudo chmod +x -R {}".format(ROOT)
+CMD4 = "sudo ln -s {}/run.py /usr/bin/Eagle".format(ROOT)
 
 commands(CMD1)
 commands(CMD2)
 commands(CMD3)
-
-
+commands(CMD4)
 
 print("安装完毕...")
 
