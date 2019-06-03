@@ -1,14 +1,47 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env python3
+#coding:utf-8
+
+import subprocess
 
 
-echo "开始安装..."
-export ROOT="$HOME/.Tools/Tools_list"
-export PATH1="$HOME/.Tools"
-sudo mkdir $HOME/.Tools
-sudo cp -v -r ../Tools_list $PATH1
-sudo chmod +x -R $PATH1
-echo "安装完毕..."
 
+
+
+
+
+
+
+
+def commands(cmd):
+    subprocess.call(cmd,shell=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+print("开始安装...")
+
+ROOT = "$HOME/.Tools/Tools_list"
+PATH1 = "$HOME/.Tools"
+CMD1 = "sudo mkdir $HOME/.Tools"
+CMD2 = "sudo cp -v -r ../Tools_list {}".format(PATH1)
+CMD3 = "sudo chmod +x -R {}".format(ROOT)
+
+commands(CMD1)
+commands(CMD2)
+commands(CMD3)
+
+
+
+print("安装完毕...")
 
 #sudo cp -v 
 
