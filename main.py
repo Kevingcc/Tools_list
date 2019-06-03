@@ -263,6 +263,7 @@ class Libs(object):
         self.Install_requests()
         self.Config_chromedriver()
         self.commands__(cmd='sudo apt-get install xfce4-terminal')
+        self.commands__(cmd='sudo apt-get install pavucontrol')
 
     def Install_requests(self):
         c1 = self.commands__(cmd='python3 -m pip install requests==2.21.0')
