@@ -8,15 +8,24 @@ import re
 from awvs_api import awvs
 from search import Exploit_Search
 from main import Libs
+from lib.headers import get_headers
 
 
         
 
 
+headers = get_headers()
 
 
 # commands
 cmd1 = "xfce4-terminal -e {}"
+
+
+
+# dns 查询接口
+dns_query1 = "https://dns.bufferover.run/dns?q={}"
+
+
 
 
 
@@ -126,9 +135,23 @@ class Scann(object):
         pass
 
 
-    def DNS_Query(self):
+    def DNS_Query_ZZ(self):
+        """
+        站长之家nslookup查询 http://tool.chinaz.com/nslookup/
+        """
         pass
 
+    def DNS_Query_ZZ_(self):
+        """
+        站长之家whois查询 http://whois.chinaz.com/
+        """
+        pass
+
+    def DNS_Query_Interface(self):
+        """
+        DNS借口查询
+        """
+        pass
 
     def main(self):
         self.Sqli_Scann()
