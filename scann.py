@@ -15,6 +15,11 @@ from main import Libs
 
 
 
+# commands
+cmd1 = "xfce4-terminal -e {}"
+
+
+
 class Scann(object):
 
     def __init__(self):
@@ -107,6 +112,22 @@ class Scann(object):
                 i = 0
                 time.sleep(600)
             i += 1
+
+
+    def CDN_Scann(self):
+        self.libs.commands__(cmd='')
+
+
+    def Subdomain_Enumeration(self):
+        pass
+
+
+    def Collect_known_domain(self):
+        pass
+
+
+    def DNS_Query(self):
+        pass
 
 
     def main(self):
