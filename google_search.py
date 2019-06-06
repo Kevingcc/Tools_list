@@ -16,11 +16,17 @@ import threading
 import time
 import sys
 import re
+import random
 from lxml import etree
 from queue import Queue
 from search import selenium_
+from lib import info
+from lib import error
+from lib import warning
+from lib import print_
 
 # /html/body/dl/dt/dl/dt[50]/dl/dt/a
+
 
 
 
@@ -86,14 +92,14 @@ class Search(object):
                 if scode == 200:
                     com_ = re.compile(keyword2)
                     if com_.findall(html):
-                        print('Url -> {}'.format(link))  
+                        info('Url -> {}'.format(link))  
                         with open('{}lib/Search_Url_.txt'.format(root),'a+') as w:
                             w.write(link+'\n')
 
 
     def main(self):
         try:
-            print("""
+            print_("""
 
 1.网站搜索.
 0.Exit.

@@ -19,7 +19,9 @@ except Exception as e:
     pass
 
 from main import Libs
-
+from lib import info
+from lib import error
+from lib import warning
 
 
 mutex = threading.Lock()
@@ -79,19 +81,19 @@ class selenium_(Libs):
         # browser_driver.get("https://www.baidu.com")
         # browser.get('http://ip138.com')
         if os.path.getsize('{}lib/id.json'.format(self.root)) <= 0:
-            print('正在打开URL：chrome://extensions/')
+            warning('正在打开URL：chrome://extensions/')
             self.browser.get('chrome://extensions/')
-            print('复制插件id...')
-            print('点击详细信息后，即可查看id...')
-            print('例子：chrome://extensions/?id=mcholjcecoiejoamfejfaadoefkcodok')
-            print('如果已输入id则跳过此步骤,按回车即可跳过...')
+            warning('复制插件id...')
+            warning('点击详细信息后，即可查看id...')
+            warning('例子：chrome://extensions/?id=mcholjcecoiejoamfejfaadoefkcodok')
+            warning('如果已输入id则跳过此步骤,按回车即可跳过...')
             ipt1 = input('ID>')
             if ipt1:
                 data1 = {'id':'{}'.format(ipt1)}
                 self.Save_json(data=data1)
-                print('ID保存成功...')
+                info('ID保存成功...')
 
-        print('ID已存在...')
+        info('ID已存在...')
         data2 = self.Read_json()
         i = 0
         for data3 in data2:
@@ -107,7 +109,7 @@ class selenium_(Libs):
             self.browser.get(self.login_url)
             self.browser.minimize_window()
             if os.path.getsize('{}lib/login.json'.format(self.root)) <= 0:
-                print('谷歌访问助手插件的账号及密码登入...')
+                warning('谷歌访问助手插件的账号及密码登入...')
                 email = input('Email>')
                 password = input('Password>')
                 data1 = {'email':email,'password':password}
@@ -127,11 +129,11 @@ class selenium_(Libs):
                     log_email = self.browser.find_element_by_id('email').send_keys(email)
                     log_password = self.browser.find_element_by_id('password').send_keys(password)
                     log_password = self.browser.find_element_by_id('password').send_keys(Keys.ENTER)
-                    print('登入成功...')
+                    info('登入成功...')
 
                 i += 1
         except Exception as e:
-            print('Login_Google_CRX = ',traceback.format_exc())
+            error(('Login_Google_CRX = ',traceback.format_exc()))
             pass
 
     def requests_(self,content):
@@ -144,13 +146,13 @@ class selenium_(Libs):
                     cookie = eval(cookie.strip())
                     if cookie:
                         self.cookie = random.choice(cookie)
-                        print('cookie = ',self.cookie)
+                        info(('cookie = ',self.cookie))
 
             time.sleep(10)
             self.browser.get('https://www.google.com')
             
             if self.cookie:
-                print('cookie2 = ',self.cookie)
+                info(('cookie2 = ',self.cookie))
                 self.browser.add_cookie(self.cookie)
             
             self.browser.get('https://www.google.com')
@@ -193,17 +195,17 @@ class selenium_(Libs):
                 try:
                     if number == 1:
                         element1 = self.browser_.find_element_by_xpath('//*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2))
-                        print('Find1 -> //*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2))
+                        # info('Find1 -> //*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2))
                     if number != 1:
                         element1 = self.browser_.find_element_by_xpath('//*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2)).text
                         if element1 in ['FIRST','PREVIOUS','NEXT','LAST']:
-                            print('总页数：{}'.format(number-1))
+                            info('总页数：{}'.format(number-1))
                             # print('Find -> //*[@id="exploits-table_paginate"]/ul/li[{}]/a'.format(number+2))
                             number = number-1
                             break
                 except Exception as e:
                     # print(traceback.format_exc())
-                    print('总页数：{}'.format(number-1))
+                    info('总页数：{}'.format(number-1))
                     number = number-1
                     break
 
@@ -211,7 +213,7 @@ class selenium_(Libs):
             for page in range(1,number+1):
                 try:
                     if page == 1:
-                        print('第{}页'.format(page))
+                        info('第{}页'.format(page))
 
                         for num in range(1,16):
                             elements = self.browser_.find_element_by_xpath('//*[@id="exploits-table"]/tbody/tr[{}]/td[2]/a'.format(num)).text
@@ -220,7 +222,7 @@ class selenium_(Libs):
                                 self.Write_Data(id_=str(page)+'0'+str(num),page=page,type_=type_,title=title,content=elements)
 
                     if page != 1 and page-1:
-                        print('第{}页'.format(page))
+                        info('第{}页'.format(page))
                         time.sleep(4)
                         self.browser_.find_element_by_xpath('//*[@id="exploits-table_next"]/a').click()
                         time.sleep(4)
@@ -238,7 +240,7 @@ class selenium_(Libs):
                     # self.browser_.close()
                     break
                 
-            print('GHack爬取完毕...')
+            info('GHack爬取完毕...')
             # self.browser_.quit()
         except Exception as e:
             # print(traceback.format_exc())
@@ -251,7 +253,7 @@ class selenium_(Libs):
 
 
     def Verification_Handle(self):
-        print('发现google验证...')
+        warning('发现google验证...')
         if os.path.getsize('{}lib/cookies.txt'.format(self.root)) <= 3000:
             ipt1 = input('手动验证完成[y|n]')
             if ipt1:
@@ -259,7 +261,7 @@ class selenium_(Libs):
                     cookies = self.browser.get_cookies()
                     print('cookies = ',cookies)
                     self.Save_text_('cookies.txt',cookies)
-                    print('继续爬取数据...')
+                    info('继续爬取数据...')
                 if ipt1 is 'n':
                     self.option_ = 'n'
             return False
@@ -287,7 +289,7 @@ class selenium_(Libs):
                 i = 0
                 while True:
                 # for i1 in range(2,12):
-                    print('第{}页'.format(i+1))    
+                    info('第{}页'.format(i+1))    
                     
                     if i+1 < 27:
                         if i != 0:
@@ -323,15 +325,15 @@ class selenium_(Libs):
                             #link
                             elements2 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]'.format(i2)).get_attribute('href')
                             
-                            print('title = ',elements1.text)
-                            print('link = ',elements2)
+                            info(('title = ',elements1.text))
+                            info(('link = ',elements2))
                             result1.append([elements1.text,elements2])
                     
                         except Exception as e:
                             # print(traceback.format_exc())
                             pass
                     
-                    print('下一页...')
+                    info(('下一页...'))
                     i += 1
                 
                 # self.browser.quit()
@@ -388,13 +390,13 @@ class Exploit_Search(object):
         if result1:
             self.browser.quit()
             self.browser_.quit()
-            print('Sqli 站点收集完成...')
+            info(('Sqli 站点收集完成...'))
         
         result2 = self.Sqli_Search(keyword='sql',filename='sqli2.txt')
         if result2:
             self.browser.quit()
             self.browser_.quit()
-            print('Sqli 站点收集完成...')
+            info(('Sqli 站点收集完成...'))
 
         return True
     

@@ -36,7 +36,12 @@ import lxml
 import random
 from lxml import etree
 from setting import option_install
-from lib.datatype import AttribDict
+from lib import AttribDict
+from lib import info
+from lib import error
+from lib import warning
+from lib import print_
+
 
 # 获取当前文件绝对路径.
 # os.getcwd()
@@ -53,7 +58,8 @@ class Libs(object):
     def __init__(self):
         self.root_ = self.commands_(cmd=['echo $HOME'])
         self.root = '{}/.Tools/Tools_list/'.format(self.root_)
-        self.commands__(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
+        c1 = self.commands_(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
+        info(c1)
         
         if option_install:
             self.config_pip_source()
@@ -138,7 +144,7 @@ class Libs(object):
         with open('{}lib/{}'.format(self.root,filename),'a+') as w:
             json.dump(data,w)
             w.write('\n')
-            print('保存文件完成...')
+            info('保存文件完成...')
 
     def Read_json(self,filename='id.json'):
         lines = []
@@ -177,7 +183,7 @@ class Libs(object):
     def Save_text_(self,filename,content):
         with open('{}lib/{}'.format(self.root,filename),'a+') as w:
             w.write(str(content)+'\n')
-            print('写入完毕...')
+            info('写入完毕...')
 
     def commands_(self,cmd=[],decodes_='utf-8'):
         """
@@ -220,21 +226,21 @@ class Libs(object):
             cmd = 'sudo chmod +x {}lib/config_pip_source && bash {}lib/config_pip_source'.format(self.root,self.root)
             c = self.commands__(cmd=cmd)
             if c:
-                print('pip 源配置完成...')
+                info('pip 源配置完成...')
             else:
-                print('pip.conf文件正常...')
+                info('pip.conf文件正常...')
 
     
     def Config_chromedriver(self):
         c1 = self.commands__(cmd=['hash chromedriver'])
         if not c1:
-            print('正在配置 chromedriver...')
+            info('正在配置 chromedriver...')
             c1 = self.commands__(cmd='sudo ln -s {}Chromedriver/chromedriver_70.0.3538.67 /usr/bin/chromedriver'.format(self.root))
             c2 = self.commands__(cmd='sudo chmod +x /usr/bin/chromedriver')
             if c1 and c2:
-                print('chromedriver 配置完成...')
+                info('chromedriver 配置完成...')
         else:
-            print('chromedriver 正在运行...')
+            info('chromedriver 正在运行...')
 
     # def Install_mechanize(self):
     #     c1 = self.commands__(cmd='python3 -m pip install mechanize==0.4.2')
@@ -247,14 +253,14 @@ class Libs(object):
         c1 = self.commands_('python3 -m pip')
         c2 = self.commands_('python2 -m pip')
         if c1 and c2:
-            print('pip3 pip2 运行正常...')
+            info('pip3 pip2 运行正常...')
             return True
         else:
-            print('pip3命令运行失败...')
-            print('正在执行安装sudo apt-get install python3-pip')
+            info('pip3命令运行失败...')
+            info('正在执行安装sudo apt-get install python3-pip')
             self.commands__('sudo apt-get -y install python3-pip')
-            print('pip2命令运行失败...')
-            print('正在执行安装sudo apt-get install python-pip')
+            info('pip2命令运行失败...')
+            info('正在执行安装sudo apt-get install python-pip')
             self.commands__('sudo apt-get -y install python-pip')
             return False
 
