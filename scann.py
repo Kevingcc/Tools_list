@@ -149,7 +149,7 @@ class Scann(object):
 
     def DNS_Query_Interface(self):
         """
-        DNS借口查询
+        DNS接口查询
         """
         pass
 
