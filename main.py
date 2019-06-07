@@ -64,10 +64,6 @@ class Libs(object):
         if option_install:
             self.config_pip_source()
             c1 = self.Inspect_pip()
-            if c1:
-                self.vle = True
-            else:
-                self.vle = False
             self.Install_Basics()
         
         self.conn = sqlite3.connect('{}lib/GHack'.format(self.root))
@@ -223,7 +219,7 @@ class Libs(object):
         c1 = self.commands_(cmd=['echo $HOME'])
         if not os.path.exists(c1+'/.pip'):
             c2 = self.commands__(cmd='mkdir $HOME/.pip')
-            cmd = 'sudo chmod +x {}lib/config_pip_source && bash {}lib/config_pip_source'.format(self.root,self.root)
+            cmd = 'sudo chmod +x {}lib/config_pip_source && {}lib/config_pip_source'.format(self.root,self.root)
             c = self.commands__(cmd=cmd)
             if c:
                 info('pip 源配置完成...')
@@ -271,6 +267,10 @@ class Libs(object):
         self.Config_chromedriver()
         self.commands__(cmd='sudo apt-get install xfce4-terminal')
         self.commands__(cmd='sudo apt-get install pavucontrol')
+        self.commands__(cmd='python2 -m pip install nmapparser==0.2.5')
+        info('依赖项安装完毕...')
+        info('如果要退出安装，设置 setting.py option_install = False ...')
+        exit(0)
 
     def Install_requests(self):
         c1 = self.commands__(cmd='python3 -m pip install requests==2.21.0')
@@ -287,49 +287,46 @@ class Libs(object):
             print('selenium 安装失败...')
 
     def Install_subdns(self):
-        if self.vle:
-            c2 = self.commands_(cmd=['python3 {}subdns/subdns.py --help'.format(self.root)])
-            if not c2:
-                print('subdns.py 没有安装依赖项...')
-                print('subdns.py 正在安装依赖项...')
-                c3 = self.commands__(cmd=['python3 -m pip install aiodns==2.0.0 colorlog==4.0.2'])
-                if c3:
-                    print('subdns.py 依赖项安装完成...')
-                
-                return False
-            else:
-                print('subdns.py 正在运行...')
-                return True
+        c2 = self.commands_(cmd=['python3 {}subdns/subdns.py --help'.format(self.root)])
+        if not c2:
+            print('subdns.py 没有安装依赖项...')
+            print('subdns.py 正在安装依赖项...')
+            c3 = self.commands__(cmd=['python3 -m pip install aiodns==2.0.0 colorlog==4.0.2'])
+            if c3:
+                print('subdns.py 依赖项安装完成...')
+            
+            return False
+        else:
+            print('subdns.py 正在运行...')
+            return True
 
     def Install_DiscoverTarget(self):
-        if self.vle:
-            c1 = self.commands_(cmd=['python2 {}DiscoverTarget/DiscoverTarget.py --help'.format(self.root)])
-            if not c1:
-                print('DiscoverTarget.py 没有安装依赖项...')
-                print('DiscoverTarget.py 正在安装依赖项...')
-                c2 = self.commands__(cmd=['python2 -m pip install fofa==1.0.1 shodan==1.13.0 gevent==1.4.0 lxml==4.3.3 bs4==0.0.1'])
-                if c2:
-                    print('DiscoverTarget.py 依赖项安装完成...')
-                
-                return False
-            else:
-                print('DiscoverTarget.py 正在运行...')
-                return True
+        c1 = self.commands_(cmd=['python2 {}DiscoverTarget/DiscoverTarget.py --help'.format(self.root)])
+        if not c1:
+            print('DiscoverTarget.py 没有安装依赖项...')
+            print('DiscoverTarget.py 正在安装依赖项...')
+            c2 = self.commands__(cmd=['python2 -m pip install fofa==1.0.1 shodan==1.13.0 gevent==1.4.0 lxml==4.3.3 bs4==0.0.1'])
+            if c2:
+                print('DiscoverTarget.py 依赖项安装完成...')
+            
+            return False
+        else:
+            print('DiscoverTarget.py 正在运行...')
+            return True
 
     def Install_dirmap(self):
-        if self.vle:
-            c1 = self.commands_(cmd=['python3 {}dirmap/dirmap.py --help'.format(self.root)])
-            if not c1:
-                print('dirmap.py 没有安装依赖项...')
-                print('dirmap.py 正在安装依赖项...')
-                c2 = self.commands__(cmd=['python3 -m pip install -r dirmap/requirement2.txt'])
-                if c2:
-                    print('dirmap.py 依赖项安装完成...')
-                
-                return False
-            else:
-                print('dirmap.py 正在运行...')
-                return True
+        c1 = self.commands_(cmd=['python3 {}dirmap/dirmap.py --help'.format(self.root)])
+        if not c1:
+            print('dirmap.py 没有安装依赖项...')
+            print('dirmap.py 正在安装依赖项...')
+            c2 = self.commands__(cmd=['python3 -m pip install -r dirmap/requirement2.txt'])
+            if c2:
+                print('dirmap.py 依赖项安装完成...')
+            
+            return False
+        else:
+            print('dirmap.py 正在运行...')
+            return True
 
     def Install_fsociety(self):
         c1 = self.commands_(cmd=['echo "99" | fsociety'])
