@@ -11,8 +11,8 @@ import traceback
 import threading
 import sys
 from queue import Queue
-from multiprocessing import Process
-from multiprocessing import Queue as Qu
+# from multiprocessing import Process
+# from multiprocessing import Queue as Qu
 from awvs_api import awvs
 from search import Exploit_Search
 from main import Libs
@@ -35,7 +35,7 @@ port_scan_results = []
 threadLock = threading.Lock()
 
 
-
+# KeyboardInterrupt
 
 
 # commands
@@ -50,11 +50,9 @@ dns_query1 = "https://dns.bufferover.run/dns?q={}"
 
 
 
-class Scann(threading.Thread):
+class Scann(object):
 
     def __init__(self,queue,domain):
-
-        super(Scann,self).__init__()
 
         self.awvs = awvs
         self.option = True
@@ -109,16 +107,19 @@ class Scann(threading.Thread):
             if ipt1 is '0':
                 exit(0)
 
-        i = 1
-        for target1 in datas:
-            if i <= 5:
-                if self.option:
-                    info(('target -> ',target1))
-                self.add_task(target=target1,rule='3')
-            else:
-                i = 0
-                time.sleep(600)
-            i += 1
+        def r():
+            i = 1
+            for target1 in datas:
+                if i <= 5:
+                    if self.option:
+                        info(('Add scann target -> ',target1))
+                    self.add_task(target=target1,rule='3')
+                else:
+                    i = 0
+                    time.sleep(600)
+                i += 1
+        thread1 = threading.Thread(target=r)
+        thread1.start()
 
 
 
@@ -173,50 +174,70 @@ class Scann(threading.Thread):
         try:
             datas_d1 = []
             datas_d2 = []
-            print('domain2 = ',domain)
+            warning(('Query Domain -> '+domain))
             self.browser_.get(dns_query1.format(domain))
             time.sleep(7)
             htmldoc = self.browser_.find_element_by_xpath('/html/body/pre').text
             data = loads(htmldoc)
             # info(data['RDNS'])
-            if 'FDNS_A' in data:
-                data1 = data['FDNS_A']
-                for data_1 in data1:
-                    find1 = re.findall('\d',data_1)
-                    if find1:
-                        d1 = data_1.split(',')
-                        ips = d1[0]
-                        domains = d1[1]
-                        datas_d1.append([ips,domains])
-                
-            if 'RDNS' in data:
-                data2 = data['RDNS']
-                for data_2 in data2:
-                    find2 = re.findall('\d',data_2)
-                    if find2:
-                        d2 = data_2.split(',')
-                        ips = d2[0]
-                        domains = d2[1]
-                        datas_d2.append([ips,domains])
+            try:
+                if 'FDNS_A' in data:
+                    data1 = data['FDNS_A']
+                    for data_1 in data1:
+                        find1 = re.findall('\d',data_1)
+                        if find1:
+                            d1 = data_1.split(',')
+                            ips = d1[0]
+                            domains = d1[1]
+                            datas_d1.append([ips,domains])
+
+            except:
+                pass
+            
+            try:
+                if 'RDNS' in data:
+                    data2 = data['RDNS']
+                    for data_2 in data2:
+                        find2 = re.findall('\d',data_2)
+                        if find2:
+                            d2 = data_2.split(',')
+                            ips = d2[0]
+                            domains = d2[1]
+                            datas_d2.append([ips,domains])
+            except:
+                pass
             
             foo.Dns_Qery = [datas_d1,datas_d2]
 
             for d1 in foo.Dns_Qery[0]:
                 ip = d1[0]
-                domain = d1[1]
-                info('域名:{} -> 查询IP:{}'.format(domain,ip))
+                if ip:
+                    domain = d1[1]
+                    thread1 = threading.Thread(target=self.port_scan,args=(ip,ip))
+                    time.sleep(1)
+                    thread1.start()
+                    info('域名:{} -> 查询IP:{}'.format(domain,ip))
 
             for d1 in foo.Dns_Qery[1]:
                 ip = d1[0]
-                domain = d1[1]
-                info('域名:{} -> 查询IP:{}'.format(domain,ip))
+                if ip:
+                    domain = d1[1]
+                    thread2 = threading.Thread(target=self.port_scan,args=(ip,ip))
+                    time.sleep(1)
+                    thread2.start()
+                    info('域名:{} -> 查询IP:{}'.format(domain,ip))
+
+            return True
+            
         except Exception as e:
             error(traceback.format_exc())
             i = 0
-            if i == 3:
-                exit(0)
-            i += 1
-            self.DNS_Query_Interface(domain=domain)
+            while True:
+                if i == 3:
+                    if self.DNS_Query_Interface(domain=domain):
+                        break
+                    i = 0
+                i += 1
         
         # threadLock.release()
         
@@ -232,12 +253,31 @@ class Scann(threading.Thread):
             # data1 = exec('data1 = '+data1)
             data1 = eval(data1)
             foo.nScan_Result = data1
+            for i in range(0,2):
+                for d1 in foo.nScan_Result[i]:
+                    if 'ip' in d1 and \
+                       'port' in d1 and \
+                       'state' in d1 and \
+                       'agreement' in d1:
+                        
+                        ip = d1.get('ip')
+                        port = d1.get('port')
+                        state = d1.get('state')
+                        agreement = d1.get('agreement')
             
-            for d1 in foo.nScan_Result[0]:
-                ip = d1['ip']
-                port = d1['port']
-                info(ip+':'+port+' /open')
-                
+                        if ip:
+                            if state != 'closed':
+                                info(ip+':'+port+' /'+state+' '+'-'+agreement)
+                                if port == '443' or port == '80':
+                                    w = open('{}lib/nScan_Result.txt'.format(libs.root),'a+')
+                                    w.write('{"ip":"%s","port":"%s","state":"%s","agreement":"%s"}' % (ip,port,state,agreement))
+                                    w.write('\n')
+                                    warning('写入 nScan_Result ...')
+                                    w.close()
+                        
+                            else:
+                                error(ip+':'+port+' /'+state+' '+'-'+agreement)
+                    
         except Exception as e:
             # error(traceback.format_exc())
             pass
@@ -248,36 +288,46 @@ class Scann(threading.Thread):
 
     def jietu(self,domain):
         try:
-            self.browser_.set_page_load_timeout(5)
-            self.browser_.get(domain)
-            self.browser_.save_screenshot('lib/img/{}.png'.format(str(url).replace('https://','').replace('http://','')))
-            self.browser_.close()
+            # self.browser_.set_page_load_timeout(5)
+            self.browser_.get(str(domain))
+            self.browser_.save_screenshot('lib/img/{}.png'.format(str(domain).replace('https://','').replace('http://','')))
+            # self.browser_.close()
         except:
-            error('截图此：{}超时...'.format(self.domain))
+            error(traceback.format_exc())
+            error('截图此：{}超时...'.format(domain))
             pass
 
 
     def main(self,domains=[]):
-        thread1 = threading.Thread(target=self.Sqli_Scann)
-
+        # self.Sqli_Scann()
         for domain in domains:
-            # domain = self.get_url(domain=domain)
-            thread2 = threading.Thread(target=self.port_scan,args=(domain,domain))
-            thread2.start()
-            
-            
-            
+            time.sleep(1)
+            self.DNS_Query_Interface(domain=domain)
 
 
     def run(self):
-        # Process1 = Process(target=self.main,args=(self.domain[0],))
-        # Process2 = Process(target=self.main,args=(self.domain[1],))
-        # Process1.start()
-        # Process2.start()
         self.main(self.domain)
         
 
-    
+
+
+def filter_domain(domain=[]):
+    d1 = []
+    for data1 in domain:
+            if not re.findall('\.xls',data1) and \
+                not re.findall('\.sql',data1) and \
+                not re.findall('\.txt',data1) and \
+                not re.findall('www.google.com',data1) and \
+                not re.findall('www.baidu.com',data1) and \
+                not re.findall('baidu.com',data1) and \
+                not re.findall('google.com',data1) and \
+                not re.findall('github.com',data1) and \
+                not re.findall('cnblogs.com',data1) and \
+                not re.findall('csdn.net',data1) and \
+                not re.findall('exploit-db.com',data1):
+                d1.append(data1)
+
+    return d1
 
 
 def get_target_sqli_url():
@@ -286,16 +336,8 @@ def get_target_sqli_url():
         libs = Libs()
         datas1 = libs.Read_text(filename='sqli1.txt')
         datas2 = libs.Read_text(filename='sqli2.txt')
-        
-        for data1 in datas1:
-            if not data1.find('.xls') != -1 and not data1.find('.sql') != -1 \
-                and not data1.find('.txt') != -1:    
-                d1.append(data1)
-
-        for data2 in datas2:
-            if not data2.find('.xls') != -1 and not data2.find('.sql') != -1 \
-                and not data2.find('.txt') != -1:
-                d2.append(data2)
+        d1 = filter_domain(domain=datas1)
+        d2 = filter_domain(domain=datas2)        
 
         return (d1,d2)
 
@@ -328,11 +370,9 @@ def main():
     d3 = list(set(datas))
     queue = Queue()
     scan1 = Scann(queue=queue,domain=d3)
-    scan1.start()
+    scan1.run()
 
 
-    selenium_.browser.quit()
-    selenium_.browser_.quit()
     
 
 
@@ -340,17 +380,25 @@ def main():
 
 
 
-# main()
+main()
+
+
+
+selenium_.browser.quit()
+selenium_.browser_.quit()
+
 
 
 # queue = Queue()
-# s = Scann(queue=queue,domain=['www.baidu.com'])
+# s = Scann(queue=queue,domain=['https://www.baidu.com','https://www.so.com'])
 
 # # s.port_scan(domain='www.baidu.com',filename='baidu.xml')
 # # info(foo.nScan_Result[0]['ip'])
 
-# s.DNS_Query_Interface(domain='baidu.com')
+# # s.DNS_Query_Interface(domain='baidu.com')
 # # info(foo.Dns_Qery)
+
+# s.Sqli_Scann()
 
 # selenium_.browser.quit()
 # selenium_.browser_.quit()

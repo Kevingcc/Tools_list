@@ -10,6 +10,10 @@ import urllib.parse
 import setting
 import traceback
 import requests.packages.urllib3
+from lib import info
+from lib import error
+from lib import warning
+from lib import print_
 
 
 class awvs(object):
@@ -177,7 +181,7 @@ class awvs(object):
 			else:
 				return False
 		except Exception as e:
-			print(e)
+			error(e)
 
 	def scan(self):
 		#启动扫描任务
@@ -278,7 +282,8 @@ class awvs(object):
 			if r.status_code == 204:
 				print('url = ',self.server+'/scans/'+self.check_id())
 				print('status_code = ',r.status_code)
-				print(self.G+'[-] OK, 已经删除任务...'+self.W)
+				# print(self.G+'[-] OK, 已经删除任务...'+self.W)
+				info('已经删除任务')
 		except Exception as e:
 			pass
 
@@ -286,16 +291,18 @@ class awvs(object):
 
 	def delete_(self):
 		c = 0
-		print("[*]开始清除任务")
+		# print("[*]开始清除任务")
+		warning('开始清除任务')
 		while True:
 			result = requests.get(self.server+"/targets?c="+str(c),headers=self.header,timeout=30,verify=False)
 			results = json.loads(result.content)
 			c = c + 100
 			if results['targets'] == []:
-				return print("[*]任务全部清除完毕")
+				info('任务全部清除完毕')
+				break
 			for s in results["targets"]:
 				r = requests.delete(url=self.server+'/targets/'+s['target_id'], timeout=10, verify=False, headers=self.header)
-				print("[-]当前删除 target_id:%s"%s['target_id'])
+				warning("当前删除 target_id:%s"%s['target_id'])
 
 
 	def handle(self):

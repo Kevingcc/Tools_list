@@ -27,7 +27,7 @@ formatter = colorlog.ColoredFormatter(
     secondary_log_colors={},
     style='%')
 handler.setFormatter(formatter)
-log = colorlog.getLogger('subdns')
+log = colorlog.getLogger('Run')
 log.addHandler(handler)
 log.setLevel(logging.INFO)
 

@@ -59,7 +59,7 @@ class Libs(object):
         self.root_ = self.commands_(cmd=['echo $HOME'])
         self.root = '{}/.Tools/Tools_list/'.format(self.root_)
         c1 = self.commands_(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
-        info(c1)
+        warning(c1)
         
         if option_install:
             self.config_pip_source()

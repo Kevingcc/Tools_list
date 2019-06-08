@@ -19,6 +19,11 @@ rm -rf "$HOME_/Search_Url_.txt"
 touch "$HOME_/Search_Url_.txt"
 rm -rf "$HOME__/setting.py"
 cp -v "$HOME__/bak/setting.py" "$HOME__/setting.py"
+rm -rf "$HOME_/nScan_Result.txt"
+touch "$HOME_/nScan_Result.txt"
+rm -rf "$HOME_/nmap_xml/"
+mkdir "$HOME_/nmap_xml"
+
 
 echo -e "login.json 初始化完毕...";
 echo -e "id.json 初始化完毕...";
@@ -26,3 +31,5 @@ echo -e "cookies.txt 初始化完毕...";
 echo -e "GHack 初始化完毕...";
 echo -e "Search_Url.txt 初始化完毕..."
 echo -e "setting.py 初始化完毕..."
+echo -e "nScan_Result.txt 初始化完毕..."
+echo -e "nmap_xml 目录 初始化完毕..."
