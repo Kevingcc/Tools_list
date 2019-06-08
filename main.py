@@ -47,7 +47,7 @@ from lib import print_
 # os.getcwd()
 
 # python 设置环境变量
-# print(os.path.dirname(os.path.abspath(__file__))+'/test')
+# print_(os.path.dirname(os.path.abspath(__file__))+'/test')
 # sys.path.insert(0,os.path.dirname(os.path.abspath(__file__))+'/test')
 
 # pyc文件清理
@@ -104,7 +104,7 @@ class Libs(object):
             
         return data
 
-        # print('查询成功...')
+        # print_('查询成功...')
 
 
     def Write_Data(self,id_,page,type_,title,content):
@@ -113,9 +113,9 @@ class Libs(object):
         """
         try:
             expression = r"""INSERT INTO "Exploit" ("id","page","type","title","content") VALUES ('{}','{}','{}','{}','{}')""".format(id_,page,type_,title,content)
-            # print(expression)
+            # print_(expression)
             self.c.execute(expression)
-            # print('写入数据成功...')
+            # print_('写入数据成功...')
             self.conn.commit()
             return True
         except Exception as e:
@@ -165,7 +165,7 @@ class Libs(object):
 
                 w.write(content.strip()+'\n')
         except Exception as e:
-            # print(traceback.format_exc())
+            # print_(traceback.format_exc())
             pass
             
 
@@ -197,7 +197,7 @@ class Libs(object):
                 else:
                     return False
         except Exception as e:
-            # print(traceback.format_exc())
+            # print_(traceback.format_exc())
             return False    
         
     def commands__(self,cmd='',decodes_='utf-8'):
@@ -212,7 +212,7 @@ class Libs(object):
             else:
                 return False
         except Exception as e:
-            # print(traceback.format_exc())
+            # print_(traceback.format_exc())
             return False   
 
     def config_pip_source(self):
@@ -241,9 +241,9 @@ class Libs(object):
     # def Install_mechanize(self):
     #     c1 = self.commands__(cmd='python3 -m pip install mechanize==0.4.2')
     #     if c1:
-    #         print('mechanize 安装成功...')
+    #         print_('mechanize 安装成功...')
     #     else:
-    #         print('mechanize 安装失败...')
+    #         print_('mechanize 安装失败...')
 
     def Inspect_pip(self):
         c1 = self.commands_('python3 -m pip')
@@ -275,57 +275,57 @@ class Libs(object):
     def Install_requests(self):
         c1 = self.commands__(cmd='python3 -m pip install requests==2.21.0')
         if c1:
-            print('requests 安装成功...')
+            print_('requests 安装成功...')
         else:
-            print('requests 安装失败...')
+            print_('requests 安装失败...')
     
     def Install_selenium(self):
         c1 = self.commands__(cmd='python3 -m pip install selenium==3.141.0')
         if c1:
-            print('selenium 安装成功...')
+            print_('selenium 安装成功...')
         else:
-            print('selenium 安装失败...')
+            print_('selenium 安装失败...')
 
     def Install_subdns(self):
         c2 = self.commands_(cmd=['python3 {}subdns/subdns.py --help'.format(self.root)])
         if not c2:
-            print('subdns.py 没有安装依赖项...')
-            print('subdns.py 正在安装依赖项...')
+            print_('subdns.py 没有安装依赖项...')
+            print_('subdns.py 正在安装依赖项...')
             c3 = self.commands__(cmd=['python3 -m pip install aiodns==2.0.0 colorlog==4.0.2'])
             if c3:
-                print('subdns.py 依赖项安装完成...')
+                print_('subdns.py 依赖项安装完成...')
             
             return False
         else:
-            print('subdns.py 正在运行...')
+            print_('subdns.py 正在运行...')
             return True
 
     def Install_DiscoverTarget(self):
         c1 = self.commands_(cmd=['python2 {}DiscoverTarget/DiscoverTarget.py --help'.format(self.root)])
         if not c1:
-            print('DiscoverTarget.py 没有安装依赖项...')
-            print('DiscoverTarget.py 正在安装依赖项...')
+            print_('DiscoverTarget.py 没有安装依赖项...')
+            print_('DiscoverTarget.py 正在安装依赖项...')
             c2 = self.commands__(cmd=['python2 -m pip install fofa==1.0.1 shodan==1.13.0 gevent==1.4.0 lxml==4.3.3 bs4==0.0.1'])
             if c2:
-                print('DiscoverTarget.py 依赖项安装完成...')
+                print_('DiscoverTarget.py 依赖项安装完成...')
             
             return False
         else:
-            print('DiscoverTarget.py 正在运行...')
+            print_('DiscoverTarget.py 正在运行...')
             return True
 
     def Install_dirmap(self):
         c1 = self.commands_(cmd=['python3 {}dirmap/dirmap.py --help'.format(self.root)])
         if not c1:
-            print('dirmap.py 没有安装依赖项...')
-            print('dirmap.py 正在安装依赖项...')
+            print_('dirmap.py 没有安装依赖项...')
+            print_('dirmap.py 正在安装依赖项...')
             c2 = self.commands__(cmd=['python3 -m pip install -r dirmap/requirement2.txt'])
             if c2:
-                print('dirmap.py 依赖项安装完成...')
+                print_('dirmap.py 依赖项安装完成...')
             
             return False
         else:
-            print('dirmap.py 正在运行...')
+            print_('dirmap.py 正在运行...')
             return True
 
     def Install_fsociety(self):
@@ -333,12 +333,12 @@ class Libs(object):
         if not c1:
             c2 = self.commands__(cmd='sudo chmod 777 -R {}fsociety && bash {}fsociety/install.sh'.format(self.root,self.root))
             if c2:
-                print('fsociety安装成功...')
+                print_('fsociety安装成功...')
             else:
-                print('fsociety安装失败...')
+                print_('fsociety安装失败...')
             return False
         else:
-            print('fsociety 正在运行...')
+            print_('fsociety 正在运行...')
             return True
 
     def Install_dnsfind(self):
@@ -346,11 +346,11 @@ class Libs(object):
         if not c1:
             c2 = self.commands__(cmd='python2 -m pip install -r {}dnsfind/reqs.txt'.format(self.root))
             if c2:
-                print('dnsfind 安装成功...')
+                print_('dnsfind 安装成功...')
             else:
-                print('dnsfind 安装失败...')
+                print_('dnsfind 安装失败...')
         else:
-            print('dnsfind 正在运行...')
+            print_('dnsfind 正在运行...')
 
     def Result_subdns(self):
         catalog = "{}output".format(self.root)
@@ -384,7 +384,7 @@ class Libs(object):
         filename = self.Result_subdns()
         i = 0
         for filename1 in filename[0]:
-            print('查看的文件 | {}.{}'.format(i,filename1))
+            print_('查看的文件 | {}.{}'.format(i,filename1))
             i += 1
         
         ipt1 = input('文件编号>')
@@ -404,20 +404,20 @@ class Libs(object):
                                     ip1 = data5.split('\'')
                                     for ip2 in ip1:
                                         if '\'' not in ip2 and ip2 and ',' not in ip2:
-                                            print('')
-                                            print('存活的IP地址...')
-                                            print('----------------------')
-                                            print(ip2.strip())
-                                            print('----------------------')
-                                            print('')
+                                            print_('')
+                                            print_('存活的IP地址...')
+                                            print_('----------------------')
+                                            print_(ip2.strip())
+                                            print_('----------------------')
+                                            print_('')
                                             ips.append(ip2.strip())
                                 if '\'' not in data5:
-                                    print('')
-                                    print('存活的域名...')
-                                    print('----------------------')
-                                    print(data5)
-                                    print('----------------------')
-                                    print('')
+                                    print_('')
+                                    print_('存活的域名...')
+                                    print_('----------------------')
+                                    print_(data5)
+                                    print_('----------------------')
+                                    print_('')
                                     domains.append(data5)
                             
             i += 1
@@ -427,13 +427,13 @@ class Libs(object):
         domains = []
         filename = self.Result_DiscoverTarget()[0]
         with open(filename,'r') as r:
-            print('收集的域名...')
+            print_('收集的域名...')
             for line in r.readlines():
-                print('')
-                print('---------------------------------------------------')
-                print(line.strip())
-                print('---------------------------------------------------')
-                print('')
+                print_('')
+                print_('---------------------------------------------------')
+                print_(line.strip())
+                print_('---------------------------------------------------')
+                print_('')
                 domains.append(line.strip())
         return domains
 
@@ -492,26 +492,28 @@ optional arguments:
         c1 = self.Install_subdns()
         helps2 = "例子：Url>baidu.com"
         if c1:
-            print(content)
+            print_(content)
             c2 = input('>')
             if not c2:
                 self.Run_subdns()
             if c2 is '1':
-                c3 = self.commands__(cmd=['python3 {}subdns/subdns.py --help'.format(self.root)])
-                print(c3)
-                print('')
-                print("##############################################################################################")
-                print(helps1)
+                c3 = self.commands_(cmd=['python3 {}subdns/subdns.py --help'.format(self.root)])
+                jinhao = '#'*173
+                print_(jinhao)
+                print_(str(c3))
+                print_('')
+                print_(jinhao)
+                print_(helps1)
                 self.Run_subdns()
             if c2 is '2':
-                print(helps2)
+                print_(helps2)
                 ipt1 = input('Url>')
                 c3 = self.commands__(cmd=['python3 {}subdns/subdns.py -u {} -d mini_names.txt'.format(self.root,ipt1)])
                 self.Run_subdns()
             if c2 is '3':
-                print('字典存放路径:$HOME/.Tools/Tools_list/dict')
-                print('如果存放好了字典，请输入字典名字...')
-                print(helps2)
+                print_('字典存放路径:$HOME/.Tools/Tools_list/dict')
+                print_('如果存放好了字典，请输入字典名字...')
+                print_(helps2)
                 ipt1 = input('Url>')
                 ipt2 = input('Dict>')
                 c3 = self.commands__(cmd=['python3 {}subdns/subdns.py -u {} -d {}'.format(self.root,ipt1,ipt2)])
@@ -564,10 +566,10 @@ app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
 """
         c1 = self.Install_DiscoverTarget()
         if c1:
-            print(content)
+            print_(content)
             ipt1 = input('>')
             if ipt1 is '1':
-                print(helps1)
+                print_(helps1)
                 c2 = self.commands__(cmd=['python2 {}DiscoverTarget/DiscoverTarget.py --help'.format(self.root)])
                 self.Run_DiscoverTarget()
             if ipt1 is '2':
@@ -575,8 +577,8 @@ app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
                 c2 = self.commands__(cmd=['python2 {}DiscoverTarget/DiscoverTarget.py -B {}'.format(self.root,keywords)])
                 self.Run_DiscoverTarget()
             if ipt1 is '3':
-                print('例子1：> -B hello word')
-                print('例子2：> -Z app:"Apache-Tomcat"')
+                print_('例子1：> -B hello word')
+                print_('例子2：> -Z app:"Apache-Tomcat"')
                 c3 = input('> ')
                 c4 = self.commands__(cmd='python2 {}DiscoverTarget/DiscoverTarget.py {}'.format(self.root,c3))
                 self.Run_DiscoverTarget()
@@ -636,28 +638,28 @@ Bruter:
         """
         c1 = self.Install_dirmap()
         if c1:
-            print(content)
+            print_(content)
             ipt1 = input('>')
             if not ipt1:
                 self.Run_dirmap()
             if ipt1 is '1':
-                print(helps1)
+                print_(helps1)
                 c2 = self.commands__(cmd='python3 {}dirmap/dirmap.py --help'.format(self.root))
                 self.Run_dirmap()
             if ipt1 is '2':
-                print('例子：Url>https://www.baidu.com/index.php?id=1')
+                print_('例子：Url>https://www.baidu.com/index.php?id=1')
                 ipt2 = input('Url>')
                 c2 = self.commands__(cmd='python3 {}dirmap/dirmap.py -iU {} -t 30 -lcf --debug'.format(self.root,ipt2))
                 self.Run_dirmap()
             if ipt1 is '3':
-                print('例子: Filename> DiscoverTarget/URL.txt')
+                print_('例子: Filename> DiscoverTarget/URL.txt')
                 ipt2 = input('Filename> ')
                 c2 = self.commands__(cmd='python3 {}dirmap/dirmap.py -iF {} -t 30 -lcf --debug'.format(self.root,ipt2))
                 self.Run_dirmap()
             if ipt1 is '4':
-                print('输入选项...')
-                print('例子1: > --help')
-                print('例子2: > --iN xxx')
+                print_('输入选项...')
+                print_('例子1: > --help')
+                print_('例子2: > --iN xxx')
                 ipt2 = input('> ')
                 c2 = self.commands__(cmd='python3 {}dirmap/dirmap.py {}'.format(self.root,ipt2))
                 self.Run_dirmap()
@@ -667,7 +669,7 @@ Bruter:
                 self.main()
     
     def Run_xcdn(self):
-        print("""
+        print_("""
 1.输入url.
 0.返回菜单.
         """)
@@ -682,7 +684,7 @@ Bruter:
             self.main()
 
     def Run_DirBrute(self):
-        print("""
+        print_("""
 ###########
 web目录扫描.
 ###########
@@ -706,14 +708,14 @@ web目录扫描.
         """
         ipt1 = input('>')
         if ipt1 is '1':
-            print(helps1)
+            print_(helps1)
             self.Run_DirBrute()
         if ipt1 is '2':
             dictnames = self.Get_Filename('{}DirBrute/dics/'.format(self.root))
             ipt2 = input('Url>')
-            print('选择字典...')
+            print_('选择字典...')
             for dictname in dictnames:
-                print(dictname)
+                print_(dictname)
             ipt3 = input('DictPath>')
             self.commands__(cmd='python2 {}DirBrute/dirbrute.py {} -e php -t 10 -d {}'.format(self.root,ipt2,ipt3))
             self.Run_DirBrute()
@@ -721,7 +723,7 @@ web目录扫描.
             self.main()
         
     def Run_xwaf(self):
-        print("""
+        print_("""
 1.查看帮助.
 2.输入url.
 3.输入url,post参数.
@@ -737,7 +739,7 @@ web目录扫描.
         if not ipt1:
             self.Run_xwaf()
         if ipt1 is '1':
-            print(helps1)
+            print_(helps1)
             self.Run_xwaf()
         if ipt1 is '2':
             ipt2 = input('Url>')
@@ -759,7 +761,7 @@ web目录扫描.
             self.main()
 
     def Run_fsociety(self):
-        print("""
+        print_("""
 1.Run Fsociety
 0.返回菜单.
         """)
@@ -781,7 +783,7 @@ web目录扫描.
 c.clear.
 0.退出.
         """
-        print(content1)
+        print_(content1)
         ipt1 = input('>')
         if not ipt1:
             self.main()
@@ -796,7 +798,7 @@ c.clear.
 4.尝试找出cdn背后的真实ip.
 0.返回菜单.
             """
-            print(content2)
+            print_(content2)
             ipt2 = input('>')
             if not ipt2:
                 self.main()
@@ -805,7 +807,7 @@ c.clear.
             if ipt2 is '2':
                 self.Run_DiscoverTarget()
             if ipt2 is '3':
-                print("""
+                print_("""
 #######
 选择工具
 #######
@@ -828,7 +830,7 @@ c.clear.
                 self.main()
         
         if ipt1 is '2':
-            print("""
+            print_("""
 ########
 web程序
 #######
@@ -841,7 +843,7 @@ web程序
             if ipt2 is '0':
                 self.main()
         if ipt1 is '3':
-            print("""
+            print_("""
 1.Fsociety.
 0.返回菜单.
             """)
@@ -856,19 +858,20 @@ web程序
             self.commands__(cmd='clear')
             self.main()
         if ipt1 is '0':
-            self.commands__(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
+            c1 = self.commands_(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
+            print_(c1)
             exit(0)
 
     def test(self):
         # c = self.commands_(cmd=['ls'])
-        # print(c)
+        # print_(c)
         # self.Install_subdns()
         pass
         
 
 
-# print(logo)
-# print('')
+# print_(logo)
+# print_('')
 # r = Run()
 # r.test()
 # r.Install_dirmap()
@@ -883,7 +886,10 @@ web程序
 
 
 
-
+if __name__ == '__main__':
+    r = Run()
+    r.main()
+    
 
 
 
