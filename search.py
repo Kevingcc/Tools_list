@@ -22,7 +22,7 @@ from main import Libs
 from lib import info
 from lib import error
 from lib import warning
-
+from lib import print_
 
 mutex = threading.Lock()
 
@@ -325,8 +325,8 @@ class selenium_(Libs):
                             #link
                             elements2 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]'.format(i2)).get_attribute('href')
                             
-                            info(('title = ',elements1.text))
-                            info(('link = ',elements2))
+                            print_('Title ==> '+elements1.text)
+                            print_('Link ==> '+elements2)
                             result1.append([elements1.text,elements2])
                     
                         except Exception as e:

@@ -44,6 +44,7 @@ cmd2 = "nmap -Pn {} -oX {}lib/nmap_xml/{}"
 
 
 
+
 # dns 查询接口
 dns_query1 = "https://dns.bufferover.run/dns?q={}"
 
@@ -105,9 +106,11 @@ class Scann(object):
             if ipt1 is '3':
                 self.option_ = False
             if ipt1 is '0':
-                exit(0)
+                eXit = True
 
         def r():
+            if eXit:
+                exit(0)
             i = 1
             for target1 in datas:
                 if i <= 5:
@@ -299,7 +302,7 @@ class Scann(object):
 
 
     def main(self,domains=[]):
-        # self.Sqli_Scann()
+        self.Sqli_Scann()        
         for domain in domains:
             time.sleep(1)
             self.DNS_Query_Interface(domain=domain)
@@ -381,9 +384,6 @@ def main():
 
 
 main()
-
-
-
 selenium_.browser.quit()
 selenium_.browser_.quit()
 
