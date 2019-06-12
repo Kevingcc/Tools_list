@@ -41,7 +41,7 @@ threadLock = threading.Lock()
 # commands
 cmd1 = "xfce4-terminal -e {}"
 cmd2 = "nmap -Pn {} -oX {}lib/nmap_xml/{}"
-
+cmd3 = "python3 {}subdns/subdns.py -u {} -d mini_names.txt"
 
 
 
@@ -286,7 +286,8 @@ class Scann(object):
             pass
         
         
-
+    def sub_domain(self):
+        pass
 
 
     def jietu(self,domain):
