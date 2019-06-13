@@ -9,6 +9,7 @@ from lib import info
 from lib import warning
 from lib import error
 from lib import print_
+from lib import root
 from search import selenium_
 from os import system
 
@@ -21,20 +22,20 @@ google_search = selenium_.Google_Search
 
 
 
-class spider(Libs):
+class spider(object):
 
     def __init__(self):
-        super(spider,self).__init__()
+        self.root = root 
 
     def main(self,keyword):
-        results = google_search(keyword=keyword)
+        results = google_search(keyword=keyword,number=2)
         i = 0
         for result in results:
-            title = result[0]
+            # title = result[0]
             link = result[1]
             html_doc = requests.get(link).text
-            system('mkdir %slib/doc_image/pyautogui' % self.root)
-            with open('%slib/doc_image/pyautogui/%s' % (self.root,'pyautogui%s.html' % str(i)),'a+') as w:
+            system('mkdir {}lib/doc_image/pyautogui'.format(self.root))
+            with open('{}lib/doc_image/pyautogui/{}'.format(self.root,'pyautogui{}.html'.format(str(i))),'a+') as w:
                 w.write(html_doc)
             i += 1
 

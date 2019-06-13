@@ -6,9 +6,10 @@ __all__ = ['test','get_headers',
            'warning','print_',
            'AttribDict','load',
            'loads','dump',
-           'dumps']
+           'dumps','root']
 
 import random
+import subprocess
 from json import load
 from json import loads
 from json import dump
@@ -28,6 +29,10 @@ G = '\033[1;32m'
 O = '\033[1;33m'
 R = '\033[1;31m'
 B = '\033[1;34m'
+
+root_ = subprocess.check_output('echo $HOME',shell=True).decode().strip()
+root = '{}/.Tools/Tools_list/'.format(root_)
+
 
 def print_(content):
     colors = ['G','O','R','B']
