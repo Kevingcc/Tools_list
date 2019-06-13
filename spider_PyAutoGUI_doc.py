@@ -30,11 +30,11 @@ class spider(object):
     def main(self,keyword):
         results = google_search(keyword=keyword,number=2)
         i = 0
+        system('mkdir {}lib/doc_image/pyautogui'.format(self.root))
         for result in results:
             # title = result[0]
             link = result[1]
             html_doc = requests.get(link).text
-            system('mkdir {}lib/doc_image/pyautogui'.format(self.root))
             with open('{}lib/doc_image/pyautogui/{}'.format(self.root,'pyautogui{}.html'.format(str(i))),'a+') as w:
                 w.write(html_doc)
             i += 1
