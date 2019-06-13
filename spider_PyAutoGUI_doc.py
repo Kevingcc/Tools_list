@@ -27,7 +27,7 @@ class spider(Libs):
         super(spider,self).__init__()
 
     def main(self,keyword):
-        results = google_search(keyword=keyword,number=3)
+        results = google_search(keyword=keyword)
         i = 0
         for result in results:
             title = result[0]
