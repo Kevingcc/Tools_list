@@ -16,8 +16,8 @@ from os import system
 
 
 selenium_ = selenium_()
-# browser = selenium_.browser
-# browser_ = selenium_.browser_
+browser = selenium_.browser
+browser_ = selenium_.browser_
 google_search = selenium_.Google_Search
 
 
@@ -53,7 +53,8 @@ class spider(object):
 if __name__ == '__main__':
     s = spider()
     s.run()
-
+    browser.quit()
+    browser_.quit()
 
 
 
