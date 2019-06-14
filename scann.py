@@ -39,7 +39,7 @@ threadLock = threading.Lock()
 browser = selenium.webdriver.Chrome()
 commands_ = libs.commands_
 commands__ = libs.commands__
-
+get_page_num = selenium_.Get_Page_num
 
 
 # KeyboardInterrupt
@@ -144,22 +144,21 @@ class Scann(object):
 
 
 
-
-    def Collect_known_domain(self,domain,number=26):
-        """
-        Return Collect known domain list.
-        """
+    def Collect_known_domain(self,domain):
         links = []
+        number = get_page_num(keyword='site:{}'.format(domain))
         datas = self.google_search(keyword='site:{}'.format(domain),number=number)
         try:
             for data in datas:
                 link = data[1]
                 links.append(link)
         except Exception as e:
-            error(traceback.format_exc())
+            # error(traceback.format_exc())
+            pass
 
-        return links
-
+        for link in links:
+            thread1 = threading.Thread(target=self.port_scan,args=(link,link))
+            thread1.start()
 
 
     def DNS_Query_ZZ(self):
@@ -336,7 +335,8 @@ class Scann(object):
                 break
 
             self.DNS_Query_Interface(domain=domain)
-            self.Subdomain_Enumeration(domain=domain)
+            # self.Subdomain_Enumeration(domain=domain)
+            self.Collect_known_domain(domain=domain)
             
             i += 1
         

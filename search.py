@@ -23,6 +23,8 @@ from lib import info
 from lib import error
 from lib import warning
 from lib import print_
+from setting import username
+from setting import password as passwd
 
 mutex = threading.Lock()
 
@@ -108,30 +110,14 @@ class selenium_(Libs):
         try:
             self.browser.get(self.login_url)
             self.browser.minimize_window()
-            if os.path.getsize('{}lib/login.json'.format(self.root)) <= 0:
-                warning('谷歌访问助手插件的账号及密码登入...')
-                email = input('Email>')
-                password = input('Password>')
-                data1 = {'email':email,'password':password}
-                self.Save_json(data=data1,filename='login.json')
+            email = username
+            password = passwd
+            time.sleep(10)
+            log_email = self.browser.find_element_by_id('email').send_keys(email)
+            log_password = self.browser.find_element_by_id('password').send_keys(password)
+            log_password = self.browser.find_element_by_id('password').send_keys(Keys.ENTER)
+            info('登入成功...')
 
-            time.sleep(2)
-            data2 = self.Read_json(filename='login.json')
-
-            i = 0
-            for line in data2:
-                if i == 0:
-                    line = json.loads(line)
-                    # print('line -> ',line)
-                    email = line['email']
-                    password = line['password']
-                    time.sleep(10)
-                    log_email = self.browser.find_element_by_id('email').send_keys(email)
-                    log_password = self.browser.find_element_by_id('password').send_keys(password)
-                    log_password = self.browser.find_element_by_id('password').send_keys(Keys.ENTER)
-                    info('登入成功...')
-
-                i += 1
         except Exception as e:
             error(('Login_Google_CRX = ',traceback.format_exc()))
             pass
@@ -247,11 +233,25 @@ class selenium_(Libs):
             pass
 
 
-    def Get_Page_num(self):
+    def Get_Page_num(self,keyword):
         """
         Get Page num.
         """
-        pass
+        global i
+        i = 1
+        
+        self.requests_(content=keyword)
+        
+        while True:
+            try:
+                    time.sleep(2)
+                    elements = self.browser.find_element_by_xpath('//*[@id="pnnext"]/span[2]')
+                    time.sleep(1)
+                    elements.click()
+                    time.sleep(3)
+                    i += 1
+            except Exception as e:
+                return i
 
 
     def test(self):
@@ -452,8 +452,13 @@ class Exploit_Search(object):
 
 
 
-
-
+# test1
+if __name__ == "__main__":
+    s = selenium_()
+    page_number = s.Get_Page_num(keyword='site:hello.com')
+    print('page number ==> ',page_number)
+    s.browser.quit()
+    s.browser_.quit()
 
 
 

@@ -2,7 +2,7 @@
 #coding:utf-8
 
 
-option_install = False
+option_install = True
 
 """
 awvs server
@@ -20,6 +20,11 @@ nessus_secretKey = ''
 nessus_accessKey = ''
 
 
+"""
+google 插件账号登入
+"""
+username = ''
+password = ''
 
 
 
