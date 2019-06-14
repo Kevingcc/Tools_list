@@ -40,6 +40,7 @@ browser = selenium.webdriver.Chrome()
 commands_ = libs.commands_
 commands__ = libs.commands__
 get_page_num = selenium_.Get_Page_num
+get_filename = libs.Get_Filename
 
 
 # KeyboardInterrupt
@@ -140,7 +141,29 @@ class Scann(object):
 
 
     def Subdomain_Enumeration(self,domain):
+        """
+        Return data:
+            data[0] >> domain
+            data[1] >> ip
+        """
         commands__(cmd=cmd3.format(root,domain))
+        
+        # 获取Result
+        domain = ''
+        ip = ''
+        datas = []
+        filename = get_filename('{}output/'.format(root))
+        for name in filename:
+            with open(name,'r') as r:
+                for line in r.readlines():
+                    l1 = line.split('[')
+                    domain = l1[0].strip()
+                    ip = eval('['+l1[1].strip())
+                    datas.append([domain,ip])
+        
+        return datas
+                            
+                            
 
 
 
@@ -156,9 +179,35 @@ class Scann(object):
             # error(traceback.format_exc())
             pass
 
-        for link in links:
-            thread1 = threading.Thread(target=self.port_scan,args=(link,link))
-            thread1.start()
+        return links
+
+
+    def Result_Compare(self,**kwargs):
+        """
+        去掉重复的结果.
+        """
+        global da1
+        global da2
+        da1 = ''
+        da2 = ''
+        ds = []
+
+        if 'S1' in kwargs:
+            da1 = kwargs['S1']
+        
+        if 'C1' in kwargs:
+            da2 = kwargs['C1']
+
+        for da_3 in da1:
+            datas = da_3[0] + da2
+            datas_ = list(set(datas))
+            ds.append(datas_)
+
+        return ds
+
+
+
+
 
 
     def DNS_Query_ZZ(self):
@@ -334,8 +383,7 @@ class Scann(object):
             if i == number:
                 break
 
-            self.DNS_Query_Interface(domain=domain)
-            # self.Subdomain_Enumeration(domain=domain)
+            self.Subdomain_Enumeration(domain=domain)
             self.Collect_known_domain(domain=domain)
             
             i += 1
@@ -417,9 +465,13 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    queue = Queue()
+    s = Scann(queue=queue,domain='')
+    s.Subdomain_Enumeration(domain='')
     selenium_.browser.quit()
     selenium_.browser_.quit()
+    browser.quit()
 
 
 

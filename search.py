@@ -340,7 +340,7 @@ class selenium_(Libs):
                             # print(traceback.format_exc())
                             pass
                     
-                    info(('下一页...'))
+                    # info(('下一页...'))
                     i += 1
                 
                 # self.browser.quit()
