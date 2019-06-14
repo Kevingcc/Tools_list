@@ -247,6 +247,13 @@ class selenium_(Libs):
             pass
 
 
+    def Get_Page_num(self):
+        """
+        Get Page num.
+        """
+        pass
+
+
     def test(self):
         self.GHack('ftp','ftp','ftp')
         

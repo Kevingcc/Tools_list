@@ -41,6 +41,7 @@ commands_ = libs.commands_
 commands__ = libs.commands__
 
 
+
 # KeyboardInterrupt
 
 
@@ -69,6 +70,7 @@ class Scann(object):
         self.queue = queue
         self.domain = domain
         self.event = event()
+        self.google_search = selenium_.Google_Search
     
     
     def add_task(self,target,rule):
@@ -141,8 +143,23 @@ class Scann(object):
         commands__(cmd=cmd3.format(root,domain))
 
 
-    def Collect_known_domain(self):
-        pass
+
+
+    def Collect_known_domain(self,domain,number=26):
+        """
+        Return Collect known domain list.
+        """
+        links = []
+        datas = self.google_search(keyword='site:{}'.format(domain),number=number)
+        try:
+            for data in datas:
+                link = data[1]
+                links.append(link)
+        except Exception as e:
+            error(traceback.format_exc())
+
+        return links
+
 
 
     def DNS_Query_ZZ(self):
