@@ -12,7 +12,7 @@ import os
 
 sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
 # print(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-print(sys.path)
+# print(sys.path)
 
 '''
 set log this code is Useless

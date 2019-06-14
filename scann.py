@@ -10,6 +10,8 @@ import socket
 import traceback
 import threading
 import sys
+import selenium
+import argparse
 from queue import Queue
 # from multiprocessing import Process
 # from multiprocessing import Queue as Qu
@@ -24,6 +26,7 @@ from lib import warning
 from lib import loads
 from lib import AttribDict
 from lib import print_
+from lib import root
 
 
 foo = AttribDict()
@@ -33,6 +36,9 @@ selenium_ = selenium_()
 event = threading.Event
 port_scan_results = []
 threadLock = threading.Lock()
+browser = selenium.webdriver.Chrome()
+commands_ = libs.commands_
+commands__ = libs.commands__
 
 
 # KeyboardInterrupt
@@ -105,8 +111,9 @@ class Scann(object):
                     self.option = False
             if ipt1 is '3':
                 self.option_ = False
-            if ipt1 is '0':
-                eXit = True
+            
+            eXit = False if not ipt1 is '0' else True
+
 
         def r():
             if eXit:
@@ -127,11 +134,13 @@ class Scann(object):
 
 
     def CDN_Scann(self):
-        libs.commands__(cmd='')
-
-
-    def Subdomain_Enumeration(self):
         pass
+
+
+    def Subdomain_Enumeration(self,domain):
+        commands__(cmd=cmd3.format(root,domain))
+
+
 
 
     def Collect_known_domain(self):
@@ -293,8 +302,9 @@ class Scann(object):
     def jietu(self,domain):
         try:
             # self.browser_.set_page_load_timeout(5)
-            self.browser_.get(str(domain))
-            self.browser_.save_screenshot('lib/img/{}.png'.format(str(domain).replace('https://','').replace('http://','')))
+            browser.get(str(domain))
+            browser.save_screenshot('lib/img/{}.png'.format(str(domain).replace('https://','').replace('http://','')))
+            browser.quit()
             # self.browser_.close()
         except:
             error(traceback.format_exc())
@@ -302,11 +312,20 @@ class Scann(object):
             pass
 
 
-    def main(self,domains=[]):
-        self.Sqli_Scann()        
+    def main(self,domains=[],number=3):
+        self.Sqli_Scann()
+        i = 1        
         for domain in domains:
             time.sleep(1)
+            if i == number:
+                break
+
             self.DNS_Query_Interface(domain=domain)
+            self.Subdomain_Enumeration(domain=domain)
+            
+            i += 1
+        
+
 
 
     def run(self):
@@ -382,11 +401,11 @@ def main():
 
 
 
+if __name__ == "__main__":
+    main()
+    selenium_.browser.quit()
+    selenium_.browser_.quit()
 
-
-main()
-selenium_.browser.quit()
-selenium_.browser_.quit()
 
 
 

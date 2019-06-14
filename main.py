@@ -265,11 +265,20 @@ class Libs(object):
         self.Install_selenium()
         self.Install_requests()
         self.Config_chromedriver()
-        self.commands__(cmd='sudo apt-get install xfce4-terminal')
-        self.commands__(cmd='sudo apt-get install pavucontrol')
+        self.commands__(cmd='sudo apt-get -y install xfce4-terminal')
+        self.commands__(cmd='sudo apt-get -y install pavucontrol')
         self.commands__(cmd='python2 -m pip install nmapparser==0.2.5')
+        self.commands__(cmd='sudo apt-get -y install nmap')
+
+        # Install pyautogui...
+        self.commands__(cmd='sudo pip3 install python3-xlib')
+        self.commands__(cmd='sudo apt-get -y install scrot')
+        self.commands__(cmd='sudo apt-get -y install python3-tk')
+        self.commands__(cmd='sudo apt-get -y install python3-dev')
+        self.commands__(cmd='python3 -m pip install pyautogui==0.9.44')
+        
         info('依赖项安装完毕...')
-        info('如果要退出安装，设置 setting.py option_install = False ...')
+        warning('如果要退出安装，设置 setting.py option_install = False ...')
         exit(0)
 
     def Install_requests(self):

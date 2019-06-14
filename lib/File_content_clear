@@ -25,6 +25,8 @@ rm -rf "$HOME_/nmap_xml/"
 mkdir "$HOME_/nmap_xml"
 rm -rf "$HOME_/doc_image"
 mkdir "$HOME_/doc_image"
+rm -rf "$HOME_/img"
+mkdir "$HOME_/img"
 
 
 echo -e "login.json 初始化完毕...";
@@ -36,4 +38,4 @@ echo -e "setting.py 初始化完毕..."
 echo -e "nScan_Result.txt 初始化完毕..."
 echo -e "nmap_xml 目录 初始化完毕..."
 echo -e "doc_image 目录　初始化完毕..."
-
+echo -e "img 目录　初始化完毕..."
