@@ -141,8 +141,6 @@ class Scann(object):
         commands__(cmd=cmd3.format(root,domain))
 
 
-
-
     def Collect_known_domain(self):
         pass
 
