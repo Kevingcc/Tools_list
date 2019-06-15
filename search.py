@@ -244,11 +244,11 @@ class selenium_(Libs):
         
         while True:
             try:
-                    time.sleep(2)
+                    time.sleep(0.3)
                     elements = self.browser.find_element_by_xpath('//*[@id="pnnext"]/span[2]')
-                    time.sleep(1)
+                    # time.sleep(1)
                     elements.click()
-                    time.sleep(3)
+                    # time.sleep(3)
                     i += 1
             except Exception as e:
                 return i
@@ -275,7 +275,7 @@ class selenium_(Libs):
         return True
         
 
-    def Google_Search(self,keyword,number=26):
+    def Google_Search(self,keyword,number=26,time_sleep=3):
         """
         keyword：Search keyword.
         number：Page number.
@@ -302,11 +302,11 @@ class selenium_(Libs):
                         if i != 0:
                             if i+1 < number+1:
                                 try:
-                                    time.sleep(2)
+                                    time.sleep(time_sleep)
                                     elements = self.browser.find_element_by_xpath('//*[@id="pnnext"]/span[2]')
-                                    time.sleep(1)
+                                    # time.sleep(1)
                                     elements.click()
-                                    time.sleep(3)
+                                    # time.sleep(3)
                                 except Exception as e:
                                     try:
                                         if self.option_ != 'n':
@@ -324,9 +324,9 @@ class selenium_(Libs):
                         # self.browser.close()
                         break
                     
+                    time.sleep(0.5)
                     for i2 in range(1,11):
                         try:
-                            time.sleep(0.5)
                             #Title
                             elements1 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]/h3'.format(i2))
                             #link

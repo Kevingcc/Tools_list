@@ -169,8 +169,10 @@ class Scann(object):
 
     def Collect_known_domain(self,domain):
         links = []
+        d1 = domain.split('.')
+        domain = d1[-2]+'.'+d1[-1]
         number = get_page_num(keyword='site:{}'.format(domain))
-        datas = self.google_search(keyword='site:{}'.format(domain),number=number)
+        datas = self.google_search(keyword='site:{}'.format(domain),number=int(number))
         try:
             for data in datas:
                 link = data[1]
@@ -199,11 +201,27 @@ class Scann(object):
             da2 = kwargs['C1']
 
         for da_3 in da1:
-            datas = da_3[0] + da2
-            datas_ = list(set(datas))
+            datas = [da_3[0]] + da2
+            datas_ = datas
             ds.append(datas_)
 
-        return ds
+        ds1 = []
+        for d1 in ds:
+            if isinstance(d1,list):
+                for d2 in d1:
+                    ds1.append(d2)
+
+        ds2 = []
+        for d1 in ds:
+            if isinstance(d1,str):
+                ds2.append(d2)
+        
+        ds3 = list(set(ds1+ds2))
+
+        return ds3
+
+
+
 
 
 
@@ -375,20 +393,24 @@ class Scann(object):
             pass
 
 
-    def main(self,domains=[],number=3):
+    def main(self,domains=[],number=1):
         self.Sqli_Scann()
-        i = 1        
+        ds1 = []
+        i = 0        
+
         for domain in domains:
             time.sleep(1)
             if i == number:
                 break
 
-            self.Subdomain_Enumeration(domain=domain)
-            self.Collect_known_domain(domain=domain)
+            s1 = self.Subdomain_Enumeration(domain=domain)
+            c1 = self.Collect_known_domain(domain=domain)
+            datas = self.Result_Compare(S1=s1,C1=c1)
+            for data in datas:
+                ds1.append(data)
             
             i += 1
         
-
 
 
     def run(self):
@@ -465,10 +487,11 @@ def main():
 
 
 if __name__ == "__main__":
-    # main()
-    queue = Queue()
-    s = Scann(queue=queue,domain='')
-    s.Subdomain_Enumeration(domain='')
+    browser.minimize_window()
+    main()
+    # queue = Queue()
+    # s = Scann(queue=queue,domain='')
+    # s.Subdomain_Enumeration(domain='')
     selenium_.browser.quit()
     selenium_.browser_.quit()
     browser.quit()
