@@ -181,7 +181,43 @@ class Scann(object):
             # error(traceback.format_exc())
             pass
 
-        return links
+        l1 = []
+        l2 = []
+        l3 = []
+        l4 = []
+        for link in links:
+            lk1 = link.split('.')
+
+            try:    
+                # 二级域名截取 www.baidu.com ==> www
+                lk2 = lk1[:-2]
+                lk3 = lk2[-1] + '.' + lk1[-2] + '.' + lk1[-1]
+                l1.append([lk3,link])
+            except Exception as e:
+                pass
+
+            try:
+                # 三级域名截取
+                lk2 = lk1[:-2]
+
+            except Exception as e:
+                pass
+
+            try:
+                # 四级域名截取
+                pass
+            except Exception as e:
+                pass
+
+            try:
+                # 五级域名截取
+                pass
+            except Exception as e:
+                pass
+
+        return []
+
+
 
 
     def Result_Compare(self,**kwargs):
@@ -408,8 +444,12 @@ class Scann(object):
             datas = self.Result_Compare(S1=s1,C1=c1)
             for data in datas:
                 ds1.append(data)
-            
+
             i += 1
+        
+        for data in ds1:
+            self.DNS_Query_Interface(domain=data)
+            
         
 
 
