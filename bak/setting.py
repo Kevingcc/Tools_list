@@ -2,6 +2,14 @@
 #coding:utf-8
 
 
+"""
+
+-------
+属性设置
+-------
+
+"""
+
 option_install = True
 
 """
