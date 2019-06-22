@@ -1,0 +1,1 @@
+openvpn.portal.spanishschoolhouse.com	['23.89.5.60']

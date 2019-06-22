@@ -23,6 +23,9 @@ from lib import info
 from lib import error
 from lib import warning
 from lib import print_
+from lib import green
+from lib import blue
+from lib import red
 from setting import username
 from setting import password as passwd
 
@@ -332,7 +335,7 @@ class selenium_(Libs):
                             #link
                             elements2 = self.browser.find_element_by_xpath('//*[@id="rso"]/div/div/div[{}]/div/div/div[1]/a[1]'.format(i2)).get_attribute('href')
                             
-                            print_('Title ==> '+elements1.text)
+                            blue('Title ==> '+elements1.text)
                             print_('Link ==> '+elements2)
                             result1.append([elements1.text,elements2])
                     
@@ -452,14 +455,20 @@ class Exploit_Search(object):
 
 
 
-# test1
 if __name__ == "__main__":
-    s = selenium_()
-    page_number = s.Get_Page_num(keyword='site:hello.com')
-    print('page number ==> ',page_number)
-    s.browser.quit()
-    s.browser_.quit()
-
+    print_("""
+1.SQLI采集.    
+0.Exit.
+""")
+    ipt1 = input('编号>')
+    e = Exploit_Search()
+    if ipt1 == '1':
+        result1 = e.Sqli_Exploit()
+        if result1:
+            info('SQLI收集完毕...')
+    if ipt1 == '0':
+        exit(0)
+    
 
 
 

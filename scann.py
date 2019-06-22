@@ -12,6 +12,7 @@ import threading
 import sys
 import selenium
 import argparse
+import os
 from queue import Queue
 # from multiprocessing import Process
 # from multiprocessing import Queue as Qu
@@ -27,6 +28,21 @@ from lib import loads
 from lib import AttribDict
 from lib import print_
 from lib import root
+from lib import get_url
+from lib import get_target_sqli_url
+from lib.oBtain_Result import oBitain_Result_sub
+from lib import get_filename_
+from lib import get_filename
+from lib import read_text
+from lib import read_text_
+from lib import input_
+from lib import blue
+from lib import red
+from lib import green
+from lib import regular
+
+
+
 
 
 foo = AttribDict()
@@ -47,7 +63,7 @@ get_filename = libs.Get_Filename
 
 
 # commands
-cmd1 = "xfce4-terminal -e {}"
+cmd1 = 'xfce4-terminal -e "bash -c \\\"{}\\\""'
 cmd2 = "nmap -Pn {} -oX {}lib/nmap_xml/{}"
 cmd3 = "python3 {}subdns/subdns.py -u {} -d mini_names.txt"
 
@@ -61,15 +77,15 @@ dns_query1 = "https://dns.bufferover.run/dns?q={}"
 
 class Scann(object):
 
-    def __init__(self,queue,domain):
+    def __init__(self):
 
         self.awvs = awvs
         self.option = True
         self.option_ = True
         self.browser = selenium_.browser
         self.browser_ = selenium_.browser_
-        self.queue = queue
-        self.domain = domain
+        # self.queue = queue
+        # self.domain = domain
         self.event = event()
         self.google_search = selenium_.Google_Search
     
@@ -86,53 +102,76 @@ class Scann(object):
         delete = self.awvs(target='',rule='')
         delete.delete()
 
-    def Sqli_Scann(self):
-        datas = self.domain
+    def _add_task(self,rule):
+
+        print_("""
+1.批量任务添加
+2.删除所有任务
+3.删除指定任务
+4.跳过
+0.Exit
+        """)
         
         if self.option_:
 
-            print_("""
-    1.删除所有任务.
-    2.删除单个任务.
-    3.跳过.
-    0.Exit.
-            """)
-            ipt1 = input('>')
+            ipt1 = input_('>')
             if ipt1 is '1':
-                self.delete_()
-                ipt2 = input('显示细节[y/n]>')
+                domains = []
+                ipt2 = input_('处理URL获取Domain name.[y/n]')
                 if ipt2 is 'y':
-                    pass
+                    i1 = True
                 if ipt2 is 'n':
-                    self.option = False
+                    i1 = False
+                filename = get_filename('{}lib/batch'.format(root))
+                for f in filename:
+                    print_(f)
+                ipt3 = input_('Filename>')
+                if ipt3:
+                    datas = read_text_(ipt3)
+                    if i1:
+                        for data in datas:
+                            d = get_url(data)
+                            domains.append(d)
+                datas = domains
+            
             if ipt1 is '2':
-                self.delete()
-                ipt2 = input('显示细节[y/n]>')
+                self.delete_()
+                ipt2 = input_('显示细节[y/n]>')
                 if ipt2 is 'y':
                     pass
                 if ipt2 is 'n':
                     self.option = False
             if ipt1 is '3':
+                self.delete()
+                ipt2 = input_('显示细节[y/n]>')
+                if ipt2 is 'y':
+                    pass
+                if ipt2 is 'n':
+                    self.option = False
+            if ipt1 is '4':
                 self.option_ = False
             
             eXit = False if not ipt1 is '0' else True
 
-
-        def r():
-            if eXit:
-                exit(0)
-            i = 1
-            for target1 in datas:
-                if i <= 5:
-                    if self.option:
-                        info(('Add scann target -> ',target1))
-                    self.add_task(target=target1,rule='3')
-                else:
-                    i = 0
-                    time.sleep(600)
-                i += 1
-        thread1 = threading.Thread(target=r)
-        thread1.start()
+        try:
+            def r():
+                if eXit:
+                    exit(0)
+                i = 1
+                for target1 in datas:
+                    if i <= 5:
+                        if self.option:
+                            info(('Add scann target -> ',target1))
+                        self.add_task(target=target1,rule=rule)
+                    else:
+                        i = 0
+                        time.sleep(600)
+                    i += 1
+            thread1 = threading.Thread(target=r)
+            thread1.start()
+        except Exception as e:
+            # red(traceback.format_exc())
+            pass
 
 
 
@@ -146,25 +185,23 @@ class Scann(object):
             data[0] >> domain
             data[1] >> ip
         """
-        commands__(cmd=cmd3.format(root,domain))
         
-        # 获取Result
-        domain = ''
-        ip = ''
-        datas = []
-        filename = get_filename('{}output/'.format(root))
-        for name in filename:
-            with open(name,'r') as r:
-                for line in r.readlines():
-                    l1 = line.split('[')
-                    domain = l1[0].strip()
-                    ip = eval('['+l1[1].strip())
-                    datas.append([domain,ip])
+        try:
+            # threadLock.acquire()
+            commands__(cmd=cmd3.format(root,domain))
+        except Exception as e:
+            pass
+        finally:
+            # threadLock.release()
+            datas = get_filename('{}/output'.format(root))
+            i = 0
+            for data in datas:
+                if os.path.getsize(datas) > 0:
+                    if i == len(datas): 
+                        foo.state1 = True
+                i += 1
         
-        return datas
-                            
-                            
-
+        
 
 
     def Collect_known_domain(self,domain):
@@ -176,11 +213,14 @@ class Scann(object):
         try:
             for data in datas:
                 link = data[1]
-                links.append(link)
+                if re.findall('http',link) or re.findall('https',link):
+                    link = get_url(link)
+                    links.append(link)
         except Exception as e:
             # error(traceback.format_exc())
             pass
 
+        foo.state2 = True
         return links
 
 
@@ -278,11 +318,16 @@ class Scann(object):
                 if 'FDNS_A' in data:
                     data1 = data['FDNS_A']
                     for data_1 in data1:
-                        find1 = re.findall('\d',data_1)
+                        find1 = re.findall(regular(1),data_1)
+                        find2 = re.findall(regular(2),data_1)
+                        find3 = re.findall(regular(3),data_1)
+                        d1 = data_1.split(',')
+                        
                         if find1:
-                            d1 = data_1.split(',')
                             ips = d1[0]
+                        if find2 or find3:
                             domains = d1[1]
+                        if ips or domains:
                             datas_d1.append([ips,domains])
 
             except:
@@ -292,11 +337,15 @@ class Scann(object):
                 if 'RDNS' in data:
                     data2 = data['RDNS']
                     for data_2 in data2:
-                        find2 = re.findall('\d',data_2)
-                        if find2:
-                            d2 = data_2.split(',')
+                        find1 = re.findall(regular(1),data_2)
+                        find2 = re.findall(regular(2),data_2)
+                        find3 = re.findall(regular(3),data_2)
+                        d2 = data_2.split(',')
+                        if find1:
                             ips = d2[0]
+                        if find2 or find3:
                             domains = d2[1]
+                        if ips or domains:
                             datas_d2.append([ips,domains])
             except:
                 pass
@@ -363,10 +412,10 @@ class Scann(object):
                             if state != 'closed':
                                 info(ip+':'+port+' /'+state+' '+'-'+agreement)
                                 if port == '443' or port == '80':
-                                    w = open('{}lib/nScan_Result.txt'.format(libs.root),'a+')
+                                    w = open('{}lib/Nmap_Result/nScan_Result.txt'.format(libs.root),'a+')
                                     w.write('{"ip":"%s","port":"%s","state":"%s","agreement":"%s"}' % (ip,port,state,agreement))
                                     w.write('\n')
-                                    warning('写入 nScan_Result ...')
+                                    warning('写入 lib/batch/nScan_Result.txt ...')
                                     w.close()
                         
                             else:
@@ -394,95 +443,90 @@ class Scann(object):
             pass
 
 
-    def main(self,domains=[],number=1):
-        self.Sqli_Scann()
-        ds1 = []
-        i = 0        
+    def main(self):
+        print_("""
+1.AWVS扫描.
+2.DNS接口查询.
+3.子域名枚举.
+4.nmap 扫描.
+0.Exit.
+""")
+        ipt1 = input_('选项>')
+        if ipt1 is '1':
+            print_("""
+    ___        __       ____  
+   / \ \      / /_   __/ ___| 
+  / _ \ \ /\ / /\ \ / /\___ \ 
+ / ___ \ V  V /  \ V /  ___) |
+/_/   \_\_/\_/    \_/  |____/ 
 
-        for domain in domains:
-            time.sleep(1)
-            if i == number:
-                break
 
-            s1 = self.Subdomain_Enumeration(domain=domain)
-            c1 = self.Collect_known_domain(domain=domain)
-            datas = self.Result_Compare(S1=s1,C1=c1)
-            for data in datas:
-                ds1.append(data)
+AWVS 配置:
+[0] 全扫描
+[1] 高风险漏洞
+[2] 跨站点脚本漏洞
+[3] SQL注入漏洞
+[4] 脆弱的密码
+[5] 仅爬行'
+[x]返回菜单.
+    """)    
+            ipt2 = input_('配置>')
+            if ipt2 is 'x':
+                self.main()
+            self._add_task(rule=ipt2)
+        if ipt1 is '2':
+            print_("""
+ ____  _   _        ___                        
+|  _ \| \ | |___   / _ \ _   _  ___ _ __ _   _ 
+| | | |  \| / __| | | | | | | |/ _ \ '__| | | |
+| |_| | |\  \__ \ | |_| | |_| |  __/ |  | |_| |
+|____/|_| \_|___/  \__\_\\\\__,_|\___|_|   \__, |
+                                         |___/ 
 
-            i += 1
-        
-        for data in ds1:
-            self.DNS_Query_Interface(domain=data)
+1.批量查询
+2.单个查询
+0.返回菜单.
+            """)            
+            ipt2 = input_('>')
+            if ipt2 is '0':
+                self.main()
+            if ipt2 is '1':
+                ipt3 = input_('处理URL获取Domain name.[y/n]')
+                filenames = get_filename(path='{}lib/batch'.format(root))
+                for filename in filenames:
+                    print_(filename)
+                ipt4 = input_('Filename>')
+                lines = read_text_(ipt4)
+                for line in lines:
+                    if ipt3 == 'y':
+                        domain = get_url(line)
+                        self.DNS_Query_Interface(domain)
+                    if ipt3 == 'n':
+                        domain = line
+                        self.DNS_Query_Interface(domain)
+            if ipt2 is '2':
+                ipt3 = input_('Domain>')
+                self.DNS_Query_Interface(ipt3)
+        if ipt1 is '0':
+            exit(0)
+
             
         
 
 
     def run(self):
-        self.main(self.domain)
+        self.main()
         
 
 
-
-def filter_domain(domain=[]):
-    d1 = []
-    for data1 in domain:
-            if not re.findall('\.xls',data1) and \
-                not re.findall('\.sql',data1) and \
-                not re.findall('\.txt',data1) and \
-                not re.findall('www.google.com',data1) and \
-                not re.findall('www.baidu.com',data1) and \
-                not re.findall('baidu.com',data1) and \
-                not re.findall('google.com',data1) and \
-                not re.findall('github.com',data1) and \
-                not re.findall('cnblogs.com',data1) and \
-                not re.findall('csdn.net',data1) and \
-                not re.findall('exploit-db.com',data1):
-                d1.append(data1)
-
-    return d1
-
-
-def get_target_sqli_url():
-        d1 = []
-        d2 = []
-        libs = Libs()
-        datas1 = libs.Read_text(filename='sqli1.txt')
-        datas2 = libs.Read_text(filename='sqli2.txt')
-        d1 = filter_domain(domain=datas1)
-        d2 = filter_domain(domain=datas2)        
-
-        return (d1,d2)
-
-
-
-def get_url(domain):
-    d1 = domain.split('/')
-    for d2 in d1:
-        if \
-        d2 != 'https' and \
-        d2 != 'http' and \
-        d2 != '/' and \
-        d2 and \
-        d2 != 'https:' and \
-        d2 != 'https:/' and \
-        d2 != 'http:' and \
-        d2 != 'http:/':
-            return d2.strip()
 
 
 
 
 
 def main():
-    data = get_target_sqli_url()
-    datas = []
-    d1 = data[0] + data[1]
-    for d2 in d1:
-        datas.append(get_url(d2))
-    d3 = list(set(datas))
-    queue = Queue()
-    scan1 = Scann(queue=queue,domain=d3)
+
+    scan1 = Scann()
     scan1.run()
 
 
