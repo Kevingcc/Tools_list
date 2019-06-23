@@ -3,10 +3,9 @@
 
 
 
-from main import Libs
+from lib import Libs
 from main import Run
 from search import selenium_
-from main import Libs
 from search import Exploit_Search
 from scann import Scann
 

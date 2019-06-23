@@ -18,7 +18,7 @@ try:
 except Exception as e:
     pass
 
-from main import Libs
+from lib import Libs
 from lib import info
 from lib import error
 from lib import warning

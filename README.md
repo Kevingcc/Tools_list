@@ -28,4 +28,11 @@ lib/batch 目录:
 
     存放批量url字典的目录.
 
+dict 目录:
+
+    存放字典.
+
+output 目录:
+
+    存放subdns工具输出结果.
 

@@ -18,7 +18,7 @@ from queue import Queue
 # from multiprocessing import Queue as Qu
 from awvs_api import awvs
 from search import Exploit_Search
-from main import Libs
+from lib import Libs
 from search import selenium_
 from lib import get_headers
 from lib import info

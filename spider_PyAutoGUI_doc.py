@@ -4,7 +4,7 @@
 
 
 import requests
-from main import Libs
+from lib import Libs
 from lib import info
 from lib import warning
 from lib import error
