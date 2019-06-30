@@ -23,6 +23,17 @@ logo = """
 
 logo = '\033[1;33m' +'{}'.format(logo)+ '\033[0m'
 
+from lib.setting import option_install
+import os
+
+if option_install:
+    os.system('python3 -m pip install colorlog==4.0.2')
+
+
+
+
+
+
 
 import os
 import sys
@@ -33,7 +44,6 @@ from lib import error
 from lib import warning
 from lib import print_
 from lib import Libs
-
 
 
 
@@ -157,13 +167,13 @@ app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
                 self.Run_DiscoverTarget()
             if ipt1 is '2':
                 keywords = input('>')
-                c2 = self.commands__(cmd=['python2 {}DiscoverTarget/DiscoverTarget.py -B {}'.format(self.root,keywords)])
+                c2 = self.commands__(cmd=['sudo python2 {}DiscoverTarget/DiscoverTarget.py -B {}'.format(self.root,keywords)])
                 self.Run_DiscoverTarget()
             if ipt1 is '3':
                 print_('例子1：> -B hello word')
                 print_('例子2：> -Z app:"Apache-Tomcat"')
                 c3 = input('> ')
-                c4 = self.commands__(cmd='python2 {}DiscoverTarget/DiscoverTarget.py {}'.format(self.root,c3))
+                c4 = self.commands__(cmd='sudo python2 {}DiscoverTarget/DiscoverTarget.py {}'.format(self.root,c3))
                 self.Run_DiscoverTarget()
             if ipt1 is '4':
                 self.Select_Files__()

@@ -5,21 +5,15 @@
 
 import time
 import re
-import requests
-import socket
 import traceback
 import threading
-import sys
 import selenium
-import argparse
 import os
-from queue import Queue
 # from multiprocessing import Process
 # from multiprocessing import Queue as Qu
-from awvs_api import awvs
-from search import Exploit_Search
+from src.awvs_api import awvs
 from lib import Libs
-from search import selenium_
+from src.search import selenium_
 from lib import get_headers
 from lib import info
 from lib import error
@@ -29,16 +23,9 @@ from lib import AttribDict
 from lib import print_
 from lib import root
 from lib import get_url
-from lib import get_target_sqli_url
-from lib.oBtain_Result import oBitain_Result_sub
-from lib import get_filename_
 from lib import get_filename
-from lib import read_text
 from lib import read_text_
 from lib import input_
-from lib import blue
-from lib import red
-from lib import green
 from lib import regular
 
 
@@ -392,7 +379,7 @@ class Scann(object):
         try:
             libs.commands_(cmd=[cmd2.format(domain,libs.root,filename)])
             time.sleep(10)
-            data1 = libs.commands_(cmd=['python2 {}lib/nmap_xml.py {}lib/nmap_xml/{}'.format(libs.root,libs.root,filename)]).strip()
+            data1 = libs.commands_(cmd=['sudo python2 {}lib/nmap_xml.py {}lib/nmap_xml/{}'.format(libs.root,libs.root,filename)]).strip()
             # data1 = exec('data1 = '+data1)
             data1 = eval(data1)
             foo.nScan_Result = data1

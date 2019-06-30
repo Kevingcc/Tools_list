@@ -29,7 +29,7 @@ try:
 except Exception as e:
     pass
 
-from setting import option_install
+from lib.setting import option_install
 from .debug import test
 from .debug import log
 from .headers import get_headers
@@ -217,15 +217,12 @@ class Libs(object):
         self.root = '{}/.Tools/Tools_list/'.format(self.root_)
         c1 = self.commands_(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
         warning(c1)
-        
+        self.conn = sqlite3.connect('{}lib/GHack'.format(self.root))
+        self.c = self.conn.cursor()
         if option_install:
             self.config_pip_source()
             c1 = self.Inspect_pip()
             self.Install_Basics()
-        
-        self.conn = sqlite3.connect('{}lib/GHack'.format(self.root))
-        self.c = self.conn.cursor()
-
 
     def etree_(self,xpath_,text):
         html = etree.HTML(str(text),etree.HTMLParser())
@@ -424,7 +421,7 @@ class Libs(object):
         self.Config_chromedriver()
         self.commands__(cmd='sudo apt-get -y install xfce4-terminal')
         self.commands__(cmd='sudo apt-get -y install pavucontrol')
-        self.commands__(cmd='python2 -m pip install nmapparser==0.2.5')
+        self.commands__(cmd='sudo python2 -m pip install nmapparser==0.2.5 --user')
         self.commands__(cmd='sudo apt-get -y install nmap')
 
         # Install pyautogui...
@@ -435,7 +432,7 @@ class Libs(object):
         self.commands__(cmd='python3 -m pip install pyautogui==0.9.44')
         
         info('依赖项安装完毕...')
-        warning('如果要退出安装，设置 setting.py option_install = False ...')
+        warning('如果要退出安装，设置 lib/setting.py option_install = False ...')
         exit(0)
 
     def Install_requests(self):
@@ -467,11 +464,11 @@ class Libs(object):
             return True
 
     def Install_DiscoverTarget(self):
-        c1 = self.commands_(cmd=['python2 {}DiscoverTarget/DiscoverTarget.py --help'.format(self.root)])
+        c1 = self.commands_(cmd=['sudo python2 {}DiscoverTarget/DiscoverTarget.py --help'.format(self.root)])
         if not c1:
             print_('DiscoverTarget.py 没有安装依赖项...')
             print_('DiscoverTarget.py 正在安装依赖项...')
-            c2 = self.commands__(cmd=['python2 -m pip install fofa==1.0.1 shodan==1.13.0 gevent==1.4.0 lxml==4.3.3 bs4==0.0.1'])
+            c2 = self.commands__(cmd=['sudo python2 -m pip install fofa==1.0.1 shodan==1.13.0 gevent==1.4.0 lxml==4.3.3 bs4==0.0.1 --user'])
             if c2:
                 print_('DiscoverTarget.py 依赖项安装完成...')
             

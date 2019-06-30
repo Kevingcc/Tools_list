@@ -2,14 +2,12 @@
 #coding:utf-8
 
 
-import re
 import threading
 import json
 import time
 import os
 import traceback
 import random
-import setting
 
 try:
     from selenium import webdriver
@@ -23,11 +21,9 @@ from lib import info
 from lib import error
 from lib import warning
 from lib import print_
-from lib import green
 from lib import blue
-from lib import red
-from setting import username
-from setting import password as passwd
+from lib.setting import username
+from lib.setting import password as passwd
 
 mutex = threading.Lock()
 

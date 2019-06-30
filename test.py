@@ -3,21 +3,22 @@
 
 
 
-from lib import Libs
-from main import Run
-from search import selenium_
-from search import Exploit_Search
-from scann import Scann
+from src.scann import *
+
+
+
+if __name__ == "__main__":
+    browser.minimize_window()
+    main()
+    # queue = Queue()
+    # s = Scann(queue=queue,domain='')
+    # s.Subdomain_Enumeration(domain='')
+    selenium_.browser.quit()
+    selenium_.browser_.quit()
+    browser.quit()
 
 # self.commands__(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
 
-
-
-
-# Exploit = Exploit_Search()
-scann = Scann()
-# Exploit.Sqli_Exploit()
-scann.main()
 
 
 

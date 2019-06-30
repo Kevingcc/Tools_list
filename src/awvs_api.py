@@ -7,13 +7,10 @@ import json
 import time
 import requests
 import urllib.parse
-import setting
-import traceback
 import requests.packages.urllib3
-from lib import info
+from lib import info, setting
 from lib import error
 from lib import warning
-from lib import print_
 
 
 class awvs(object):

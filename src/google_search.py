@@ -11,18 +11,11 @@ except Exception as e:
 import requests
 import os
 import subprocess
-import traceback
 import threading
-import time
-import sys
 import re
-import random
-from lxml import etree
 from queue import Queue
-from search import selenium_
+from src.search import selenium_
 from lib import info
-from lib import error
-from lib import warning
 from lib import print_
 
 # /html/body/dl/dt/dl/dt[50]/dl/dt/a

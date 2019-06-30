@@ -4,13 +4,8 @@
 
 
 import requests
-from lib import Libs
-from lib import info
-from lib import warning
-from lib import error
-from lib import print_
 from lib import root
-from search import selenium_
+from src.search import selenium_
 from os import system
 
 
