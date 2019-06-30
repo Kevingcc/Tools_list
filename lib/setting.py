@@ -10,7 +10,7 @@
 
 """
 
-option_install = False
+option_install = True
 
 """
 awvs server
