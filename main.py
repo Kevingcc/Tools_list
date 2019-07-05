@@ -370,6 +370,7 @@ web目录扫描.
 
 
     def xsstrike(self):
+        self.Install_xSStrike()
         help1 = """
 	XSStrike v3.1.4
 
@@ -575,7 +576,7 @@ Xss
                 ipt3 = input_('>')
                 if ipt3 is '1':
                     self.xsstrike()
-                    self.xsstrike()
+                    self.main()
                 if ipt3 is '0':
                     self.main()
             

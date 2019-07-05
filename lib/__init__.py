@@ -427,6 +427,7 @@ class Libs(object):
         self.Install_selenium()
         self.Install_requests()
         self.Config_chromedriver()
+        self.Install_xSStrike()
         self.commands__(cmd='sudo apt-get -y install xfce4-terminal')
         self.commands__(cmd='sudo apt-get -y install pavucontrol')
         self.commands__(cmd='sudo python2 -m pip install nmapparser==0.2.5 --user')
