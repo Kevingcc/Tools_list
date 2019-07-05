@@ -20,7 +20,7 @@
 
 ### 配置说明
 
-setting.py:
+lib/setting.py:
     
     提供基本的属性设置.
 
