@@ -61,6 +61,10 @@ def red(content):
     d = R + content + W
     print(d)
 
+def _red(content):
+    d = R + content + W
+    return d
+
 def blue(content):
     d = B + content + W
     print(d)
@@ -98,7 +102,17 @@ def filter_domain(domain=[]):
 
     return d1
 
-
+def _commands(num):
+    """
+    命令选择.
+    c = _commands(1)
+    >>> 'xfce4-terminal -e "bash -c \\\"{}\\\""'
+    """
+    # commands
+    if num == 1:
+        cmd1 = 'xfce4-terminal -e "bash -c \\\"{}\\\""'
+        return cmd1
+    
 
 def read_text(filename):
     lines = []
@@ -432,8 +446,9 @@ class Libs(object):
         self.commands__(cmd='sudo apt-get -y install pavucontrol')
         self.commands__(cmd='sudo python2 -m pip install nmapparser==0.2.5 --user')
         self.commands__(cmd='sudo apt-get -y install nmap')
-        self.commands__(cmd='sudo apt-get install figlet')
-        self.commands__(cmd='sudo apt-get install toilet')
+        self.commands__(cmd='sudo apt-get -y install figlet')
+        self.commands__(cmd='sudo apt-get -y install toilet')
+        self.commands__(cmd='sudo apt-get -y install pdfgrep')
 
         # Install pyautogui...
         self.commands__(cmd='sudo pip3 install python3-xlib')
