@@ -78,6 +78,9 @@ def input_(content):
 
 
 def filter_domain(domain=[]):
+    """
+    过滤器.
+    """
     d1 = []
     for data1 in domain:
             if not re.findall('\.xls',data1) and \
@@ -305,6 +308,11 @@ class Libs(object):
 
 
     def Save_text(self,filename,content):
+        """
+        参数: 1.filename 2.content
+        
+        绝对路径: /.../lib/<filename>
+        """
         try:
             with open('{}lib/{}'.format(self.root,filename),'a+') as w:
                 if 'https' not in content or 'http' not in content:
@@ -423,6 +431,8 @@ class Libs(object):
         self.commands__(cmd='sudo apt-get -y install pavucontrol')
         self.commands__(cmd='sudo python2 -m pip install nmapparser==0.2.5 --user')
         self.commands__(cmd='sudo apt-get -y install nmap')
+        self.commands__(cmd='sudo apt-get install figlet')
+        self.commands__(cmd='sudo apt-get install toilet')
 
         # Install pyautogui...
         self.commands__(cmd='sudo pip3 install python3-xlib')
@@ -527,6 +537,14 @@ class Libs(object):
         return (filename1,filename2)
 
     def Result_DiscoverTarget(self):
+        """
+        libs = Libs()
+        f1,f2 = libs.Result_DiscoverTarget()
+        print(f1)
+        >>> '/home/remix/.Tools/Tools_list/DiscoverTarget/URL.txt'
+        print(f2)
+        >>> 'URL.txt'
+        """
         catalog = "{}DiscoverTarget".format(self.root)
         filename = []
         for root,dirs,files in os.walk(catalog):

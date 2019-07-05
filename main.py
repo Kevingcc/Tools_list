@@ -21,7 +21,7 @@ logo = """
 
 """
 
-logo = '\033[1;33m' +'{}'.format(logo)+ '\033[0m'
+# logo = '\033[1;33m' +'{}'.format(logo)+ '\033[0m'
 
 from lib.setting import option_install
 import os
@@ -43,6 +43,7 @@ from lib import info
 from lib import error
 from lib import warning
 from lib import print_
+from lib import input_
 from lib import Libs
 
 
@@ -86,7 +87,7 @@ optional arguments:
         helps2 = "例子：Url>baidu.com"
         if c1:
             print_(content)
-            c2 = input('>')
+            c2 = input_('>')
             if not c2:
                 self.Run_subdns()
             if c2 is '1':
@@ -100,15 +101,15 @@ optional arguments:
                 self.Run_subdns()
             if c2 is '2':
                 print_(helps2)
-                ipt1 = input('Url>')
+                ipt1 = input_('Url>')
                 c3 = self.commands__(cmd=['python3 {}subdns/subdns.py -u {} -d mini_names.txt'.format(self.root,ipt1)])
                 self.Run_subdns()
             if c2 is '3':
                 print_('字典存放路径:$HOME/.Tools/Tools_list/dict')
                 print_('如果存放好了字典，请输入字典名字...')
                 print_(helps2)
-                ipt1 = input('Url>')
-                ipt2 = input('Dict>')
+                ipt1 = input_('Url>')
+                ipt2 = input_('Dict>')
                 c3 = self.commands__(cmd=['python3 {}subdns/subdns.py -u {} -d {}'.format(self.root,ipt1,ipt2)])
                 self.Run_subdns()
             if c2 is '4':
@@ -160,23 +161,23 @@ app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
         c1 = self.Install_DiscoverTarget()
         if c1:
             print_(content)
-            ipt1 = input('>')
+            ipt1 = input_('>')
             if ipt1 is '1':
                 print_(helps1)
                 # c2 = self.commands__(cmd=['python2 {}DiscoverTarget/DiscoverTarget.py --help'.format(self.root)])
                 self.Run_DiscoverTarget()
             if ipt1 is '2':
-                keywords = input('>')
+                keywords = input_('>')
                 c2 = self.commands__(cmd=['sudo python2 {}DiscoverTarget/DiscoverTarget.py -B {}'.format(self.root,keywords)])
                 self.Run_DiscoverTarget()
             if ipt1 is '3':
                 print_('例子1：> -B hello word')
                 print_('例子2：> -Z app:"Apache-Tomcat"')
-                c3 = input('> ')
+                c3 = input_('> ')
                 c4 = self.commands__(cmd='sudo python2 {}DiscoverTarget/DiscoverTarget.py {}'.format(self.root,c3))
                 self.Run_DiscoverTarget()
             if ipt1 is '4':
-                self.Select_Files__()
+                self.sElect_Files__()
                 self.Run_DiscoverTarget()
             if ipt1 is '0':
                 self.main()
@@ -232,7 +233,7 @@ Bruter:
         c1 = self.Install_dirmap()
         if c1:
             print_(content)
-            ipt1 = input('>')
+            ipt1 = input_('>')
             if not ipt1:
                 self.Run_dirmap()
             if ipt1 is '1':
@@ -240,20 +241,20 @@ Bruter:
                 # c2 = self.commands__(cmd='python3 {}dirmap/dirmap.py --help'.format(self.root))
                 self.Run_dirmap()
             if ipt1 is '2':
-                print_('例子：Url>https://www.baidu.com/index.php?id=1')
-                ipt2 = input('Url>')
+                print_('例子：Url>https://www.baidu.com/')
+                ipt2 = input_('Url>')
                 c2 = self.commands__(cmd='python3 {}dirmap/dirmap.py -iU {} -t 30 -lcf --debug'.format(self.root,ipt2))
                 self.Run_dirmap()
             if ipt1 is '3':
                 print_('例子: Filename> DiscoverTarget/URL.txt')
-                ipt2 = input('Filename> ')
+                ipt2 = input_('Filename> ')
                 c2 = self.commands__(cmd='python3 {}dirmap/dirmap.py -iF {} -t 30 -lcf --debug'.format(self.root,ipt2))
                 self.Run_dirmap()
             if ipt1 is '4':
                 print_('输入选项...')
                 print_('例子1: > --help')
                 print_('例子2: > --iN xxx')
-                ipt2 = input('> ')
+                ipt2 = input_('> ')
                 c2 = self.commands__(cmd='python3 {}dirmap/dirmap.py {}'.format(self.root,ipt2))
                 self.Run_dirmap()
             if ipt1 is '5':
@@ -266,11 +267,11 @@ Bruter:
 1.输入url.
 0.返回菜单.
         """)
-        ipt1 = input('>')
+        ipt1 = input_('>')
         if not ipt1:
             self.Run_xcdn()
         if ipt1 is '1':
-            ipt2 = input('Url>')
+            ipt2 = input_('Url>')
             c1 = self.commands__(cmd='python3 {}xcdn/xcdn.py {}'.format(self.root,ipt2))
             self.Run_xcdn()
         if ipt1 is '0':
@@ -299,17 +300,17 @@ web目录扫描.
                         默认字典: ./dics/dirs.txt
 
         """
-        ipt1 = input('>')
+        ipt1 = input_('>')
         if ipt1 is '1':
             print_(helps1)
             self.Run_DirBrute()
         if ipt1 is '2':
             dictnames = self.Get_Filename('{}DirBrute/dics/'.format(self.root))
-            ipt2 = input('Url>')
+            ipt2 = input_('Url>')
             print_('选择字典...')
             for dictname in dictnames:
                 print_(dictname)
-            ipt3 = input('DictPath>')
+            ipt3 = input_('DictPath>')
             self.commands__(cmd='python2 {}DirBrute/dirbrute.py {} -e php -t 10 -d {}'.format(self.root,ipt2,'"'+ipt3+'"'))
             self.Run_DirBrute()
         if ipt1 is '0':
@@ -328,26 +329,26 @@ web目录扫描.
 2.python3 xwaf.py -u "http://www.baidu.com/1.php" --data="postdata" -p xxx
 3.python3 xwaf.py -r /tmp/headerfile -p xxx --level 5
         """
-        ipt1 = input('>')
+        ipt1 = input_('>')
         if not ipt1:
             self.Run_xwaf()
         if ipt1 is '1':
             print_(helps1)
             self.Run_xwaf()
         if ipt1 is '2':
-            ipt2 = input('Url>')
+            ipt2 = input_('Url>')
             self.commands__(cmd='python3 {}bypass_waf/xwaf.py -u "{}"'.format(self.root,ipt2))
             self.Run_xwaf()
         if ipt1 is '3':
-            ipt2 = input('Url>')
-            ipt3 = input('Data>')
-            ipt4 = input('Post parameter>')
+            ipt2 = input_('Url>')
+            ipt3 = input_('Data>')
+            ipt4 = input_('Post parameter>')
             self.commands__(cmd='python3 {}bypass_waf/xwaf.py -u "{}" --data="{}" -p {}'.format(self.root,ipt2,ipt3,ipt4))
             self.Run_xwaf()
         if ipt1 is '4':
-            ipt2 = input('1>')
-            ipt3 = input('2>')
-            ipt4 = input('3>')
+            ipt2 = input_('1>')
+            ipt3 = input_('2>')
+            ipt4 = input_('3>')
             self.commands__(cmd='python3 {}bypass_waf/xwaf.py -r {} -p {} --level {}'.format(self.root,ipt2,ipt3,ipt4))
             self.Run_xwaf()
         if ipt1 is '0':
@@ -360,7 +361,7 @@ web目录扫描.
         """)
         c1 = self.Install_fsociety()
         if c1:
-            ipt1 = input('>')
+            ipt1 = input_('>')
             if ipt1 is '1':
                 self.commands__(cmd='fsociety')
                 self.Run_fsociety()
@@ -370,14 +371,18 @@ web目录扫描.
 
     def main(self):
         content1 = """
+{}
+
+
 [1].信息收集.
-[2].web程序.
+[2].Web程序.
 [3].黑盒测试工具包.
-[c].clear.
+[4].Linux 工具.
+[c].Clear.
 [0].退出.
-        """
+        """.format(logo)
         print_(content1)
-        ipt1 = input('>')
+        ipt1 = input_('>')
         if not ipt1:
             self.main()
         if ipt1 is '1':
@@ -387,12 +392,12 @@ web目录扫描.
 ########
 1.子域名爆破.
 2.URL采集.
-3.web目录扫描.
+3.Web目录扫描.
 4.尝试找出cdn背后的真实ip.
 0.返回菜单.
             """
             print_(content2)
-            ipt2 = input('>')
+            ipt2 = input_('>')
             if not ipt2:
                 self.main()
             if ipt2 is '1':
@@ -408,7 +413,7 @@ web目录扫描.
 2.DirBrute.
 0.返回菜单.
                 """)
-                ipt3 = input('>')
+                ipt3 = input_('>')
                 if not ipt3:
                     self.main()
                 if ipt3 is '1':
@@ -430,7 +435,7 @@ web程序
 1.xwaf waf自动化绕过工具.
 0.返回菜单.
             """)
-            ipt2 = input('>')
+            ipt2 = input_('>')
             if ipt2 is '1':
                 self.Run_xwaf()
             if ipt2 is '0':
@@ -440,13 +445,31 @@ web程序
 1.Fsociety.
 0.返回菜单.
             """)
-            ipt2 = input('>')
+            ipt2 = input_('>')
             if not ipt2:
                 self.main()
             if ipt2 is '1':
                 self.Run_fsociety()
             if ipt2 is '0':
                 self.main()
+        
+        if ipt1 is '4':
+            print_("""
+##########
+linux 工具
+##########
+    [1].输出艺术字.
+    [0].返回菜单.
+            """)
+            ipt2 = input_('>')
+            if ipt2 is '1':
+                ipt3 = input_('内容>')
+                self.commands__(cmd='figlet {}'.format(ipt3))
+                self.commands__(cmd='toilet {}'.format(ipt3))
+                self.main()
+            if ipt2 is '0':
+                self.main()
+        
         if ipt1 is 'c':
             self.commands__(cmd='clear')
             self.main()
@@ -480,7 +503,6 @@ web程序
 
 
 if __name__ == '__main__':
-    print_(logo)
     r = Run()
     r.main()
     

@@ -494,6 +494,12 @@ AWVS 配置:
             if ipt2 is '2':
                 ipt3 = input_('Domain>')
                 self.DNS_Query_Interface(ipt3)
+
+        if ipt1 is '3':
+            print("""
+
+            """)
+
         if ipt1 is '0':
             exit(0)
 

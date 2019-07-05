@@ -392,13 +392,13 @@ class Exploit_Search(object):
         """
         收集存在sqli的站点.
         """
-        result1 = self.Sqli_Search(keyword='sqli',filename='sqli1.txt')
+        result1 = self.Sqli_Search(keyword='sqli',filename='SQLi/sqli1.txt')
         if result1:
             self.browser.quit()
             self.browser_.quit()
             info(('Sqli 站点收集完成...'))
         
-        result2 = self.Sqli_Search(keyword='sql',filename='sqli2.txt')
+        result2 = self.Sqli_Search(keyword='sql',filename='SQLi/sqli2.txt')
         if result2:
             self.browser.quit()
             self.browser_.quit()
