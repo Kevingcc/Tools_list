@@ -369,6 +369,72 @@ web目录扫描.
                 self.main()
 
 
+    def xsstrike(self):
+        help1 = """
+	XSStrike v3.1.4
+
+usage: xsstrike.py [-h] [-u TARGET] [--data PARAMDATA] [-e ENCODE] [--fuzzer]
+                   [--update] [--timeout TIMEOUT] [--proxy] [--params]
+                   [--crawl] [--json] [--path] [--seeds ARGS_SEEDS]
+                   [-f ARGS_FILE] [-l LEVEL] [--headers [ADD_HEADERS]]
+                   [-t THREADCOUNT] [-d DELAY] [--skip] [--skip-dom] [--blind]
+                   [--console-log-level {INFO,VULN,GOOD,CRITICAL,RUN,DEBUG,WARNING,ERROR}]
+                   [--file-log-level {INFO,VULN,GOOD,CRITICAL,RUN,DEBUG,WARNING,ERROR}]
+                   [--log-file LOG_FILE]
+
+optional arguments -- 可选参数:
+  -h, --help            show this help message and exit
+  -u TARGET, --url TARGET url -- 目标
+  --data PARAMDATA      post data -- 发布数据
+  -e ENCODE, --encode ENCODE encode payloads -- 编码有效载荷
+  --fuzzer              fuzzer -- 模糊测试
+  --update              update -- 更新
+  --timeout TIMEOUT     timeout -- 超时
+  --proxy               use prox(y|ies) -- 代理
+  --params              find params -- 查找参数
+  --crawl               crawl -- 爬行
+  --json                treat post data as json -- 将Post数据视为JSON
+  --path                inject payloads in the path -- 在路径中注入有效载荷
+  --seeds ARGS_SEEDS    load crawling seeds from a file -- 从文件加载爬行种子
+  -f ARGS_FILE, --file ARGS_FILE load payloads from a file -- args_file 从文件加载有效负载
+  -l LEVEL, --level LEVEL level of crawling -- 爬行等级
+  --headers [ADD_HEADERS] add headers -- 添加报头
+  -t THREADCOUNT, --threads THREADCOUNT number of threads -- 线程数
+  -d DELAY, --delay DELAY delay between requests -- 请求之间的延迟
+  --skip                don't ask to continue -- 不要求继续
+  --skip-dom            skip dom checking -- 跳过DOM检查
+  --blind               inject blind XSS payload while crawling -- 爬行时注入盲XSS负载
+  --console-log-level {INFO,VULN,GOOD,CRITICAL,RUN,DEBUG,WARNING,ERROR} Console logging level -- {INFO,VULN,GOOD,CRITICAL,RUN,DEBUG,WARNING,ERROR} 控制台日志记录级别
+  --file-log-level {INFO,VULN,GOOD,CRITICAL,RUN,DEBUG,WARNING,ERROR} File logging level -- {INFO,VULN,GOOD,CRITICAL,RUN,DEBUG,WARNING,ERROR} 文件记录级别
+  --log-file LOG_FILE   Name of the file to log -- 日志文件的名称
+
+
+        """
+        print_("""
+#########
+XSStrike
+#########
+[1].扫描单个目标.
+[2].扫描多个目标.
+[h].帮助.
+[0].返回菜单.
+        """)
+        ipt1 = input_('>')
+        if ipt1 is '1':
+            pass
+
+        if ipt1 is '2':
+            pass
+
+        if ipt1 is 'h':
+            print_(help1)
+
+        if ipt1 is '0':
+            self.main()
+
+
+
+
     def main(self):
         content1 = """
 {}
@@ -378,6 +444,8 @@ web目录扫描.
 [2].Web程序.
 [3].黑盒测试工具包.
 [4].Linux 工具.
+[5].漏洞验证(POC).
+[6].漏洞测试(FUZZ).
 [c].Clear.
 [0].退出.
         """.format(logo)
@@ -470,9 +538,56 @@ linux 工具
             if ipt2 is '0':
                 self.main()
         
+        if ipt1 is '5':
+            print_("""
+############
+漏洞验证(POC)
+############
+1.Xss
+2.Sqli
+3.Csrf
+0.返回菜单
+            """)
+            ipt2 = input_('>')
+            if ipt2 is '0':
+                self.main()
+            
+
+        if ipt1 is '6':
+            print_("""
+#############
+漏洞测试(FUZZ)
+#############
+1.Xss
+2.Sqli
+3.Csrf
+0.返回菜单
+            """)
+            ipt2 = input_('>')
+            if ipt2 is '1':
+                print_("""
+####
+Xss
+####
+1.XSStrike.
+0.返回菜单.
+                """)
+                ipt3 = input_('>')
+                if ipt3 is '1':
+                    self.xsstrike()
+                    self.xsstrike()
+                if ipt3 is '0':
+                    self.main()
+            
+            if ipt2 is '0':
+
+                self.main()
+
+
         if ipt1 is 'c':
             self.commands__(cmd='clear')
             self.main()
+
         if ipt1 is '0':
             c1 = self.commands_(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
             print_(c1)

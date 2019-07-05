@@ -525,6 +525,17 @@ class Libs(object):
         else:
             print_('dnsfind 正在运行...')
 
+    def Install_xSStrike(self):
+        c1 = self.commands_(cmd=['python3 {}XSStrike/xsstrike.py --help'.format(self.root)])
+        if not c1:
+            c2 = self.commands__(cmd='python3 -m pip install -r {}XSStrike/requirements.txt'.format(self.root))
+            if c2:
+                print_('XSStrike 安装成功...')
+            else:
+                print_('XSStrike 安装失败...')
+        else:
+            print_('XSStrike 正在运行...')    
+
     def Result_subdns(self):
         catalog = "{}output".format(self.root)
         filename1 = []
