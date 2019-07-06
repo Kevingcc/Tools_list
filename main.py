@@ -415,17 +415,31 @@ optional arguments -- 可选参数:
 #########
 XSStrike
 #########
-[1].扫描单个目标.
-[2].扫描多个目标.
+[1].扫描单个目标(GET).
+[2].扫描单个目标(POST).
+[3].扫描多个目标.
+[4].测试URL路径组件.
+[5].将POST数据视为JSON.
+[6].爬行.
 [h].帮助.
 [0].返回菜单.
         """)
         ipt1 = input_('>')
+        if not ipt1:
+            self.xsstrike()
         if ipt1 is '1':
-            pass
+            ipt2 = input_('URL>')
+            c1 = self.commands__(cmd='{}XSStrike/xsstrike.py -u \"{}\"'.format(self.root,ipt2))
+            self.xsstrike()
 
         if ipt1 is '2':
-            pass
+            ipt2 = input_('URL>')
+            ipt3 = input_('data>')
+            c1 = self.commands__(cmd='{}XSStrike/xsstrike.py -u \"{}\" --data \"{}\"'.format(self.root,ipt2,ipt3))
+
+        if ipt1 is '3':
+            ipt2 = input_('FilenamePath>')
+            c1 = self.commands__(cmd='{}/XSStrike/xsstrike.py --seeds {}'.format(self.root,ipt2))
 
         if ipt1 is 'h':
             print_(help1)
