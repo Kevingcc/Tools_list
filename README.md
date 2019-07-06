@@ -39,3 +39,19 @@ output 目录:
 lib/INIT:
 
     初始化工具,提供初始化操作.
+
+### 使用
+
+笔记搜索:
+    
+    # PDF search
+    pdfgrep <keyword> -r -n ./note/*
+    # text search
+    grep <keyword> -r -n ./note/*
+
+
+
+
+
+
+
