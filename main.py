@@ -421,6 +421,7 @@ XSStrike
 [4].测试URL路径组件.
 [5].将POST数据视为JSON.
 [6].爬行.
+[7].自定义命令.
 [h].帮助.
 [0].返回菜单.
         """)
@@ -436,13 +437,34 @@ XSStrike
             ipt2 = input_('URL>')
             ipt3 = input_('data>')
             c1 = self.commands__(cmd='{}XSStrike/xsstrike.py -u \"{}\" --data \"{}\"'.format(self.root,ipt2,ipt3))
+            self.xsstrike()    
 
         if ipt1 is '3':
             ipt2 = input_('FilenamePath>')
             c1 = self.commands__(cmd='{}/XSStrike/xsstrike.py --seeds {}'.format(self.root,ipt2))
+            self.xsstrike()
+
+        if ipt1 is '4':
+            ipt2 = input_('Payload>')
+            ipt3 = input_('Url>')
+            c1 = self.commands__(cmd='{}/XSStrike/xsstrike.py -u "{}{}" --path'.format(self.root,ipt3,ipt2))
+            self.xsstrike()
+        
+        if ipt1 is '5':
+            pass
+
+        if ipt1 is '6':
+            pass
+
+        if ipt1 is '7':
+            print_(help1)
+            ipt2 = input_('>')
+            c1 = self.commands__(cmd='{}/XSStrike/xsstrike.py {}'.format(self.root,ipt2))
+            self.xsstrike()
 
         if ipt1 is 'h':
             print_(help1)
+            self.xsstrike()
 
         if ipt1 is '0':
             self.main()
@@ -595,7 +617,6 @@ Xss
                     self.main()
             
             if ipt2 is '0':
-
                 self.main()
 
 

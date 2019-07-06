@@ -3,7 +3,7 @@
 find $HOME/.Tools/Tools_list/ -name "*.pyc" | xargs rm -rf
 
 if [ $? -ne 0 ]; then
-  echo "不存在pyc文件..."
+  echo "不存在pYc文件..."
 else
-  echo "清理pyc文件完毕..."
+  echo "清理pYc文件完毕..."
 fi

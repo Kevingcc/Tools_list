@@ -437,6 +437,7 @@ class Libs(object):
             return False
 
     def Install_Basics(self):
+        self.commands__(cmd='sudo cp -v -r ~/.pip /root/')
         self.commands__(cmd='python3 -m pip install lxml==4.3.3')
         self.Install_selenium()
         self.Install_requests()
