@@ -46,6 +46,7 @@ lib/INIT:
     
     # PDF search
     pdfgrep <keyword> -r -n ./note/*
+    
     # text search
     grep <keyword> -r -n ./note/*
 
