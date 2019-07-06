@@ -28,6 +28,7 @@ import os
 
 if option_install:
     os.system('python3 -m pip install colorlog==4.0.2')
+    
 
 
 
@@ -46,6 +47,14 @@ from lib import print_
 from lib import input_
 from lib import Libs
 
+#helps
+from lib import poc_t_helps
+from lib import dirmap_helps
+from lib import discovertarget_helps
+from lib import subdns_helps
+from lib import xsstrike_helps
+from lib import dirbrute_helps
+
 
 
 
@@ -56,6 +65,28 @@ class Run(Libs):
         self.cmd = cmd
         super(Run,self).__init__()
         
+
+    def POC_T(self):
+        helps = poc_t_helps
+        print_("""
+######
+POC_T
+######
+[1].批量POC验证.
+[2].单个POC验证.
+[h].帮助.
+[0].返回菜单.
+        """)
+        ipt1 = input_('>')
+        if ipt1 is '1':
+            pass
+        if ipt1 is '2':
+            ipt2 = input_('指纹名称>')
+        if ipt1 is 'h':
+            print_(helps)
+        if ipt1 is '0':
+            self.main()
+
 
 
     def Run_subdns(self):
@@ -69,20 +100,7 @@ class Run(Libs):
 4.查看结果.
 0.返回菜单.
         """
-        helps1 = """
-使用: subdns.py [-h] [-v] [-d 字典] [-u 域名] [-s 深度] [-n 字典]
-
-to use get subnames of dns
-
-optional arguments:
-  -h, --help            显示此帮助消息并退出
-  -v, --version         显示程序的版本号并退出
-  -d DICT, --dict DICT  指定词典
-  -u DOMAIN, --domain 领域
-                        指定域名
-  -s DEEP, --deep DEEP  深度 域名
-  -n NEXT, --next NEXT  指定词典
-        """
+        helps1 = subdns_helps
         c1 = self.Install_subdns()
         helps2 = "例子：Url>baidu.com"
         if c1:
@@ -129,35 +147,7 @@ URL采集
 4.查看结果.
 0.返回菜单.
         """
-        helps1 = """
-Usage: 
-      _____  _                          _______                   _   
-     |  __ \(_)                        |__   __|                 | |  
-     | |  | |_ ___  ___ _____   _____ _ __| | __ _ _ __ __ _  ___| |_ 
-     | |  | | / __|/ __/ _ \ \ / / _ \ '__| |/ _` | '__/ _` |/ _ \ __|
-     | |__| | \__ \ (_| (_) \ V /  __/ |  | | (_| | | | (_| |  __/ |_ 
-     |_____/|_|___/\___\___/ \_/ \___|_|  |_|\__,_|_|  \__, |\___|\__|
-                                                        __/ |         
-                                                       |___/         
-                                        Coded By Coco413 (v1.0 RELEASE) 
-    
-
-Options:
-  --version             show program's version number and exit
-  -h, --help            show this help message and exit
-  -S SHODAN, --shodan=SHODAN
-                        使用shodan空间搜索引擎
-  -F FOFA, --fofa=FOFA  FOFA空间搜索引擎
-  -Z ZOOMEYE, --zoomeye=ZOOMEYE
-                        使用ZOOMEYE空间搜索引擎
-  -C CENSYS, --censys=CENSYS
-                        使用censys空间搜索引擎
-  -B B3G, --b3g=B3G     传统搜索引擎使用百度360谷歌
-
-例子: python DiscoverTarget.py -S Apache-Tomcat -F app="Apache-Tomcat" -Z
-app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
-
-"""
+        helps1 = discovertarget_helps
         c1 = self.Install_DiscoverTarget()
         if c1:
             print_(content)
@@ -194,42 +184,7 @@ web目录扫描
 5.查看结果.
 0.返回菜单.
         """
-        helps1 = """
-                     #####  # #####  #    #   ##   #####
-                     #    # # #    # ##  ##  #  #  #    #
-                     #    # # #    # # ## # #    # #    #
-                     #    # # #####  #    # ###### #####
-                     #    # # #   #  #    # #    # #
-                     #####  # #    # #    # #    # #   v1.0
-
-使用: python3 dirmap.py -iU https://target.com -lcf
-
-可选参数:
-  -h, --help            show this help message and exit
-
-引擎:
-  引擎配置
-
-  -t THREAD_NUM, --thread THREAD_NUM
-                        线程数, default 30
-
-目标:
-  Target config
-
-  -iU TARGET            扫描单个目标 (e.g. http://target.com)
-  -iF FILE              从目标文件加载目标 (e.g. urls.txt)
-  -iR START-END         从int（开始）到int（结束）的数组 (e.g.
-                        192.168.1.1-192.168.2.100)
-  -iN IP/MASK           通过IP/掩码生成IP. (e.g. 192.168.1.0/24)
-
-Bruter:
-  Bruter config
-
-  -lcf, --加载配置文件
-                        通过配置文件加载配置
-  --debug               打印有效载荷并退出
-
-        """
+        helps1 = dirmap_helps
         c1 = self.Install_dirmap()
         if c1:
             print_(content)
@@ -286,20 +241,7 @@ web目录扫描.
 2.输入url.
 0.返回菜单.
         """)
-        helps1 = """
-用法: dirbrute.py target [options] 
-例子: python dirbrute.py www.cdxy.me -e php -t 10
-         python dirbrute.py www.cdxy.me -t 10 -d ./dics/ASP/uniq
-
-选项:
-  -h, --help            show this help message and exit
-  -e EXT, --ext=EXT     选择扩展名: php asp aspx jsp...
-  -t THREADS_NUM, --threads=线程数
-                        线程数. default = 10
-  -d DIC_PATH, --dic=字典路径.
-                        默认字典: ./dics/dirs.txt
-
-        """
+        helps1 = dirbrute_helps
         ipt1 = input_('>')
         if ipt1 is '1':
             print_(helps1)
@@ -371,46 +313,7 @@ web目录扫描.
 
     def xsstrike(self):
         self.Install_xSStrike()
-        help1 = """
-	XSStrike v3.1.4
-
-usage: xsstrike.py [-h] [-u TARGET] [--data PARAMDATA] [-e ENCODE] [--fuzzer]
-                   [--update] [--timeout TIMEOUT] [--proxy] [--params]
-                   [--crawl] [--json] [--path] [--seeds ARGS_SEEDS]
-                   [-f ARGS_FILE] [-l LEVEL] [--headers [ADD_HEADERS]]
-                   [-t THREADCOUNT] [-d DELAY] [--skip] [--skip-dom] [--blind]
-                   [--console-log-level {INFO,VULN,GOOD,CRITICAL,RUN,DEBUG,WARNING,ERROR}]
-                   [--file-log-level {INFO,VULN,GOOD,CRITICAL,RUN,DEBUG,WARNING,ERROR}]
-                   [--log-file LOG_FILE]
-
-optional arguments -- 可选参数:
-  -h, --help            show this help message and exit
-  -u TARGET, --url TARGET url -- 目标
-  --data PARAMDATA      post data -- 发布数据
-  -e ENCODE, --encode ENCODE encode payloads -- 编码有效载荷
-  --fuzzer              fuzzer -- 模糊测试
-  --update              update -- 更新
-  --timeout TIMEOUT     timeout -- 超时
-  --proxy               use prox(y|ies) -- 代理
-  --params              find params -- 查找参数
-  --crawl               crawl -- 爬行
-  --json                treat post data as json -- 将Post数据视为JSON
-  --path                inject payloads in the path -- 在路径中注入有效载荷
-  --seeds ARGS_SEEDS    load crawling seeds from a file -- 从文件加载爬行种子
-  -f ARGS_FILE, --file ARGS_FILE load payloads from a file -- args_file 从文件加载有效负载
-  -l LEVEL, --level LEVEL level of crawling -- 爬行等级
-  --headers [ADD_HEADERS] add headers -- 添加报头
-  -t THREADCOUNT, --threads THREADCOUNT number of threads -- 线程数
-  -d DELAY, --delay DELAY delay between requests -- 请求之间的延迟
-  --skip                don't ask to continue -- 不要求继续
-  --skip-dom            skip dom checking -- 跳过DOM检查
-  --blind               inject blind XSS payload while crawling -- 爬行时注入盲XSS负载
-  --console-log-level {INFO,VULN,GOOD,CRITICAL,RUN,DEBUG,WARNING,ERROR} Console logging level -- {INFO,VULN,GOOD,CRITICAL,RUN,DEBUG,WARNING,ERROR} 控制台日志记录级别
-  --file-log-level {INFO,VULN,GOOD,CRITICAL,RUN,DEBUG,WARNING,ERROR} File logging level -- {INFO,VULN,GOOD,CRITICAL,RUN,DEBUG,WARNING,ERROR} 文件记录级别
-  --log-file LOG_FILE   Name of the file to log -- 日志文件的名称
-
-
-        """
+        help1 = xsstrike_helps
         print_("""
 #########
 XSStrike

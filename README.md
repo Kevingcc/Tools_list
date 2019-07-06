@@ -21,6 +21,11 @@
         grep <keyword> -r -n ./note/*
 
 
+    指纹库扩展:
+
+        google-chrome http://127.0.0.1/phpmyadmin_sqlite/phpliteadmin.php?table=fofa&action=row_view
+
+
 ### 安装
 
     sudo chmod +x ./install && ./install
@@ -52,6 +57,8 @@ output 目录:
 lib/INIT:
 
     初始化工具,提供初始化操作.
+
+
 
 
 

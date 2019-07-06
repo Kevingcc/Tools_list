@@ -436,6 +436,20 @@ class Libs(object):
             self.commands__('sudo apt-get -y install python-pip')
             return False
 
+    def phpmyadmin_config(self):
+        """
+        phpmyadmin_sqlite config
+        """
+        c1 = self.commands__('sudo cp -v -r {}lib/phpmyadmin_sqlite /var/www/html'.format(root))
+        c2 = self.commands__('sudo chmod -R 777 /var/www/html/*')
+        c3 = self.commands__('sudo /etc/init.d/apache2 restart')
+        c4 = self.commands__('sudo cp -v -r {}Webfinger/lib/web.db /var/www/html/phpmyadmin_sqlite'.format(root))
+        c5 = self.commands__('sudo /etc/init.d/apache2 restart')
+        if c1 and c2 and c3 and c4 and c5:
+            print_('phpmyadmin 配置完成...')
+        else:
+            print_('phpmyadmin 配置失败...')
+
     def Install_Basics(self):
         self.commands__(cmd='sudo cp -v -r ~/.pip /root/')
         self.commands__(cmd='python3 -m pip install lxml==4.3.3')
@@ -443,6 +457,8 @@ class Libs(object):
         self.Install_requests()
         self.Config_chromedriver()
         self.Install_xSStrike()
+        self.Install_POC_T()
+        self.phpmyadmin_config()
         self.commands__(cmd='sudo apt-get -y install xfce4-terminal')
         self.commands__(cmd='sudo apt-get -y install pavucontrol')
         self.commands__(cmd='sudo python2 -m pip install nmapparser==0.2.5 --user')
@@ -553,6 +569,19 @@ class Libs(object):
         else:
             print_('XSStrike 正在运行...')    
 
+    
+    def Install_POC_T(self):
+        c1 = self.commands_(cmd='python2 {}/POC-T/POC-T.py --help'.format(self.root))
+        if not c1:
+            c2 = self.commands__(cmd='python2 -m pip install -r {}POC-T/requirement.txt'.format(self.root))
+            if c2:
+                print_('POC_T 安装成功...')
+            else:
+                print_('POC_T 安装失败...')
+        else:
+            print_('POC_T 正在运行...')
+
+
     def Result_subdns(self):
         catalog = "{}output".format(self.root)
         filename1 = []
@@ -646,21 +675,197 @@ class Libs(object):
 
 
 
+poc_t_helps = """
+usage: python POC-T.py -s bingc -aZ "port:8080"
+
+powered by cdxy <mail:i@cdxy.me>
+
+ENGINE -- 发动机:
+  -eT                   Multi-Threaded engine (default choice) -- 多线程引擎（默认选项）
+  -eG                   Gevent engine (single-threaded with asynchronous) -- GEvent引擎（单线程异步）
+  -t NUM                num of threads/concurrent, 10 by default -- 线程数/并发数，默认为10个
+
+SCRIPT -- 脚本:
+  -s NAME               load script by name (-s jboss-rce) or path (-s ./script/jboss.py) -- 按名称加载脚本 (-s jboss-rce) 或路径 (-s ./script/jboss.py)
+
+TARGET -- 目标:
+  -iS TARGET            scan a single target (e.g. www.wooyun.org) -- 扫描单个目标（如www.wooyun.org）
+  -iF FILE              load targets from targetFile (e.g. ./data/wooyun_domain) -- 从targetfile加载目标（例如/data/wooyun_域）
+  -iA START-END         generate array from int(start) to int(end) (e.g. 1-100) -- 从int（开始）到int（结束）生成数组（例如1-100）
+  -iN IP/MASK           generate IP from IP/MASK. (e.g. 127.0.0.0/24) -- 从IP/屏蔽生成IP。（例如127.0.0.0/24）
+
+API:
+  -aZ DORK, --zoomeye DORK ZoomEye dork (e.g. "zabbix port:8080") -- Zoomeye Dork（例如“Zabbix端口：8080”)　zoomeye search.
+  -aS DORK, --shodan DORK Shodan dork. -- shodan search.
+  -aG DORK, --google DORK Google dork (e.g. "inurl:admin.php") -- google search.
+  -aF DORK, --fofa DORK FoFa dork (e.g. "banner=users && protocol=ftp") -- fofa search.
+  --limit NUM           Maximum searching results (default:10) -- 最大搜索结果（默认值：10）
+  --offset OFFSET       Search offset to begin getting results from (default:0) -- 开始获取结果的搜索偏移量（默认值：0）
+  --search-type TYPE    [ZoomEye] search type used in ZoomEye API, web or host (default:host) -- [ZoomEye]在ZoomEye API、Web或主机中使用的搜索类型（默认：主机）
+  --gproxy PROXY        [Google] Use proxy for Google (e.g. "sock5 127.0.0.1 7070" or "http 127.0.0.1 1894" -- [Google]使用Google代理（例如“sock5 127.0.0.1 7070”或“http 127.0.0.1 1894”
+
+OUTPUT -- 输出:
+  -o FILE               output file path&name. default in ./output/ -- 输出文件路径和名称。默认输入/输出/
+  -oF, --no-file        disable file output -- 禁用文件输出
+  -oS, --no-screen      disable screen output -- 禁用屏幕输出
+
+MISC:
+  --single              exit after finding the first victim/password. -- 找到第一个受害者/密码后退出。
+  --show                show available script names in ./script/ and exit -- 在./script/和exit中显示可用的脚本名称
+  --browser             Open notepad or web browser to view report after task finished. -- 任务完成后，打开记事本或Web浏览器查看报告。
+
+SYSTEM:
+  -v, --version         show program's version number and exit -- 显示程序的版本号并退出
+  -h, --help            show this help message and exit -- 显示此帮助消息并退出
+  --update              update POC-T from github source -- 从github源更新poc-t
+
+"""
 
 
 
 
 
+dirmap_helps = """
+                     #####  # #####  #    #   ##   #####
+                     #    # # #    # ##  ##  #  #  #    #
+                     #    # # #    # # ## # #    # #    #
+                     #    # # #####  #    # ###### #####
+                     #    # # #   #  #    # #    # #
+                     #####  # #    # #    # #    # #   v1.0
+
+使用: python3 dirmap.py -iU https://target.com -lcf
+
+可选参数:
+  -h, --help            show this help message and exit
+
+引擎:
+  引擎配置
+
+  -t THREAD_NUM, --thread THREAD_NUM
+                        线程数, default 30
+
+目标:
+  Target config
+
+  -iU TARGET            扫描单个目标 (e.g. http://target.com)
+  -iF FILE              从目标文件加载目标 (e.g. urls.txt)
+  -iR START-END         从int（开始）到int（结束）的数组 (e.g.
+                        192.168.1.1-192.168.2.100)
+  -iN IP/MASK           通过IP/掩码生成IP. (e.g. 192.168.1.0/24)
+
+Bruter:
+  Bruter config
+
+  -lcf, --加载配置文件
+                        通过配置文件加载配置
+  --debug               打印有效载荷并退出
+
+        """
+
+
+discovertarget_helps = """
+Usage: 
+      _____  _                          _______                   _   
+     |  __ \(_)                        |__   __|                 | |  
+     | |  | |_ ___  ___ _____   _____ _ __| | __ _ _ __ __ _  ___| |_ 
+     | |  | | / __|/ __/ _ \ \ / / _ \ '__| |/ _` | '__/ _` |/ _ \ __|
+     | |__| | \__ \ (_| (_) \ V /  __/ |  | | (_| | | | (_| |  __/ |_ 
+     |_____/|_|___/\___\___/ \_/ \___|_|  |_|\__,_|_|  \__, |\___|\__|
+                                                        __/ |         
+                                                       |___/         
+                                        Coded By Coco413 (v1.0 RELEASE) 
+    
+
+Options:
+  --version             show program's version number and exit
+  -h, --help            show this help message and exit
+  -S SHODAN, --shodan=SHODAN
+                        使用shodan空间搜索引擎
+  -F FOFA, --fofa=FOFA  FOFA空间搜索引擎
+  -Z ZOOMEYE, --zoomeye=ZOOMEYE
+                        使用ZOOMEYE空间搜索引擎
+  -C CENSYS, --censys=CENSYS
+                        使用censys空间搜索引擎
+  -B B3G, --b3g=B3G     传统搜索引擎使用百度360谷歌
+
+例子: python DiscoverTarget.py -S Apache-Tomcat -F app="Apache-Tomcat" -Z
+app:"Apache-Tomcat" -C Apache-Tomcat -B Powered by Discuz
+
+"""
 
 
 
+subdns_helps = """
+使用: subdns.py [-h] [-v] [-d 字典] [-u 域名] [-s 深度] [-n 字典]
+
+to use get subnames of dns
+
+optional arguments:
+  -h, --help            显示此帮助消息并退出
+  -v, --version         显示程序的版本号并退出
+  -d DICT, --dict DICT  指定词典
+  -u DOMAIN, --domain 领域
+                        指定域名
+  -s DEEP, --deep DEEP  深度 域名
+  -n NEXT, --next NEXT  指定词典
+        """
 
 
+xsstrike_helps = """
+	XSStrike v3.1.4
+
+usage: xsstrike.py [-h] [-u TARGET] [--data PARAMDATA] [-e ENCODE] [--fuzzer]
+                   [--update] [--timeout TIMEOUT] [--proxy] [--params]
+                   [--crawl] [--json] [--path] [--seeds ARGS_SEEDS]
+                   [-f ARGS_FILE] [-l LEVEL] [--headers [ADD_HEADERS]]
+                   [-t THREADCOUNT] [-d DELAY] [--skip] [--skip-dom] [--blind]
+                   [--console-log-level {INFO,VULN,GOOD,CRITICAL,RUN,DEBUG,WARNING,ERROR}]
+                   [--file-log-level {INFO,VULN,GOOD,CRITICAL,RUN,DEBUG,WARNING,ERROR}]
+                   [--log-file LOG_FILE]
+
+optional arguments -- 可选参数:
+  -h, --help            show this help message and exit
+  -u TARGET, --url TARGET url -- 目标
+  --data PARAMDATA      post data -- 发布数据
+  -e ENCODE, --encode ENCODE encode payloads -- 编码有效载荷
+  --fuzzer              fuzzer -- 模糊测试
+  --update              update -- 更新
+  --timeout TIMEOUT     timeout -- 超时
+  --proxy               use prox(y|ies) -- 代理
+  --params              find params -- 查找参数
+  --crawl               crawl -- 爬行
+  --json                treat post data as json -- 将Post数据视为JSON
+  --path                inject payloads in the path -- 在路径中注入有效载荷
+  --seeds ARGS_SEEDS    load crawling seeds from a file -- 从文件加载爬行种子
+  -f ARGS_FILE, --file ARGS_FILE load payloads from a file -- args_file 从文件加载有效负载
+  -l LEVEL, --level LEVEL level of crawling -- 爬行等级
+  --headers [ADD_HEADERS] add headers -- 添加报头
+  -t THREADCOUNT, --threads THREADCOUNT number of threads -- 线程数
+  -d DELAY, --delay DELAY delay between requests -- 请求之间的延迟
+  --skip                don't ask to continue -- 不要求继续
+  --skip-dom            skip dom checking -- 跳过DOM检查
+  --blind               inject blind XSS payload while crawling -- 爬行时注入盲XSS负载
+  --console-log-level {INFO,VULN,GOOD,CRITICAL,RUN,DEBUG,WARNING,ERROR} Console logging level -- {INFO,VULN,GOOD,CRITICAL,RUN,DEBUG,WARNING,ERROR} 控制台日志记录级别
+  --file-log-level {INFO,VULN,GOOD,CRITICAL,RUN,DEBUG,WARNING,ERROR} File logging level -- {INFO,VULN,GOOD,CRITICAL,RUN,DEBUG,WARNING,ERROR} 文件记录级别
+  --log-file LOG_FILE   Name of the file to log -- 日志文件的名称
 
 
+        """
 
+dirbrute_helps = """
+用法: dirbrute.py target [options] 
+例子: python dirbrute.py www.cdxy.me -e php -t 10
+         python dirbrute.py www.cdxy.me -t 10 -d ./dics/ASP/uniq
 
+选项:
+  -h, --help            show this help message and exit
+  -e EXT, --ext=EXT     选择扩展名: php asp aspx jsp...
+  -t THREADS_NUM, --threads=线程数
+                        线程数. default = 10
+  -d DIC_PATH, --dic=字典路径.
+                        默认字典: ./dics/dirs.txt
 
+        """
 
 
 # 获取当前文件绝对路径.

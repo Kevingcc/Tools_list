@@ -3,19 +3,24 @@
 
 
 
-# from src.scann import *
+from src.scann import *
+from src.search import selenium_
+
+selenium_ = selenium_()
+browser = selenium_.browser
+browser_ = selenium_.browser_
 
 
-
-# if __name__ == "__main__":
-#     browser.minimize_window()
-#     main()
-#     # queue = Queue()
-#     # s = Scann(queue=queue,domain='')
-#     # s.Subdomain_Enumeration(domain='')
-#     selenium_.browser.quit()
-#     selenium_.browser_.quit()
-#     browser.quit()
+if __name__ == "__main__":
+    browser.minimize_window()
+    browser_.minimize_window()
+    main()
+    # queue = Queue()
+    # s = Scann(queue=queue,domain='')
+    # s.Subdomain_Enumeration(domain='')
+    browser.quit()
+    browser_.quit()
+    browser.quit()
 
 # self.commands__(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
 
@@ -51,9 +56,9 @@
 
 
 
-from src.note_search import search
+# from src.note_search import search
 
 
-s1 = search()
-search = s1.search
-search('x')
+# s1 = search()
+# search = s1.search
+# search('x')
