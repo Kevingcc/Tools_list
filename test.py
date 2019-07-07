@@ -3,26 +3,25 @@
 
 
 
-from src.scann import *
-from src.search import selenium_
+#from src.scann import *
+#from src.search import selenium_
+#
+#selenium_ = selenium_()
+#browser = selenium_.browser
+#browser_ = selenium_.browser_
+#
+#
+#if __name__ == "__main__":
+#    browser.minimize_window()
+#    browser_.minimize_window()
+#    s_browser.minimize_window()
+#
+#    main()
+#
+#    browser.quit()
+#    browser_.quit()
+#    s_browser.quit()
 
-selenium_ = selenium_()
-browser = selenium_.browser
-browser_ = selenium_.browser_
-
-
-if __name__ == "__main__":
-    browser.minimize_window()
-    browser_.minimize_window()
-    main()
-    # queue = Queue()
-    # s = Scann(queue=queue,domain='')
-    # s.Subdomain_Enumeration(domain='')
-    browser.quit()
-    browser_.quit()
-    browser.quit()
-
-# self.commands__(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
 
 
 
@@ -62,3 +61,28 @@ if __name__ == "__main__":
 # s1 = search()
 # search = s1.search
 # search('x')
+
+#import os
+#curPath = os.path.abspath(os.path.dirname(__file__))
+#pa = os.getcwd()
+##print(pa)
+##print(curPath)
+#
+#from lib.test import curPath
+#
+#s = curPath
+#print(s)
+#
+
+
+#from lib import _grep
+#
+#grep = _grep('s','lib/sss.txt')
+#for i in grep:
+#    print('第'+i[0]+'行'+' '+i[1])
+
+
+from main import Run
+
+r = Run()
+r.POC_T()

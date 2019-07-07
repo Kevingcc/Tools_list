@@ -22,7 +22,7 @@ from lib import loads
 from lib import AttribDict
 from lib import print_
 from lib import root
-from lib import get_url
+from lib import get_domain
 from lib import get_filename
 from lib import read_text_
 from lib import input_
@@ -39,7 +39,7 @@ selenium_ = selenium_()
 event = threading.Event
 port_scan_results = []
 threadLock = threading.Lock()
-browser = selenium.webdriver.Chrome()
+s_browser = selenium.webdriver.Chrome()
 commands_ = libs.commands_
 commands__ = libs.commands__
 get_page_num = selenium_.Get_Page_num
@@ -117,7 +117,7 @@ class Scann(object):
                     datas = read_text_(ipt3)
                     if i1:
                         for data in datas:
-                            d = get_url(data)
+                            d = get_domain(data)
                             domains.append(d)
                 datas = domains
             
@@ -201,7 +201,7 @@ class Scann(object):
             for data in datas:
                 link = data[1]
                 if re.findall('http',link) or re.findall('https',link):
-                    link = get_url(link)
+                    link = get_domain(link)
                     links.append(link)
         except Exception as e:
             # error(traceback.format_exc())
@@ -270,7 +270,7 @@ class Scann(object):
 
 
 
-    # def get_url(self,domain):
+    # def get_domain(self,domain):
     #     d1 = domain.split('/')
     #     for d2 in d1:
     #         if \
@@ -420,9 +420,9 @@ class Scann(object):
     def jietu(self,domain):
         try:
             # self.browser_.set_page_load_timeout(5)
-            browser.get(str(domain))
-            browser.save_screenshot('lib/img/{}.png'.format(str(domain).replace('https://','').replace('http://','')))
-            browser.quit()
+            _browser.get(str(domain))
+            _browser.save_screenshot('lib/img/{}.png'.format(str(domain).replace('https://','').replace('http://','')))
+            _browser.quit()
             # self.browser_.close()
         except:
             error(traceback.format_exc())
@@ -486,7 +486,7 @@ AWVS 配置:
                 lines = read_text_(ipt4)
                 for line in lines:
                     if ipt3 == 'y':
-                        domain = get_url(line)
+                        domain = get_domain(line)
                         self.DNS_Query_Interface(domain)
                     if ipt3 == 'n':
                         domain = line
@@ -529,14 +529,14 @@ def main():
 
 
 if __name__ == "__main__":
-    browser.minimize_window()
+    s_browser.minimize_window()
     main()
     # queue = Queue()
     # s = Scann(queue=queue,domain='')
     # s.Subdomain_Enumeration(domain='')
     selenium_.browser.quit()
     selenium_.browser_.quit()
-    browser.quit()
+    s_browser.quit()
 
 
 

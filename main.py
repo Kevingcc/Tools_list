@@ -46,6 +46,10 @@ from lib import warning
 from lib import print_
 from lib import input_
 from lib import Libs
+from lib import get_POC_T_script
+from lib import _grep
+from lib import red
+from lib import green
 
 #helps
 from lib import poc_t_helps
@@ -54,6 +58,7 @@ from lib import discovertarget_helps
 from lib import subdns_helps
 from lib import xsstrike_helps
 from lib import dirbrute_helps
+from lib import TideFinger_helps
 
 
 
@@ -65,8 +70,34 @@ class Run(Libs):
         self.cmd = cmd
         super(Run,self).__init__()
         
+    def TideFinger(self,**kwargs):
+        helps = TideFinger_helps
+        print_("""
+######＃
+指纹识别
+######＃
+[1].单个识别.
+[2].批量识别.
+[h].帮助.
+[0].返回菜单.
+        """)
+
+        for args in kwargs:
+            if args == 'url':
+                url = kwargs['url']
+
+        ipt1 = input_('>')
+        if ipt1 is '1':
+            pass
+        if ipt1 is '2':
+            pass
+        if ipt1 is 'h':
+            pass
+        if ipt1 is '0':
+            pass
 
     def POC_T(self):
+        self.Install_POC_T()
         helps = poc_t_helps
         print_("""
 ######
@@ -77,11 +108,29 @@ POC_T
 [h].帮助.
 [0].返回菜单.
         """)
+        f1,f2,f3 = get_POC_T_script()
         ipt1 = input_('>')
         if ipt1 is '1':
             pass
         if ipt1 is '2':
-            ipt2 = input_('指纹名称>')
+            ipt2 = input_('URL>')
+            self.TideFinger(url=ipt2)
+            ipt3 = input_('指纹名称>')
+            f1,f2,f3 = get_POC_T_script()
+            for sf1 in f1:
+                with open('{}lib/script_name.txt'.format(self.root),'a+') as w:
+                    w.write(sf1+'\n')
+            search_r = _grep(keyword=ipt3,path='{}lib/script_name.txt'.format(self.root))
+            print('')
+            print('')
+            red('----------------------------')
+            print('')
+            for s1 in search_r:
+                line_number,line_content = s1
+                print(line_content)
+            green('----------------------------')
+            ipt4 = input_('选择脚本>')
+            
         if ipt1 is 'h':
             print_(helps)
         if ipt1 is '0':

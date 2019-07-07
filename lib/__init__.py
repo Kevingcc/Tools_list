@@ -17,6 +17,7 @@ try:
     import subprocess
     import re
     import os
+    import sys
     import json
     import time
     from lxml import etree
@@ -48,8 +49,8 @@ O = '\033[1;33m'
 R = '\033[1;31m'
 B = '\033[1;34m'
 
-root_ = subprocess.check_output('echo $HOME',shell=True).decode().strip()
-root = '{}/.Tools/Tools_list/'.format(root_)
+# sys.path.insert(0,os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/'
 
 
 def print_(content):
@@ -146,7 +147,13 @@ def get_target_sqli_url():
 
 
 
-def get_url(domain):
+def get_domain(domain):
+    """
+    获取域名.
+    domain = get_domain('https://www.baidu.com/')
+    print(domain)
+    >>> www.baidu.com
+    """
     d1 = domain.split('/')
     for d2 in d1:
         if \
@@ -230,8 +237,7 @@ def oBtain_resuLt(name):
 class Libs(object):
     
     def __init__(self):
-        self.root_ = self.commands_(cmd=['echo $HOME'])
-        self.root = '{}/.Tools/Tools_list/'.format(self.root_)
+        self.root = root
         c1 = self.commands_(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
         warning(c1)
         self.conn = sqlite3.connect('{}lib/GHack'.format(self.root))
@@ -406,13 +412,13 @@ class Libs(object):
     def Config_chromedriver(self):
         c1 = self.commands__(cmd=['hash chromedriver'])
         if not c1:
-            info('正在配置 chromedriver...')
+            print_('正在配置 chromedriver...')
             c1 = self.commands__(cmd='sudo ln -s {}Chromedriver/chromedriver_70.0.3538.67 /usr/bin/chromedriver'.format(self.root))
             c2 = self.commands__(cmd='sudo chmod +x /usr/bin/chromedriver')
             if c1 and c2:
-                info('chromedriver 配置完成...')
+                print_('chromedriver 配置完成...')
         else:
-            info('chromedriver 正在运行...')
+            print_('chromedriver 正在运行...')
 
     # def Install_mechanize(self):
     #     c1 = self.commands__(cmd='python3 -m pip install mechanize==0.4.2')
@@ -450,6 +456,17 @@ class Libs(object):
         else:
             print_('phpmyadmin 配置失败...')
 
+    def Install_TideFinger(self):
+        c1 = self.commands_(cmd=['python2 {}TideFinger/TideFinger.py --help'.format(self.root)])
+        if not c1:
+            c2 = self.commands__(cmd='sudo python2 -m pip install lxml requests bs4 --user')
+            if c2:
+                print_('TideFinger 依赖项安装完成...')
+            else:
+                print_('TideFinger 依赖项安装失败...')
+        else:
+            print_('TideFinger 正在运行...')
+
     def Install_Basics(self):
         self.commands__(cmd='sudo cp -v -r ~/.pip /root/')
         self.commands__(cmd='python3 -m pip install lxml==4.3.3')
@@ -459,6 +476,7 @@ class Libs(object):
         self.Install_xSStrike()
         self.Install_POC_T()
         self.phpmyadmin_config()
+        self.Install_TideFinger()
         self.commands__(cmd='sudo apt-get -y install xfce4-terminal')
         self.commands__(cmd='sudo apt-get -y install pavucontrol')
         self.commands__(cmd='sudo python2 -m pip install nmapparser==0.2.5 --user')
@@ -670,6 +688,63 @@ class Libs(object):
 
 
 
+def get_POC_T_script():
+    """
+    获取POC_T工具script目录下的所有文件名.
+    script/
+        |zhimeng-cms.py
+
+    f1,f2,f3 = get_POC_T_script()
+    
+    f1
+    >>> ['zhimeng-cms',...] -> list
+    f2
+    >>> ['zhimeng',...] -> list
+    f3
+    >>> ['zhimeng-cms.py',...] -> list
+    """
+    filenames_1 = []
+    filenames_2 = []
+    filenames_3 = []
+    _get_filename = get_filename_('{}POC-T/script'.format(root))
+    for f1 in _get_filename:
+        filename = f1.replace('.py','')
+        filenames_1.append(filename)
+
+        filename1 = f1.replace('.py','')
+        filename2 = filename1.split('-')
+        filename3 = filename2[0]
+        filenames_2.append(filename3)
+
+        filename1 = f1
+        filenames_3.append(filename1)
+
+    return [filenames_1,filenames_2,filenames_3]
+    
+
+def _grep(keyword,path):
+    """
+    文本文件关键字搜索.
+    行号.
+    关键字高亮.
+    obj = _grep(keyword,path)
+    obj -> 迭代
+    for o in obj:
+        line_number,line_content = o
+    """
+    result1 = []
+    count = -1
+    for count,line in enumerate(open(r"{}".format(path),'r')):
+        count += 1
+        line_number = count
+        line_content = line
+        if line_content.find(keyword) != -1:
+            lc1 = line_content.replace(keyword,_red(keyword))
+            result1.append([str(line_number),lc1])
+    
+    return result1
+            
+
         
 
 
@@ -866,6 +941,19 @@ dirbrute_helps = """
                         默认字典: ./dics/dirs.txt
 
         """
+
+
+TideFinger_helps = """
+
+Usage: python TideFinger.py -u http://www.123.com [-p 1] [-m 50] [-t 5] 
+
+-u: 待检测目标URL地址
+-p: 指定该选项为1后，说明启用代理检测，请确保代理文件名为proxys_ips.txt,每行一条代理，格式如: 124.225.223.101:80
+-m: 指纹匹配的线程数，不指定时默认为50
+-t: 网站响应超时时间，默认为5秒
+
+
+"""
 
 
 # 获取当前文件绝对路径.
