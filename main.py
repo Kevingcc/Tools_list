@@ -23,16 +23,6 @@ logo = """
 
 # logo = '\033[1;33m' +'{}'.format(logo)+ '\033[0m'
 
-from lib.setting import option_install
-import os
-
-if option_install:
-    os.system('python3 -m pip install colorlog==4.0.2')
-    
-
-
-
-
 
 
 
@@ -50,6 +40,8 @@ from lib import get_POC_T_script
 from lib import _grep
 from lib import red
 from lib import green
+from lib import _grep
+from lib import grep
 
 #helps
 from lib import poc_t_helps
@@ -516,6 +508,7 @@ web程序
 linux 工具
 ##########
     [1].输出艺术字.
+    [2].获取工具的绝对路径.
     [0].返回菜单.
             """)
             ipt2 = input_('>')
@@ -524,6 +517,15 @@ linux 工具
                 self.commands__(cmd='figlet {}'.format(ipt3))
                 self.commands__(cmd='toilet {}'.format(ipt3))
                 self.main()
+            if ipt2 is '2':
+                ipt3 = input_('Tool name>')
+                c1 = self.commands_(cmd='whereis {}'.format(ipt3))
+                c2 = self.commands_(cmd='which {}'.format(ipt3))
+                data1 = grep(ipt3,c1)
+                data2 = grep(ipt3,c2)
+                print(data1)
+                print(data2)
+            
             if ipt2 is '0':
                 self.main()
         

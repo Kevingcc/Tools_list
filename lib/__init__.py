@@ -9,7 +9,17 @@ __all__ = ['test','get_headers',
            'dumps','root',
            'red','blue',
            'green','input_',
-           'regular','Libs']
+           'regular','Libs',
+           '_grep','grep']
+
+
+
+from lib.setting import option_install
+import os
+
+if option_install:
+    os.system('python3 -m pip install colorlog==4.0.2')
+
 
 try:
     import random
@@ -743,9 +753,22 @@ def _grep(keyword,path):
             result1.append([str(line_number),lc1])
     
     return result1
-            
 
-        
+
+def grep(keyword,content):
+    """
+    文本文件关键字搜索.
+    关键字高亮.
+    obj = _grep(keyword,content)
+    print(obj)
+    >>> xxx
+    type(obj)
+    >>> str
+    """
+    if content.find(keyword) != -1:
+        lc1 = content.replace(keyword,_red(keyword))
+    
+    return lc1
 
 
 
