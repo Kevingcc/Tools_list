@@ -82,7 +82,12 @@
 #    print('第'+i[0]+'行'+' '+i[1])
 
 
-from main import Run
+#from main import Run
+#
+#r = Run()
+#r.POC_T()
 
-r = Run()
-r.POC_T()
+
+
+from src._note import *
+

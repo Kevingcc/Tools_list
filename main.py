@@ -42,6 +42,9 @@ from lib import red
 from lib import green
 from lib import _grep
 from lib import grep
+from lib.setting import username_z
+from lib.setting import password_z
+from lib.setting import jiushixxsj
 
 #helps
 from lib import poc_t_helps
@@ -61,6 +64,10 @@ class Run(Libs):
     def __init__(self,cmd=''):
         self.cmd = cmd
         super(Run,self).__init__()
+
+
+    def nmap(self,**kwargs):
+        pass
         
     def TideFinger(self,**kwargs):
         helps = TideFinger_helps
@@ -88,7 +95,11 @@ class Run(Libs):
         if ipt1 is '0':
             pass
 
-    def POC_T(self):
+    def POC_T(self,**kwargs):
+        for args in kwargs:
+            if 'sqli' == args:
+                ke1 = kwargs['sqli']
+
         self.Install_POC_T()
         helps = poc_t_helps
         print_("""
@@ -102,12 +113,12 @@ POC_T
         """)
         f1,f2,f3 = get_POC_T_script()
         ipt1 = input_('>')
+
         if ipt1 is '1':
-            pass
-        if ipt1 is '2':
-            ipt2 = input_('URL>')
-            self.TideFinger(url=ipt2)
-            ipt3 = input_('指纹名称>')
+            if not ke1:
+                ipt3 = input_('指纹名称>')
+            else:
+                ipt3 = ke1
             f1,f2,f3 = get_POC_T_script()
             for sf1 in f1:
                 with open('{}lib/script_name.txt'.format(self.root),'a+') as w:
@@ -122,6 +133,13 @@ POC_T
                 print(line_content)
             green('----------------------------')
             ipt4 = input_('选择脚本>')
+            ipt5 = input_('ZSearch_keyword>')
+            ipt6 = input_('页数>')
+            self.commands__(cmd='python2 {}POC-T/POC-T.py -s {} -aZ "{}" --limit {} -luz {} -lup {}'.format(self.root,ipt4,ipt5,ipt6,username_z,password_z))
+            self.POC_T()
+        
+        if ipt1 is '2':
+            pass
             
         if ipt1 is 'h':
             print_(helps)
@@ -427,6 +445,9 @@ XSStrike
 [4].Linux 工具.
 [5].漏洞验证(POC).
 [6].漏洞测试(FUZZ).
+[7].note.
+[8].内网攻击工具.
+[i].INIT
 [c].Clear.
 [0].退出.
         """.format(logo)
@@ -443,6 +464,7 @@ XSStrike
 2.URL采集.
 3.Web目录扫描.
 4.尝试找出cdn背后的真实ip.
+5.九世信息收集工具.
 0.返回菜单.
             """
             print_(content2)
@@ -473,6 +495,15 @@ XSStrike
                     self.main()
             if ipt2 is '4':
                 self.Run_xcdn()
+            if ipt2 is '5':
+                ipt1 = input_('URL>')
+                ipt2 = input_('Domain>')
+                c1 = jiushixxsj(url=ipt1,domain=ipt2)
+                if c1:
+                    print_('九世信息收集工具配置完成...')
+                else:
+                    print_('九世信息收集工具配置失败...')
+                self.commands__(cmd='cd "{}信息收集工具" && python3 ./main.py'.format(self.root))
             if ipt2 is '0':
                 self.main()
         
@@ -509,6 +540,7 @@ linux 工具
 ##########
     [1].输出艺术字.
     [2].获取工具的绝对路径.
+    [3].History.
     [0].返回菜单.
             """)
             ipt2 = input_('>')
@@ -525,6 +557,10 @@ linux 工具
                 data2 = grep(ipt3,c2)
                 print(data1)
                 print(data2)
+            if ipt2 is '3':
+                from os import popen
+                ipt1 = input_('Keyword>')
+                print_('history | grep "{}"'.format(ipt1))
             
             if ipt2 is '0':
                 self.main()
@@ -537,9 +573,18 @@ linux 工具
 1.Xss
 2.Sqli
 3.Csrf
+4.POC-T
 0.返回菜单
             """)
             ipt2 = input_('>')
+            if ipt2 is '1':
+                pass
+            if ipt2 is '2':
+                self.POC_T(sqli='sqli')
+            if ipt2 is '3':
+                pass
+            if ipt2 is '4':
+                self.POC_T()
             if ipt2 is '0':
                 self.main()
             
@@ -573,6 +618,31 @@ Xss
             if ipt2 is '0':
                 self.main()
 
+
+        if ipt1 is '7':
+            from src._note import note
+            note()
+            self.main()
+
+        if ipt1 is 'i':
+            self.commands__('{}lib/INIT'.format(self.root))
+            self.main()
+
+
+        if ipt1 is '8':
+            print_("""
+############
+内网攻击工具.
+############
+1.ARP欺骗.
+0.返回菜单.
+            """)
+            ipt2 = input_('>')
+            if ipt2 is '1':
+                self.commands__(cmd='python2 {}src/arp.py'.format(self.root))
+                self.main()
+            if ipt2 is '0':
+                self.main()
 
         if ipt1 is 'c':
             self.commands__(cmd='clear')

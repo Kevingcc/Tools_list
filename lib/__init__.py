@@ -41,6 +41,13 @@ except Exception as e:
     pass
 
 from lib.setting import option_install
+from lib.setting import system_platform
+
+if system_platform == 'deepin':
+    system_platform = 'deepin'
+elif system_platform == 'kali':
+    system_platform = 'kali'
+
 from .debug import test
 from .debug import log
 from .headers import get_headers
@@ -477,6 +484,22 @@ class Libs(object):
         else:
             print_('TideFinger 正在运行...')
 
+    def Install_information_gathering_jiushi(self):
+        """
+        安装九世信息收集工具依赖项.
+        """
+        print_('安装九世信息收集工具依赖项.')
+        try:
+            c1 = 'python3 -m pip install python-whois==0.7.1 --user'
+            c2 = 'python3 -m pip install dnspython==1.16.0 --user'
+            c3 = 'python3 -m pip install IPy==1.0 --user'
+            self.commands__(c1)
+            self.commands__(c2)
+            self.commands__(c3)
+            print_('安装九世信息收集工具依赖项完成.')
+        except:
+            print_('安装九世信息收集工具依赖项失败.')
+
     def Install_Basics(self):
         self.commands__(cmd='sudo cp -v -r ~/.pip /root/')
         self.commands__(cmd='python3 -m pip install lxml==4.3.3')
@@ -487,6 +510,7 @@ class Libs(object):
         self.Install_POC_T()
         self.phpmyadmin_config()
         self.Install_TideFinger()
+        self.Install_information_gathering_jiushi()
         self.commands__(cmd='sudo apt-get -y install xfce4-terminal')
         self.commands__(cmd='sudo apt-get -y install pavucontrol')
         self.commands__(cmd='sudo python2 -m pip install nmapparser==0.2.5 --user')
@@ -494,7 +518,15 @@ class Libs(object):
         self.commands__(cmd='sudo apt-get -y install figlet')
         self.commands__(cmd='sudo apt-get -y install toilet')
         self.commands__(cmd='sudo apt-get -y install pdfgrep')
-
+        self.commands__(cmd='python2 -m pip install sqlmap --user')
+        
+        if system_platform == 'deepin':
+            self.commands__(cmd='sudo apt-get -y install python-scapy')
+        
+        if system_platform == 'deepin':
+            self.commands__(cmd='sudo apt-get -y install evince')
+            self.commands__(cmd='sudo apt-get -y install code')
+        
         # Install pyautogui...
         self.commands__(cmd='sudo pip3 install python3-xlib')
         self.commands__(cmd='sudo apt-get -y install scrot')
@@ -767,8 +799,7 @@ def grep(keyword,content):
     """
     if content.find(keyword) != -1:
         lc1 = content.replace(keyword,_red(keyword))
-    
-    return lc1
+        return lc1
 
 
 
