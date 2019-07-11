@@ -3,8 +3,8 @@
 # @time:2019/7/2
 # @file:mian.py
 
-URL='https://xkb.com.au' #输入要进行探测的url
-DOMAIN='xkb.com.au' #输入要进行探测的域名
+URL='https://www.hello.com' #输入要进行探测的url
+DOMAIN='www.hello.com' #输入要进行探测的域名
 THREAD=100 #协程设置
 XIANC=20 #进程数设置
 DIRECTORY=10000 #目录扫描的协程设置
