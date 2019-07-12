@@ -519,6 +519,8 @@ class Libs(object):
         self.commands__(cmd='sudo apt-get -y install toilet')
         self.commands__(cmd='sudo apt-get -y install pdfgrep')
         self.commands__(cmd='python2 -m pip install sqlmap --user')
+        self.commands__(cmd='python3 -m pip install asyncio==3.4.3 --user')
+        self.commands__(cmd='python3 -m pip install gevent==1.4.0 --user')
         
         if system_platform == 'deepin':
             self.commands__(cmd='sudo apt-get -y install python-scapy')

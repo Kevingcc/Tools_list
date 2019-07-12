@@ -384,6 +384,7 @@ XSStrike
 [5].将POST数据视为JSON.
 [6].爬行.
 [7].自定义命令.
+[r].查看结果.
 [h].帮助.
 [0].返回菜单.
         """)
@@ -423,6 +424,9 @@ XSStrike
             ipt2 = input_('>')
             c1 = self.commands__(cmd='{}/XSStrike/xsstrike.py {}'.format(self.root,ipt2))
             self.xsstrike()
+
+        if ipt1 is 'r':
+            pass
 
         if ipt1 is 'h':
             print_(help1)
