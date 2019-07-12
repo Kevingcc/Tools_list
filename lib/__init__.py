@@ -42,6 +42,7 @@ except Exception as e:
 
 from lib.setting import option_install
 from lib.setting import system_platform
+from lib.setting import key_config
 
 if system_platform == 'deepin':
     system_platform = 'deepin'
@@ -521,13 +522,16 @@ class Libs(object):
         self.commands__(cmd='python2 -m pip install sqlmap --user')
         self.commands__(cmd='python3 -m pip install asyncio==3.4.3 --user')
         self.commands__(cmd='python3 -m pip install gevent==1.4.0 --user')
-        
+        self.commands__(cmd='python3 -m pip install virtualenv==16.6.1 --user')
+        self.commands__(cmd='python2 -m pip install virtualenv==16.6.1 --user')
+
         if system_platform == 'deepin':
             self.commands__(cmd='sudo apt-get -y install python-scapy')
-        
-        if system_platform == 'deepin':
             self.commands__(cmd='sudo apt-get -y install evince')
             self.commands__(cmd='sudo apt-get -y install code')
+            if key_config:
+                self.commands__(cmd='sudo apt-key adv --keyserver hkp://keys.gnupg.net --recv-keys 7D8D0BF6')
+                self.commands__(cmd='sudo apt-get update')
         
         # Install pyautogui...
         self.commands__(cmd='sudo pip3 install python3-xlib')

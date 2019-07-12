@@ -45,6 +45,7 @@ from lib import grep
 from lib.setting import username_z
 from lib.setting import password_z
 from lib.setting import jiushixxsj
+from lib.setting import system_platform
 
 #helps
 from lib import poc_t_helps
@@ -87,13 +88,15 @@ class Run(Libs):
 
         ipt1 = input_('>')
         if ipt1 is '1':
-            pass
+            ipt2 = input_('URL>')
+            self.commands__(cmd='python2 {}TideFinger/TideFinger.py -u "{}"'.format(self.root,ipt2))
+            self.TideFinger()
         if ipt1 is '2':
             pass
         if ipt1 is 'h':
-            pass
+            self.commands__(cmd='python2 {}TideFinger/TideFinger.py'.format(self.root))
         if ipt1 is '0':
-            pass
+            self.main()
 
     def POC_T(self,**kwargs):
         for args in kwargs:
@@ -136,7 +139,7 @@ POC_T
             ipt5 = input_('ZSearch_keyword>')
             ipt6 = input_('页数>')
             self.commands__(cmd='python2 {}POC-T/POC-T.py -s {} -aZ "{}" --limit {} -luz {} -lup {}'.format(self.root,ipt4,ipt5,ipt6,username_z,password_z))
-            self.POC_T()
+            self.main()
         
         if ipt1 is '2':
             pass
@@ -469,6 +472,7 @@ XSStrike
 3.Web目录扫描.
 4.尝试找出cdn背后的真实ip.
 5.九世信息收集工具.
+6.指纹识别.
 0.返回菜单.
             """
             print_(content2)
@@ -508,6 +512,9 @@ XSStrike
                 else:
                     print_('九世信息收集工具配置失败...')
                 self.commands__(cmd='cd "{}信息收集工具" && python3 ./main.py'.format(self.root))
+            if ipt2 is '6':
+                self.TideFinger()
+                self.TideFinger()
             if ipt2 is '0':
                 self.main()
         
@@ -545,6 +552,7 @@ linux 工具
     [1].输出艺术字.
     [2].获取工具的绝对路径.
     [3].History.
+    [4].源配置.
     [0].返回菜单.
             """)
             ipt2 = input_('>')
@@ -565,7 +573,32 @@ linux 工具
                 from os import popen
                 ipt1 = input_('Keyword>')
                 print_('history | grep "{}"'.format(ipt1))
-            
+            if ipt2 is '4':
+                print_("""
+1.deepin　源配置.
+2.kali 源配置.
+                """)
+                if system_platform == 'deepin':
+                    ipt1 = input_('>')
+                    if ipt1 is '1':
+                        c1 = self.commands__(cmd=f'sudo cp -v -r {self.root}bak/sources.list.deepin /etc/apt/sources.list')
+                        c2 = self.commands__(cmd='sudo apt-get update')
+                        if c1:
+                            print_('deepin 源配置完成.')
+                        else:
+                            print_('deepin 源配置失败.')
+                        self.main()
+                    if ipt1 is '2':
+                        c1 = self.commands__(cmd=f'sudo cp -v -r {self.root}bak/sources.list.kali /etc/apt/sources.list')
+                        c2 = self.commands__(cmd='sudo apt-get update')
+                        if c1:
+                            print_('kali 源配置完成.')
+                        else:
+                            print_('kali 源配置失败.')
+                        self.main()
+                    
+
+
             if ipt2 is '0':
                 self.main()
         

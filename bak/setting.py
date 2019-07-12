@@ -86,5 +86,10 @@ DIRE_PATH=r'{}' #引用dict目录下的指定字典
     return True
 
 
+"""
+是否添加秘钥
+"""
+key_config = False
+
 
 

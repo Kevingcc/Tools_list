@@ -1158,3 +1158,7 @@
 [200][text/html][153.10kb]https://www.baidu.com/index.htm
 [200][text/html][153.11kb]https://www.baidu.com/INDEX.PHP
 [200][text/html][153.10kb]https://www.baidu.com/index.PHP
+[200][text/html][153.21kb]https://www.baidu.com/index.php
+[200][text/html][153.10kb]https://www.baidu.com/INDEX.PHP
+[200][text/html][153.12kb]https://www.baidu.com/index.html
+[200][text/html][153.12kb]https://www.baidu.com/index.htm
