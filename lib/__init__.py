@@ -31,7 +31,6 @@ try:
     import json
     import time
     from lxml import etree
-    import sqlite3
     import requests
     from json import load
     from json import loads
@@ -258,6 +257,8 @@ class Libs(object):
         self.root = root
         c1 = self.commands_(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
         warning(c1)
+        
+        import sqlite3
         self.conn = sqlite3.connect('{}lib/GHack'.format(self.root))
         self.c = self.conn.cursor()
         if option_install:
