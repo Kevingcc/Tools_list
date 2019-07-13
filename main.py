@@ -463,6 +463,7 @@ XSStrike
         ipt1 = input_('>')
         if not ipt1:
             self.main()
+        
         if ipt1 is '1':
             content2 = """
 ########
@@ -778,6 +779,18 @@ Xss
             c1 = self.commands_(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
             print_(c1)
             exit(0)
+
+        if ipt1:
+            self.commands__(f'{ipt1}')
+            ipt2 = input_('返回菜单[y/n]>')
+            if ipt2 is 'y':
+                self.main()
+            if \
+            ipt2 is 'n' or \
+            not ipt2 or \
+            ipt2[0] in 'abcdefghijklmnopqrstuvwsyz' or \
+            ipt2[0] in 'ABCDEFGHIJKLMNOPQRSTUVWSYZ':
+                self.main()
 
     def test(self):
         # c = self.commands_(cmd=['ls'])
