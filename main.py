@@ -170,7 +170,7 @@ POC_T
         """
         helps1 = subdns_helps
         c1 = self.Install_subdns()
-        helps2 = "例子：Url>baidu.com"
+        helps2 = "例子：Domain>baidu.com"
         if c1:
             print_(content)
             c2 = input_('>')
@@ -181,14 +181,14 @@ POC_T
                 self.Run_subdns()
             if c2 is '2':
                 print_(helps2)
-                ipt1 = input_('Url>')
+                ipt1 = input_('Domain>')
                 c3 = self.commands__(cmd=['python3 {}subdns/subdns.py -u {} -d mini_names.txt'.format(self.root,ipt1)])
                 self.Run_subdns()
             if c2 is '3':
                 print_('字典存放路径:$HOME/.Tools/Tools_list/dict')
                 print_('如果存放好了字典，请输入字典名字...')
                 print_(helps2)
-                ipt1 = input_('Url>')
+                ipt1 = input_('Domain>')
                 ipt2 = input_('Dict>')
                 c3 = self.commands__(cmd=['python3 {}subdns/subdns.py -u {} -d {}'.format(self.root,ipt1,ipt2)])
                 self.Run_subdns()
