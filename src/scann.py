@@ -71,6 +71,7 @@ class Scann(object):
         self.option_ = True
         self.browser = selenium_.browser
         self.browser_ = selenium_.browser_
+        self.s_browser = s_browser
         # self.queue = queue
         # self.domain = domain
         self.event = event()
@@ -407,10 +408,11 @@ class Scann(object):
                         
                             else:
                                 error(ip+':'+port+' /'+state+' '+'-'+agreement)
-                    
+            
         except Exception as e:
             # error(traceback.format_exc())
             pass
+            
         
         
     def sub_domain(self):

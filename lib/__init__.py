@@ -195,7 +195,12 @@ def get_filename(path):
         for filename in filenames:  
             pathname += [os.path.join(dirpath, filename)]
     
-    return pathname
+    for p in pathname:
+        if pathname:
+            return pathname
+        else:
+            return False
+
 
 def get_filename_(path):
     """
@@ -502,7 +507,26 @@ class Libs(object):
         except:
             print_('安装九世信息收集工具依赖项失败.')
 
+    def source_config(self):
+        print_(f'{system_platform}源配置.')
+        if system_platform == 'kali':
+            c1 = self.commands__(cmd=f'sudo cp -v -r {self.root}bak/sources.list.kali /etc/apt/sources.list')
+            c2 = self.commands__(cmd='sudo apt-get update')
+            if c1:
+                print_('kali 源配置完成.')
+            else:
+                print_('kali 源配置失败.')
+        elif system_platform == 'deepin':
+            c1 = self.commands__(cmd=f'sudo cp -v -r {self.root}bak/sources.list.deepin /etc/apt/sources.list')
+            c2 = self.commands__(cmd='sudo apt-get update')
+            if c1:
+                print_('deepin 源配置完成.')
+            else:
+                print_('deepin 源配置失败.')
+
+
     def Install_Basics(self):
+        self.source_config()
         self.commands__(cmd='sudo cp -v -r ~/.pip /root/')
         self.commands__(cmd='python3 -m pip install lxml==4.3.3')
         self.Install_selenium()
@@ -525,6 +549,10 @@ class Libs(object):
         self.commands__(cmd='python3 -m pip install gevent==1.4.0 --user')
         self.commands__(cmd='python3 -m pip install virtualenv==16.6.1 --user')
         self.commands__(cmd='python2 -m pip install virtualenv==16.6.1 --user')
+        self.commands__(cmd='sudo apt-get -y install fping')
+
+        if system_platform == 'kali':
+            self.commands__(cmd='python3 -m pip install exp10it==2.7.21 --user')
 
         if system_platform == 'deepin':
             self.commands__(cmd='sudo apt-get -y install python-scapy')
@@ -771,12 +799,13 @@ def get_POC_T_script():
     return [filenames_1,filenames_2,filenames_3]
     
 
-def _grep(keyword,path):
+def _grep(keyword,path,regex=0,highlight=1):
     """
     文本文件关键字搜索.
     行号.
     关键字高亮.
-    obj = _grep(keyword,path)
+    正则判断.
+    obj = _grep(keyword,path,regex=0)
     obj -> 迭代
     for o in obj:
         line_number,line_content = o
@@ -787,9 +816,18 @@ def _grep(keyword,path):
         count += 1
         line_number = count
         line_content = line
-        if line_content.find(keyword) != -1:
-            lc1 = line_content.replace(keyword,_red(keyword))
-            result1.append([str(line_number),lc1])
+        if regex:
+            find1 = re.findall(keyword,line_content)
+            if find1:
+                if highlight:
+                    lc1 = _red(line_content)
+                else:
+                    lc1 = line_content
+                result1.append([str(line_number),lc1.strip()])
+        else:
+            if line_content.find(keyword) != -1:
+                lc1 = line_content.replace(keyword,_red(keyword))
+                result1.append([str(line_number),lc1.strip()])
     
     return result1
 

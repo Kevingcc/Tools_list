@@ -10,7 +10,7 @@ from scapy.all import (
 print("""
 作者:九世.
 """)
-ifconfig=os.system('ifconfig')
+ifconfig=os.system('ip address')
 print ifconfig
 gmac=raw_input('Please enter gateway IP:')
 liusheng=raw_input('Please enter your IP:')

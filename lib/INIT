@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 HOME_="$HOME/.Tools/Tools_list/lib";
 HOME__="$HOME/.Tools/Tools_list";
@@ -29,6 +29,8 @@ rm -rf "$HOME_/img"
 mkdir "$HOME_/img"
 rm -rf "$HOME_/SQLi"
 mkdir "$HOME_/SQLi"
+rm -rf "$HOME_/fping"
+mkdir "$HOME_/fping"
 
 
 echo -e "login.json 初始化完毕...";
@@ -42,3 +44,6 @@ echo -e "nmap_xml 目录 初始化完毕..."
 echo -e "doc_image 目录　初始化完毕..."
 echo -e "img 目录　初始化完毕..."
 echo -e "SQLi 目录 初始化完毕..."
+echo -e "fping 目录 初始化完毕..."
+
+

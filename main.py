@@ -25,37 +25,43 @@ logo = """
 
 
 
+try:
+    import os
+    import sys
+    import traceback
+    import time
+    from lib import AttribDict
+    from lib import info
+    from lib import error
+    from lib import warning
+    from lib import print_
+    from lib import input_
+    from lib import Libs
+    from lib import get_POC_T_script
+    from lib import _grep
+    from lib import red
+    from lib import green
+    from lib import _grep
+    from lib import grep
+    from lib import get_filename
+    from lib import regular
 
-import os
-import sys
-import traceback
-from lib import AttribDict
-from lib import info
-from lib import error
-from lib import warning
-from lib import print_
-from lib import input_
-from lib import Libs
-from lib import get_POC_T_script
-from lib import _grep
-from lib import red
-from lib import green
-from lib import _grep
-from lib import grep
-from lib.setting import username_z
-from lib.setting import password_z
-from lib.setting import jiushixxsj
-from lib.setting import system_platform
+    from lib.setting import username_z
+    from lib.setting import password_z
+    from lib.setting import jiushixxsj
+    from lib.setting import system_platform
+    from src.nmap_scan import fping_result_handle
 
-#helps
-from lib import poc_t_helps
-from lib import dirmap_helps
-from lib import discovertarget_helps
-from lib import subdns_helps
-from lib import xsstrike_helps
-from lib import dirbrute_helps
-from lib import TideFinger_helps
-
+    #helps
+    from lib import poc_t_helps
+    from lib import dirmap_helps
+    from lib import discovertarget_helps
+    from lib import subdns_helps
+    from lib import xsstrike_helps
+    from lib import dirbrute_helps
+    from lib import TideFinger_helps
+except Exception as e:
+    pass
 
 
 
@@ -171,12 +177,6 @@ POC_T
             if not c2:
                 self.Run_subdns()
             if c2 is '1':
-                # c3 = self.commands_(cmd=['python3 {}subdns/subdns.py --help'.format(self.root)])
-                # jinhao = '#'*173
-                # print_(jinhao)
-                # print_(str(c3))
-                # print_('')
-                # print_(jinhao)
                 print_(helps1)
                 self.Run_subdns()
             if c2 is '2':
@@ -281,14 +281,14 @@ web目录扫描
     
     def Run_xcdn(self):
         print_("""
-1.输入url.
+1.输入Domain.
 0.返回菜单.
         """)
         ipt1 = input_('>')
         if not ipt1:
             self.Run_xcdn()
         if ipt1 is '1':
-            ipt2 = input_('Url>')
+            ipt2 = input_('Domain>')
             c1 = self.commands__(cmd='python3 {}xcdn/xcdn.py {}'.format(self.root,ipt2))
             self.Run_xcdn()
         if ipt1 is '0':
@@ -454,7 +454,8 @@ XSStrike
 [6].漏洞测试(FUZZ).
 [7].note.
 [8].内网攻击工具.
-[i].INIT
+[9].内网扫描.
+[i].INIT.
 [c].Clear.
 [0].退出.
         """.format(logo)
@@ -473,6 +474,7 @@ XSStrike
 4.尝试找出cdn背后的真实ip.
 5.九世信息收集工具.
 6.指纹识别.
+7.ABC段扫描.
 0.返回菜单.
             """
             print_(content2)
@@ -502,7 +504,11 @@ XSStrike
                 if ipt3 is '0':
                     self.main()
             if ipt2 is '4':
-                self.Run_xcdn()
+                if system_platform == 'kali':
+                    self.Run_xcdn()
+                else:
+                    red('[Error] xcdn run for kali.')
+                    self.main()
             if ipt2 is '5':
                 ipt1 = input_('URL>')
                 ipt2 = input_('Domain>')
@@ -515,6 +521,48 @@ XSStrike
             if ipt2 is '6':
                 self.TideFinger()
                 self.TideFinger()
+            if ipt2 is '7':
+                print_("""
+[A].A段扫描.
+[B].B段扫描.
+[C].C段扫描.
+[r].查看结果.
+                """)
+                ipt2 = input_('>')
+                if ipt2 is 'r':
+                    if fping_result_handle():
+                        time.sleep(3)
+                        self.main()
+                    else:
+                        time.sleep(3)
+                        self.main()
+
+
+                content1 = """
+A段 前缀 8.
+B段 前缀 16.
+C段 前缀 24.
+                """
+                a1 = grep(f'{ipt2}',content1)
+                print(a1)
+                ipt3 = input_('IP>')
+                ipt4 = input_('前缀>')
+                # self.commands__(f'fping -a -g "{ipt3}/{ipt4}" > {self.root}lib/fping_result.txt')
+                self.commands__(f'fping -a -g "{ipt3}/{ipt4}" > {self.root}lib/fping_result.txt')
+                datas = _grep(f'({regular(1)})(\.+)*',f'{self.root}lib/fping_result.txt',regex=1,highlight=0)
+                for data in datas:
+                    line_number,line_content = data
+                    if 'ICMP Host Unreachable from 192.168.1.105 for ICMP Echo sent to' not in line_content:
+                        print(line_content.replace('\n','').strip())
+                        s1 = line_content.replace('\n','').strip()
+                        with open(f'{self.root}lib/fping/{ipt3}_{ipt4}.txt','a+') as w:
+                            w.write(s1+'\n')
+                
+                self.commands__(f'rm -rf {self.root}lib/{ipt3}_{ipt4}.txt')
+                self.commands__(f'rm -rf {self.root}lib/fping_result.txt')
+                time.sleep(3)
+                self.main()
+
             if ipt2 is '0':
                 self.main()
         
@@ -522,13 +570,18 @@ XSStrike
             print_("""
 ########
 web程序
-#######
+########
 1.xwaf waf自动化绕过工具.
 0.返回菜单.
             """)
             ipt2 = input_('>')
             if ipt2 is '1':
-                self.Run_xwaf()
+                if system_platform == 'kali':
+                    self.Run_xwaf()
+                    self.main()
+                else:
+                    red('[Error] xwaf run for kali.')
+                    self.main()
             if ipt2 is '0':
                 self.main()
         if ipt1 is '3':
@@ -553,6 +606,8 @@ linux 工具
     [2].获取工具的绝对路径.
     [3].History.
     [4].源配置.
+    [5].配置x11 vnc server.
+    [6].配置sftp.
     [0].返回菜单.
             """)
             ipt2 = input_('>')
@@ -574,11 +629,8 @@ linux 工具
                 ipt1 = input_('Keyword>')
                 print_('history | grep "{}"'.format(ipt1))
             if ipt2 is '4':
-                print_("""
-1.deepin　源配置.
-2.kali 源配置.
-                """)
                 if system_platform == 'deepin':
+                    print_('1.deepin　源配置.')
                     ipt1 = input_('>')
                     if ipt1 is '1':
                         c1 = self.commands__(cmd=f'sudo cp -v -r {self.root}bak/sources.list.deepin /etc/apt/sources.list')
@@ -588,7 +640,10 @@ linux 工具
                         else:
                             print_('deepin 源配置失败.')
                         self.main()
-                    if ipt1 is '2':
+                if system_platform == 'kali':
+                    print_('1.kali 源配置.')
+                    ipt1 = input_('>')
+                    if ipt1 is '1':
                         c1 = self.commands__(cmd=f'sudo cp -v -r {self.root}bak/sources.list.kali /etc/apt/sources.list')
                         c2 = self.commands__(cmd='sudo apt-get update')
                         if c1:
@@ -597,7 +652,14 @@ linux 工具
                             print_('kali 源配置失败.')
                         self.main()
                     
+            if ipt2 is '5':
+                self.commands__('sudo apt-get -y install x11vnc')
+                self.commands__('x11vnc -storepasswd')
+                self.commands__('ip address')
+                self.commands__('x11vnc -auth guess -once -loop -noxdamage -repeat -rfbauth ~/.vnc/passwd -rfbport 5900 -shared')
 
+            if ipt2 is '6':
+                self.commands__('sudo apt-get -y install ssh')
 
             if ipt2 is '0':
                 self.main()
@@ -680,6 +742,29 @@ Xss
                 self.main()
             if ipt2 is '0':
                 self.main()
+
+        if ipt1 is '9':
+            print_("""
+############
+内网扫描工具.
+############
+1.nbtscan.
+0.返回菜单.
+            """)
+            ipt2 = input_('>')
+            
+            if system_platform == 'kali':
+                if ipt2 is '1':
+                    print_('例子:192.168.1.1/24')
+                    ipt3 = input_('输入扫描的IP段>')
+                    self.commands__(f'nbtscan -r {ipt3}')
+                    self.main()
+            else:
+                red('[Error] nbtscan run for kali.')
+
+            if ipt2 is '0':
+                self.main() 
+            
 
         if ipt1 is 'c':
             self.commands__(cmd='clear')
