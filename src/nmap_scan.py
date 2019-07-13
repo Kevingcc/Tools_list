@@ -95,7 +95,7 @@ def port_scan(ip,filename):
 
 
 
-def fping_result_handle():
+def ip_or_domain_result_handle():
     from main import Run
     r1 = Run()
     main = r1.main

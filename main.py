@@ -50,7 +50,7 @@ try:
     from lib.setting import password_z
     from lib.setting import jiushixxsj
     from lib.setting import system_platform
-    from src.nmap_scan import fping_result_handle
+    from src.nmap_scan import ip_or_domain_result_handle
 
     #helps
     from lib import poc_t_helps
@@ -530,7 +530,7 @@ XSStrike
                 """)
                 ipt2 = input_('>')
                 if ipt2 is 'r':
-                    if fping_result_handle():
+                    if ip_or_domain_result_handle():
                         time.sleep(3)
                         self.main()
                     else:
