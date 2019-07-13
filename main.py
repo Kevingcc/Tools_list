@@ -593,7 +593,11 @@ web程序
             if not ipt2:
                 self.main()
             if ipt2 is '1':
-                self.Run_fsociety()
+                if system_platform == 'kali':
+                    self.Run_fsociety()
+                else:
+                    red('[Error] fsociety run for kali.')
+                    self.main()
             if ipt2 is '0':
                 self.main()
         
