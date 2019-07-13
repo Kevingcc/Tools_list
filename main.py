@@ -30,6 +30,7 @@ try:
     import sys
     import traceback
     import time
+    import threading
     from lib import AttribDict
     from lib import info
     from lib import error
@@ -457,6 +458,7 @@ XSStrike
 [9].内网扫描.
 [i].INIT.
 [c].Clear.
+[n].记录线索.
 [0].退出.
         """.format(logo)
         print_(content1)
@@ -774,6 +776,10 @@ Xss
         if ipt1 is 'c':
             self.commands__(cmd='clear')
             self.main()
+
+        if ipt1 is 'n':
+            thread1 = threading.Thread(target=self.commands__,args=('gedit',))
+            thread1.start()
 
         if ipt1 is '0':
             c1 = self.commands_(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
