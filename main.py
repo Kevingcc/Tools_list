@@ -456,6 +456,7 @@ XSStrike
 [7].note.
 [8].内网攻击工具.
 [9].内网扫描.
+[10].漏洞分析.
 [i].INIT.
 [c].Clear.
 [n].记录线索.
@@ -771,6 +772,14 @@ Xss
 
             if ipt2 is '0':
                 self.main() 
+            
+        if ipt1 is '10':
+            print_("""
+########
+漏洞分析
+########
+1.apache-users.
+            """)
             
 
         if ipt1 is 'c':
