@@ -771,15 +771,28 @@ Xss
                 red('[Error] nbtscan run for kali.')
 
             if ipt2 is '0':
-                self.main() 
-            
+                self.main()
+                
+        
         if ipt1 is '10':
             print_("""
 ########
 漏洞分析
 ########
 1.apache-users.
+0.返回菜单.
             """)
+            ipt2 = input_('>')
+            if ipt2 is '1':
+                if system_platform == 'kali':
+                    pass
+                else:
+                    red('[Error] apache_users run for kali.')
+
+            if ipt2 is '0':
+                self.main()
+            
+            
             
 
         if ipt1 is 'c':

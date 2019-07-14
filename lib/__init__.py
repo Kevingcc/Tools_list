@@ -551,6 +551,7 @@ class Libs(object):
         self.commands__(cmd='python2 -m pip install virtualenv==16.6.1 --user')
         self.commands__(cmd='sudo apt-get -y install fping')
         self.commands__(cmd='sudo apt-get -y install gedit')
+        self.commands__(cmd='sudo apt-get -y install gdebi')
 
         if system_platform == 'kali':
             self.commands__(cmd='python3 -m pip install exp10it==2.7.21 --user')
