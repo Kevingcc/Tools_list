@@ -116,9 +116,9 @@ class Search(object):
             self.browser_.quit()
 
 
-queue = Queue()
-s = Search(queue)
-s.main()
+#queue = Queue()
+#s = Search(queue)
+#s.main()
 
 
     

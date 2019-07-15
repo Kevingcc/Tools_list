@@ -1,0 +1,6 @@
+[200][image/x-icon][1.12kb]http://ylqx.qgyyzs.net/favicon.ico
+[200][text/html][1.58kb]http://ylqx.qgyyzs.net/help.htm
+[200][text/html][631.00b]http://ylqx.qgyyzs.net/index.htm
+[200][text/plain][402.00b]http://ylqx.qgyyzs.net/info.txt
+[200][text/html][1.98kb]http://ylqx.qgyyzs.net/login.asp
+[200][text/plain][760.00b]http://ylqx.qgyyzs.net/robots.txt

@@ -342,19 +342,19 @@ web目录扫描.
             self.Run_xwaf()
         if ipt1 is '2':
             ipt2 = input_('Url>')
-            self.commands__(cmd='python3 {}bypass_waf/xwaf.py -u "{}"'.format(self.root,ipt2))
+            self.commands__(cmd='sudo python3 {}bypass_waf/xwaf.py -u "{}"'.format(self.root,ipt2))
             self.Run_xwaf()
         if ipt1 is '3':
             ipt2 = input_('Url>')
             ipt3 = input_('Data>')
             ipt4 = input_('Post parameter>')
-            self.commands__(cmd='python3 {}bypass_waf/xwaf.py -u "{}" --data="{}" -p {}'.format(self.root,ipt2,ipt3,ipt4))
+            self.commands__(cmd='sudo python3 {}bypass_waf/xwaf.py -u "{}" --data="{}" -p {}'.format(self.root,ipt2,ipt3,ipt4))
             self.Run_xwaf()
         if ipt1 is '4':
             ipt2 = input_('1>')
             ipt3 = input_('2>')
             ipt4 = input_('3>')
-            self.commands__(cmd='python3 {}bypass_waf/xwaf.py -r {} -p {} --level {}'.format(self.root,ipt2,ipt3,ipt4))
+            self.commands__(cmd='sudo python3 {}bypass_waf/xwaf.py -r {} -p {} --level {}'.format(self.root,ipt2,ipt3,ipt4))
             self.Run_xwaf()
         if ipt1 is '0':
             self.main()
@@ -372,6 +372,42 @@ web目录扫描.
                 self.Run_fsociety()
             if ipt1 is '0':
                 self.main()
+
+
+
+    def crunch(self):
+        print_("""
+########
+crunch
+########
+1.生成.
+2.查看结果.
+0.返回菜单.
+        """)
+        ipt1 = input_('>')
+        if ipt1 == '1':
+            ipt1 = input_('最小字符长度>')
+            ipt2 = input_('最大字符长度>')
+            ipt3 = input_('构造内容>')
+            ipt4 = input_('Domain>')
+            self.commands__(f'cd {self.root}dict && mkdir login')
+            self.commands__(f'crunch {ipt1} {ipt2} {ipt3} > {self.root}dict/login/f{ipt4}.txt')
+        if ipt1 == '2':
+            paths = get_filename(f'{self.root}dict/login')
+            i = 1
+            for f1 in paths:
+                print_(f'{i}. {f1}')
+                i += 1
+            ipt1 = input_('选择编号>')
+            i = 1
+            for f1 in paths:
+                if i == int(ipt1):
+                    path = f1
+                    break
+                i += 1
+            self.commands__(f'vim {path}')
+        if ipt1 == '0':
+            self.main()
 
 
     def xsstrike(self):
@@ -457,6 +493,7 @@ XSStrike
 [8].内网攻击工具.
 [9].内网扫描.
 [10].漏洞分析.
+[11].字典构造.
 [i].INIT.
 [c].Clear.
 [n].记录线索.
@@ -828,7 +865,25 @@ Xss
                 self.main()
             
             
-            
+        
+        if ipt1 == '11':
+            print_("""
+########
+字典构造
+########
+1.crunch.
+0.返回菜单.
+            """)
+            ipt2 = input_('>')
+            if ipt2 == '1':
+                if system_platform == 'kali':
+                    self.crunch()
+                    self.main()
+                else:
+                    red('[Error] crunch run for kali.')
+            if ipt2 == '0':
+                self.main()
+
 
         if ipt1 is 'c':
             self.commands__(cmd='clear')
