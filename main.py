@@ -290,7 +290,7 @@ web目录扫描
             self.Run_xcdn()
         if ipt1 is '1':
             ipt2 = input_('Domain>')
-            c1 = self.commands__(cmd='python3 {}xcdn/xcdn.py {}'.format(self.root,ipt2))
+            c1 = self.commands__(cmd='sudo python3 {}xcdn/xcdn.py {}'.format(self.root,ipt2))
             self.Run_xcdn()
         if ipt1 is '0':
             self.main()
@@ -796,9 +796,9 @@ Xss
                 else:
                     red('[Error] apache_users run for kali.')
             if ipt2 is '2':
-                from src.scann import Scann
-                s = Scann()
-                s.main()
+                self.commands__(f'python3 {self.root}scann.py')
+                self.main()
+
             if ipt2 is '3':
                 pass
             if ipt2 is '4':
@@ -854,6 +854,7 @@ Xss
             ipt2[0] in 'abcdefghijklmnopqrstuvwsyz' or \
             ipt2[0] in 'ABCDEFGHIJKLMNOPQRSTUVWSYZ':
                 self.main()
+    
 
     def test(self):
         # c = self.commands_(cmd=['ls'])

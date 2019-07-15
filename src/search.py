@@ -35,9 +35,6 @@ mutex = threading.Lock()
 
 
 
-
-
-
 class selenium_(Libs):
     def __init__(self):
         super(selenium_,self).__init__()
@@ -356,115 +353,14 @@ class selenium_(Libs):
 
 
 
-class Exploit_Search(object):
-    """
-    通过Google hack 搜索可利用的漏洞.
-    """
-    def __init__(self):
-        self.selenium_ = selenium_()
-        self.google_search = self.selenium_.Google_Search
-        self.query = self.selenium_.Query_Data
-        self.GHack = self.selenium_.GHack
-        self.Save_text = self.selenium_.Save_text
-        self.Read_text = self.selenium_.Read_text
-        self.browser = self.selenium_.browser
-        self.browser_ = self.selenium_.browser_
 
-    def CVE_Exploit(self):
-        """
-        收集存在CVE漏洞的站点.
-        """
-        pass
-
-    def FTP_Exploit(self):
-        """
-        收集存在FTP漏洞的站点.
-        """
-        pass
-
-    def WEB_Frame_Exploit(self):
-        """
-        收集指定版本的WEB框架存在漏洞的站点.
-        """
-        pass
-
-    def Sqli_Exploit(self):
-        """
-        收集存在sqli的站点.
-        """
-        result1 = self.Sqli_Search(keyword='sqli',filename='SQLi/sqli1.txt')
-        if result1:
-            self.browser.quit()
-            self.browser_.quit()
-            info(('Sqli 站点收集完成...'))
-        
-        result2 = self.Sqli_Search(keyword='sql',filename='SQLi/sqli2.txt')
-        if result2:
-            self.browser.quit()
-            self.browser_.quit()
-            info(('Sqli 站点收集完成...'))
-
-        return True
-    
-    def Xss_Exploit(self):
-        """
-        收集存在xss的站点.
-        """
-        pass
-
-    def CSRF_Exploit(self):
-        """
-        收集存在CSRF的站点.
-        """
-        pass
-
-    def Sqli_Search(self,keyword,filename):
-        try:
-            self.GHack(keyword=keyword,type_='sqli',title='sqli')
-            query = self.query(type_='sqli')
-            for query_ in query:
-                content = query_[4]
-                google_search = self.google_search(keyword=content,number=3)
-                for google_search_ in google_search:
-                    title = google_search_[0]
-                    link = google_search_[1]
-                    self.Save_text(filename=filename,content=link)
-            return True
-        except Exception as e:
-            pass
-        
                 
 
-
-
-
-
-
-
     
 
 
 
 
-
-
-
-
-
-if __name__ == "__main__":
-    print_("""
-1.SQLI采集.    
-0.Exit.
-""")
-    ipt1 = input('编号>')
-    e = Exploit_Search()
-    if ipt1 == '1':
-        result1 = e.Sqli_Exploit()
-        if result1:
-            info('SQLI收集完毕...')
-    if ipt1 == '0':
-        exit(0)
-    
 
 
 

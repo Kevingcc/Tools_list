@@ -1,0 +1,4 @@
+[200][text/html][2.67kb]http://www.swust.cn/_upload/article/files/aspxspy.aspx
+[200][text/html][2.67kb]http://www.swust.cn/_upload/article/files/cfide/administrator/index.cfm
+[200][text/html][2.67kb]http://www.swust.cn/_upload/article/files/etc/passwd
+[200][text/html][2.67kb]http://www.swust.cn/_upload/article/files/text-base/etc/passwd

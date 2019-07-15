@@ -35,6 +35,8 @@ rm -rf "$HOME_/script_name.txt"
 rm -rf "$HOME__/POC-T/data/ZoomEye"
 mkdir "$HOME__/POC-T/data/ZoomEye"
 rm -rf "$HOME__/log.txt"
+rm -rf "$HOME_/batch"
+mkdir "$HOME_/batch"
 
 
 echo -e "login.json 初始化完毕...";
@@ -52,3 +54,4 @@ echo -e "fping 目录 初始化完毕..."
 echo -e "script_name.txt 文件删除完毕..."
 echo -e "ZoomEye 目录 初始化完毕..."
 echo -e "log.txt 文件 删除完毕..."
+echo -e "batch 目录 初始化完毕..."

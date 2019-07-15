@@ -35,15 +35,16 @@ from lib import regular
 foo = AttribDict()
 headers = get_headers()
 libs = Libs()
-selenium_ = selenium_()
 event = threading.Event
 port_scan_results = []
 threadLock = threading.Lock()
 s_browser = selenium.webdriver.Chrome()
 commands_ = libs.commands_
 commands__ = libs.commands__
-get_page_num = selenium_.Get_Page_num
 get_filename = libs.Get_Filename
+
+selenium_ = selenium_()
+get_page_num = selenium_.Get_Page_num
 
 
 # KeyboardInterrupt
@@ -69,11 +70,6 @@ class Scann(object):
         self.awvs = awvs
         self.option = True
         self.option_ = True
-        self.browser = selenium_.browser
-        self.browser_ = selenium_.browser_
-        self.s_browser = s_browser
-        # self.queue = queue
-        # self.domain = domain
         self.event = event()
         self.google_search = selenium_.Google_Search
     
@@ -97,7 +93,7 @@ class Scann(object):
 2.删除所有任务
 3.删除指定任务
 4.跳过
-0.Exit
+0.Exit.
         """)
         
         if self.option_:
@@ -144,7 +140,8 @@ class Scann(object):
         try:
             def r():
                 if eXit:
-                    exit(0)
+                    selenium_.browser_.quit()
+                    return False
                 i = 1
                 for target1 in datas:
                     if i <= 5:
@@ -297,9 +294,9 @@ class Scann(object):
             datas_d1 = []
             datas_d2 = []
             warning(('Query Domain -> '+domain))
-            self.browser_.get(dns_query1.format(domain))
+            selenium_.browser_.get(dns_query1.format(domain))
             time.sleep(7)
-            htmldoc = self.browser_.find_element_by_xpath('/html/body/pre').text
+            htmldoc = selenium_.browser_.find_element_by_xpath('/html/body/pre').text
             data = loads(htmldoc)
             # info(data['RDNS'])
             try:
@@ -357,10 +354,12 @@ class Scann(object):
                     time.sleep(1)
                     thread2.start()
                     info('域名:{} -> 查询IP:{}'.format(domain,ip))
-
+            
+            selenium_.browser_.quit()
             return True
             
         except Exception as e:
+            selenium_.browser_.quit()
             error(traceback.format_exc())
             i = 0
             while True:
@@ -419,25 +418,23 @@ class Scann(object):
         pass
 
 
-    def jietu(self,domain):
-        try:
-            # self.browser_.set_page_load_timeout(5)
-            _browser.get(str(domain))
-            _browser.save_screenshot('lib/img/{}.png'.format(str(domain).replace('https://','').replace('http://','')))
-            _browser.quit()
-            # self.browser_.close()
-        except:
-            error(traceback.format_exc())
-            error('截图此：{}超时...'.format(domain))
-            pass
+    # def jietu(self,domain):
+    #     try:
+    #         # self.browser_.set_page_load_timeout(5)
+    #         _browser.get(str(domain))
+    #         _browser.save_screenshot('lib/img/{}.png'.format(str(domain).replace('https://','').replace('http://','')))
+    #         _browser.quit()
+    #         # self.browser_.close()
+    #     except:
+    #         error(traceback.format_exc())
+    #         error('截图此：{}超时...'.format(domain))
+    #         pass
 
 
     def main(self):
         print_("""
 1.AWVS扫描.
 2.DNS接口查询.
-3.子域名枚举.
-4.nmap 扫描.
 0.Exit.
 """)
         ipt1 = input_('选项>')
@@ -497,12 +494,9 @@ AWVS 配置:
                 ipt3 = input_('Domain>')
                 self.DNS_Query_Interface(ipt3)
 
-        if ipt1 is '3':
-            print("""
-
-            """)
 
         if ipt1 is '0':
+            selenium_.browser_.quit()
             exit(0)
 
             
@@ -536,9 +530,9 @@ if __name__ == "__main__":
     # queue = Queue()
     # s = Scann(queue=queue,domain='')
     # s.Subdomain_Enumeration(domain='')
-    selenium_.browser.quit()
+    # selenium_.browser.quit()
     selenium_.browser_.quit()
-    s_browser.quit()
+    # s_browser.quit()
 
 
 
