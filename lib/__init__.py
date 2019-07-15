@@ -436,15 +436,16 @@ class Libs(object):
 
     
     def Config_chromedriver(self):
-        c1 = self.commands__(cmd=['hash chromedriver'])
-        if not c1:
-            print_('正在配置 chromedriver...')
-            c1 = self.commands__(cmd='sudo ln -s {}Chromedriver/chromedriver_70.0.3538.67 /usr/bin/chromedriver'.format(self.root))
-            c2 = self.commands__(cmd='sudo chmod +x /usr/bin/chromedriver')
-            if c1 and c2:
-                print_('chromedriver 配置完成...')
-        else:
-            print_('chromedriver 正在运行...')
+        if system_platform == 'deepin':
+            c1 = self.commands__(cmd=['hash chromedriver'])
+            if not c1:
+                print_('正在配置 chromedriver...')
+                c1 = self.commands__(cmd='sudo ln -s {}Chromedriver/chromedriver_70.0.3538.67 /usr/bin/chromedriver'.format(self.root))
+                c2 = self.commands__(cmd='sudo chmod +x /usr/bin/chromedriver')
+                if c1 and c2:
+                    print_('chromedriver 配置完成...')
+            else:
+                print_('chromedriver 正在运行...')
 
     # def Install_mechanize(self):
     #     c1 = self.commands__(cmd='python3 -m pip install mechanize==0.4.2')
@@ -534,6 +535,8 @@ class Libs(object):
             self.commands__(cmd='mkdir $HOME/download_chrome')
             self.commands__(cmd='cd $HOME/download_chrome && axel -n 60 "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"')
             self.commands__(cmd='cd $HOME/download_chrome && sudo echo "y" | gdebi ./google-chrome-stable_current_amd64.deb')
+            self.commands__(cmd='cd $HOME/download_chrome && axel -n 60 "http://cdn.npm.taobao.org/dist/chromedriver/75.0.3770.140/chromedriver_linux64.zip"')
+            self.commands__(cmd='cd $HOME/download_chrome && unzip ./chromedriver_linux64.zip && sudo ln -s $HOME/download_chrome/chromedriver /usr/bin/chromedriver && sudo chmod +x /usr/bin/chromedriver')
             print_('kali 安装 google_chrome 完毕...')
 
     
