@@ -42,6 +42,8 @@ except Exception as e:
 from lib.setting import option_install
 from lib.setting import system_platform
 from lib.setting import key_config
+from lib.setting import kali_user
+from lib.setting import Ichrome
 
 if system_platform == 'deepin':
     system_platform = 'deepin'
@@ -523,6 +525,27 @@ class Libs(object):
                 print_('deepin 源配置完成.')
             else:
                 print_('deepin 源配置失败.')
+    
+    def Install_chrome(self):
+        if Ichrome:
+            print_('kali 安装 google_chrome...')
+            self.commands__(cmd='sudo apt-get -y install axel')
+            self.commands__(cmd='sudo apt-get -y install gdebi')
+            self.commands__(cmd='mkdir $HOME/download_chrome')
+            self.commands__(cmd='cd $HOME/download_chrome && axel -n 60 "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"')
+            self.commands__(cmd='cd $HOME/download_chrome && sudo echo "y" | gdebi ./google-chrome-stable_current_amd64.deb')
+            print_('kali 安装 google_chrome 完毕...')
+
+    
+    def kali_establish_user(self):
+        if kali_user:
+            print_('kali 添加user...')
+            ipt1 = input_('kali add username>')
+            self.commands__(cmd=f'useradd -m {ipt1}')
+            self.commands__(cmd=f'passwd {ipt1}')
+            self.commands__(cmd=f'usermod -a -G sudo {ipt1}')
+            self.commands__(cmd=f'chsh -s /bin/bash {ipt1}')
+            print_('kali 添加user 完毕...')
 
 
     def Install_Basics(self):
@@ -553,9 +576,12 @@ class Libs(object):
         self.commands__(cmd='sudo apt-get -y install fping')
         self.commands__(cmd='sudo apt-get -y install gedit')
         self.commands__(cmd='sudo apt-get -y install gdebi')
+        self.commands__(cmd='sudo apt-get -y install axel')
 
         if system_platform == 'kali':
             self.commands__(cmd='python3 -m pip install exp10it==2.7.21 --user')
+            self.Install_chrome()
+            self.kali_establish_user()
 
         if system_platform == 'deepin':
             self.commands__(cmd='sudo apt-get -y install python-scapy')

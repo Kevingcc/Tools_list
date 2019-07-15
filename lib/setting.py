@@ -55,7 +55,7 @@ password_z = ''
         deepin
 
 """
-system_platform = 'deepin'
+system_platform = 'kali'
 
 
 """
@@ -92,4 +92,13 @@ DIRE_PATH=r'{}' #引用dict目录下的指定字典
 key_config = False
 
 
+"""
+Install Chrome.
+"""
+Ichrome = True
 
+
+"""
+root 模式下 add user
+"""
+kali_user = True

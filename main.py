@@ -774,12 +774,19 @@ Xss
                 self.main()
                 
         
-        if ipt1 is '10':
+        if ipt1 == '10':
             print_("""
 ########
 漏洞分析
 ########
 1.apache-users.
+2.scann.py.
+3.nikto.
+4.nmap.
+5.lynis
+6.sparta
+7.unix-privesc-check
+8.goLismero
 0.返回菜单.
             """)
             ipt2 = input_('>')
@@ -788,6 +795,34 @@ Xss
                     pass
                 else:
                     red('[Error] apache_users run for kali.')
+            if ipt2 is '2':
+                from src.scann import Scann
+                s = Scann()
+                s.main()
+            if ipt2 is '3':
+                pass
+            if ipt2 is '4':
+                pass
+            if ipt2 is '5':
+                if system_platform == 'kali':
+                    pass
+                else:
+                    red('[Error] lynis run for kali.')
+            if ipt2 is '6':
+                if system_platform == 'kali':
+                    pass
+                else:
+                    red('[Error] sparta run for kali.')
+            if ipt2 is '7':
+                if system_platform == 'kali':
+                    pass
+                else:
+                    red('[Error] unix-privesc-check run for kali.')
+            if ipt2 is '8':
+                if system_platform=='kali':
+                    pass
+                else:
+                    red('[Error] goLismero run for kali.')
 
             if ipt2 is '0':
                 self.main()
@@ -848,7 +883,8 @@ if __name__ == '__main__':
     r = Run()
     r.main()
     
-
+r = Run()
+r.main()
 
 
 
