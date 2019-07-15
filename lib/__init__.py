@@ -549,6 +549,7 @@ class Libs(object):
         self.commands__(cmd='python3 -m pip install gevent==1.4.0 --user')
         self.commands__(cmd='python3 -m pip install virtualenv==16.6.1 --user')
         self.commands__(cmd='python2 -m pip install virtualenv==16.6.1 --user')
+        self.commands__(cmd='python3 -m pip install gevent==1.4.0 --user')
         self.commands__(cmd='sudo apt-get -y install fping')
         self.commands__(cmd='sudo apt-get -y install gedit')
         self.commands__(cmd='sudo apt-get -y install gdebi')
