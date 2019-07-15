@@ -212,7 +212,8 @@ def get_filename_(path):
     catalog = path
     for (dirpath,dirnames,filenames) in os.walk(catalog):
         for filename in filenames:
-            pathname.append(filename)
+            if filename:
+                pathname.append(filename)
     return pathname
 
 

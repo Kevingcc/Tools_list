@@ -46,6 +46,8 @@ try:
     from lib import grep
     from lib import get_filename
     from lib import regular
+    from lib import get_filename_
+
 
     from lib.setting import username_z
     from lib.setting import password_z
@@ -74,8 +76,64 @@ class Run(Libs):
         super(Run,self).__init__()
 
 
-    def nmap(self,**kwargs):
-        pass
+    def nmap_script_exploit(self):
+        print_("""
+1.cve_script_search.
+2.cve_script_exploit.
+0.返回菜单. 
+        """)
+        ipt1 = input_('>')
+        if ipt1 == '1':
+            if system_platform == 'kali':
+                filenames = get_filename_(path='/usr/share/nmap/scripts')
+            if system_platform == 'deepin':
+                filenames = get_filename_(path='/usr/share/nmap/scripts')
+            i = 1
+            for filename in filenames:
+                d1 = grep('cve',filename)
+                if d1:
+                    print(f'{i}. {d1}')
+                i += 1
+            self.nmap_script_exploit()
+        
+        if ipt1 == '2':
+            print_("""
+12. http-vuln-cve2017-5638.nse
+19. http-vuln-cve2015-1635.nse
+24. http-vuln-cve2010-2861.nse
+46. smb-vuln-cve-2017-7494.nse
+104. http-vuln-cve2014-2127.nse
+141. http-vuln-cve2017-1001000.nse
+150. smtp-vuln-cve2010-4344.nse
+152. http-vuln-cve2014-2126.nse
+158. http-vuln-cve2010-0738.nse
+162. http-vuln-cve2006-3392.nse
+176. http-vuln-cve2011-3192.nse
+191. http-vuln-cve2011-3368.nse
+192. http-vuln-cve2013-7091.nse
+208. http-vuln-cve2012-1823.nse
+217. http-vuln-cve2014-2128.nse
+222. http-vuln-cve2014-3704.nse
+287. mysql-vuln-cve2012-2122.nse
+288. smb-vuln-cve2009-3103.nse
+298. samba-vuln-cve-2012-1182.nse
+326. http-vuln-cve2013-6786.nse
+345. http-vuln-cve2009-3960.nse
+361. distcc-cve2004-2687.nse
+411. smtp-vuln-cve2011-1720.nse
+426. http-vuln-cve2017-5689.nse
+432. ftp-vuln-cve2010-4221.nse
+441. http-vuln-cve2015-1427.nse
+509. http-vuln-cve2017-8917.nse
+521. smtp-vuln-cve2011-1764.nse
+535. http-vuln-cve2014-8877.nse
+565. http-vuln-cve2014-2129.nse
+585. http-vuln-cve2013-0156.nse
+            """)
+
+        if ipt1 == '0':
+            self.main()
+
         
     def TideFinger(self,**kwargs):
         helps = TideFinger_helps
@@ -839,7 +897,7 @@ Xss
             if ipt2 is '3':
                 pass
             if ipt2 is '4':
-                pass
+                self.nmap_script_exploit()
             if ipt2 is '5':
                 if system_platform == 'kali':
                     pass
@@ -883,7 +941,6 @@ Xss
                     red('[Error] crunch run for kali.')
             if ipt2 == '0':
                 self.main()
-
 
         if ipt1 is 'c':
             self.commands__(cmd='clear')
