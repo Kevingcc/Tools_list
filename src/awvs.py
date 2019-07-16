@@ -5,7 +5,7 @@
 
 import time
 import threading
-from src.awvs_api import awvs
+from src.awvs_api import awvs as _awvs
 from lib import input_
 from lib import print_
 from lib import get_filename
@@ -21,7 +21,7 @@ from main import Run
 class awvs(object):
 
     def __init__(self):
-        self.awvs = awvs
+        self.awvs = _awvs
         self.option = True
         self.option_ = True
 
@@ -79,18 +79,10 @@ class awvs(object):
                     
                 if ipt1 is '2':
                     self.delete_()
-                    ipt2 = input_('显示细节[y/n]>')
-                    if ipt2 is 'y':
-                        pass
-                    if ipt2 is 'n':
-                        self.option = False
+                    return False
                 if ipt1 is '3':
                     self.delete()
-                    ipt2 = input_('显示细节[y/n]>')
-                    if ipt2 is 'y':
-                        pass
-                    if ipt2 is 'n':
-                        self.option = False
+                    return False
                 if ipt1 is '4':
                     self.option_ = False
                 
@@ -145,6 +137,8 @@ AWVS 配置:
             if ipt2 is 'x':
                 self.main()
             self._add_task(rule=ipt2)
+            r = Run()
+            r.main()
 
         if ipt1 == '0':
             r = Run()

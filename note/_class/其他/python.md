@@ -34,4 +34,94 @@ python 可靠性方法:
 参考链接：
     https://www.cnblogs.com/jhao/p/7243043.html
 
+
+
+
+
+
+import subprocess
+
+s = subprocess.Popen("python", stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
+s.stdin.write(b"import sys\n")
+s.stdin.write(b"print(sys.version)")
+s.stdin.close()
+
+out = s.stdout.read().decode("GBK")
+s.stdout.close()
+print(out)
+
+
+
+s = subprocess.Popen("python", stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
+s.stdin.write(b"import sys\n")
+s.stdin.write(b"print(sys.version)")
+s.stdin.close()
+
+out = s.stdout.read().decode("GBK")
+s.stdout.close()
+print(out)
+
+
+"""
+results
+"""
+
+"""
+Python 3.6.5 (default, May 11 2018, 13:30:17) 
+[GCC 7.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import subprocess
+>>> s = subprocess.Popen("python", stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
+>>> s.stdin.write(b"import sys\n")
+11
+>>> s.stdin.write(b"print(sys.version)")
+18
+>>> s.stdin.close()
+>>> out = s.stdout.read().decode("GBK")
+>>> s.stdout.close()
+>>> print(out)
+2.7.15 (default, May  1 2018, 05:55:50) 
+[GCC 7.3.0]
+
+>>> s = subprocess.Popen("python", stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
+>>> s.stdin.write(b"import sys\n")
+11
+>>> s.stdin.write(b"print(sys.version)")
+18
+>>> s.stdin.close()
+>>> out = s.stdout.read().decode("GBK")
+>>> s.stdout.close()
+>>> print(out)
+2.7.15 (default, May  1 2018, 05:55:50) 
+[GCC 7.3.0]
+
+>>> 
+>>> import subprocess
+>>> s = subprocess.Popen("python", stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
+>>> s.stdin.write(b"import sys\n")
+11
+>>> s.stdin.write(b"print(sys.version)")
+18
+>>> s.stdin.close()
+>>> out = s.stdout.read().decode("GBK")
+>>> s.stdout.close()
+>>> print(out)
+2.7.15 (default, May  1 2018, 05:55:50) 
+[GCC 7.3.0]
+
+>>> s = subprocess.Popen("python", stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
+>>> s.stdin.write(b"import sys\n")
+11
+>>> s.stdin.write(b"print(sys.version)")
+18
+>>> s.stdin.close()
+>>> out = s.stdout.read().decode("GBK")
+>>> s.stdout.close()
+>>> print(out)
+2.7.15 (default, May  1 2018, 05:55:50) 
+[GCC 7.3.0]
+
+>>> 
+>>> 
+"""
     

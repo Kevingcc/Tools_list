@@ -54,7 +54,7 @@ try:
     from lib.setting import jiushixxsj
     from lib.setting import system_platform
     from src.nmap_scan import ip_or_domain_result_handle
-    from src.awvs import awvs
+    from src.awvs import awvs as _awvs
 
     #helps
     from lib import poc_t_helps
@@ -1015,8 +1015,13 @@ Xss
                     red('[Error] goLismero run for kali.')
             
             if ipt2 == '9':
-                a1 = awvs()
-                a1.main()
+                try:
+                    a1 = _awvs()
+                    a1.main()
+                except:
+                    from src.awvs import awvs as _awvs
+                    a1 = _awvs()
+                    a1.main()
 
             if ipt2 is '0':
                 self.main()
