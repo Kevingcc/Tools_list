@@ -585,6 +585,7 @@ class Libs(object):
         self.commands__(cmd='sudo apt-get -y install gdebi')
         self.commands__(cmd='sudo apt-get -y install axel')
         self.commands__(cmd='sudo apt-get -y install vim')
+        self.commands__(cmd='sudo apt-get -y install tree')
 
         if system_platform == 'kali':
             self.commands__(cmd='python3 -m pip install exp10it==2.7.21 --user')

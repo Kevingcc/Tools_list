@@ -37,7 +37,9 @@ mkdir "$HOME__/POC-T/data/ZoomEye"
 rm -rf "$HOME__/log.txt"
 rm -rf "$HOME_/batch"
 mkdir "$HOME_/batch"
-
+mkdir "$HOME_/batch/whatweb"
+mkdir "$HOME_/batch/whatweb/results"
+mkdir "$HOME_/batch/awvs"
 
 echo -e "login.json 初始化完毕...";
 echo -e "id.json 初始化完毕...";

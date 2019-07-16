@@ -54,6 +54,7 @@ try:
     from lib.setting import jiushixxsj
     from lib.setting import system_platform
     from src.nmap_scan import ip_or_domain_result_handle
+    from src.awvs import awvs
 
     #helps
     from lib import poc_t_helps
@@ -101,49 +102,98 @@ class Run(Libs):
         
         if ipt1 == '2':
             print_("""
-12. http-vuln-cve2017-5638.nse
-19. http-vuln-cve2015-1635.nse
-24. http-vuln-cve2010-2861.nse
-46. smb-vuln-cve-2017-7494.nse
-104. http-vuln-cve2014-2127.nse
-141. http-vuln-cve2017-1001000.nse
-150. smtp-vuln-cve2010-4344.nse
-152. http-vuln-cve2014-2126.nse
-158. http-vuln-cve2010-0738.nse
-162. http-vuln-cve2006-3392.nse
-176. http-vuln-cve2011-3192.nse
-191. http-vuln-cve2011-3368.nse
-192. http-vuln-cve2013-7091.nse
-208. http-vuln-cve2012-1823.nse
-217. http-vuln-cve2014-2128.nse
-222. http-vuln-cve2014-3704.nse
-287. mysql-vuln-cve2012-2122.nse
-288. smb-vuln-cve2009-3103.nse
-298. samba-vuln-cve-2012-1182.nse
-326. http-vuln-cve2013-6786.nse
-345. http-vuln-cve2009-3960.nse
-361. distcc-cve2004-2687.nse
-411. smtp-vuln-cve2011-1720.nse
-426. http-vuln-cve2017-5689.nse
-432. ftp-vuln-cve2010-4221.nse
-441. http-vuln-cve2015-1427.nse
-509. http-vuln-cve2017-8917.nse
-521. smtp-vuln-cve2011-1764.nse
-535. http-vuln-cve2014-8877.nse
-565. http-vuln-cve2014-2129.nse
-585. http-vuln-cve2013-0156.nse
+1.http-vuln-cve2017-5638.nse
+2.http-vuln-cve2015-1635.nse
+3.其他cve脚本使用.
+0.返回菜单.
             """)
+            if system_platform == 'kali':
+                path = '/usr/share/nmap/scripts'
+            if system_platform == 'deepin':
+                path = '/usr/share/nmap/scripts'
+            ipt1 = input_('>')
+            if ipt1 == '1':
+                print_('port -> 80')
+                ipt2 = input_('port>')
+                ipt3 = input_('target(domain)>')
+                self.commands__(f'cd {path} && sudo nmap -p {ipt2} --script http-vuln-cve2017-5638 {ipt3}')
+                self.nmap_script_exploit()
+            if ipt1 == '2':
+                ipt2 = input_('target(domain)>')
+                self.commands__(f'cd {path} && sudo nmap -p 80 --script http-vuln-cve2015-1635.nse {ipt2}')
+                self.nmap_script_exploit()
+            if ipt1 == '3':
+                print_('编号 -> http-vuln-cve2017-5638')
+                ipt2 = input_('编号>')
+                s1 = f'官方使用教程:https://nmap.org/nsedoc/scripts/{ipt2}.html'
+                print_(s1)
+                self.nmap_script_exploit()
+            if ipt1 == '0':
+                self.nmap_script_exploit()
 
         if ipt1 == '0':
             self.main()
 
-        
+
+    def whatweb(self):
+        print_("""
+#########
+whatweb
+#########
+1.批量域名扫描(domain).
+2.常规扫描.
+3.详细回显扫描.
+4.快速本地扫描(扫描内网主机).
+5.查看结果.
+0.返回菜单.
+        """)
+        ipt1 = input_('>')
+        if ipt1 != '0':
+            ipt2 = input_('Save name>')
+            path = f'{self.root}lib/batch/whatweb/results'
+            save_name = f'{ipt2}.xml'
+        if ipt1 == '1':
+            paths = get_filename(f'{self.root}lib/batch/whatweb')
+            i = 1
+            for p1 in paths:
+                print_(f'{i}. {p1}')
+                i += 1
+            
+            ipt2 = input_('Path编号>')
+            i = 1
+            for p2 in paths:
+                if ipt2 == str(i):
+                    path = p2
+                    break
+                i += 1
+            self.commands__(f'cd {path} && whatweb -i {path} --log-xml={save_name}')
+            self.whatweb()
+        if ipt1 == '2':
+            ipt2 = input_('Domain>')
+            self.commands__(f'cd {path} && whatweb {ipt2} --log-xml={save_name}')
+            self.whatweb()
+        if ipt1 == '3':
+            ipt2 = input_('Domain>')
+            self.commands__(f'cd {path} && whatweb -v {ipt2} --log-xml={save_name}')
+            self.whatweb()
+        if ipt1 == '4':
+            ipt2 = input_('IP>')
+            ipt3 = input_('前缀>')
+            self.commands__(f'cd {path} && whatweb --no-errors -t 255 {ipt2}{ipt3} --log-xml={save_name}')
+            self.whatweb()
+        if ipt1 == '5':
+            pass
+        if ipt1 == '0':
+            self.main()
+
+
+
     def TideFinger(self,**kwargs):
         helps = TideFinger_helps
         print_("""
-######＃
-指纹识别
-######＃
+######＃####
+TideFinger
+######＃####
 [1].单个识别.
 [2].批量识别.
 [h].帮助.
@@ -650,8 +700,20 @@ XSStrike
                     print_('九世信息收集工具配置失败...')
                 self.commands__(cmd='cd "{}信息收集工具" && python3 ./main.py'.format(self.root))
             if ipt2 is '6':
-                self.TideFinger()
-                self.TideFinger()
+                print_("""
+1.TideFinger.
+2.whatweb.
+0.返回菜单.
+                """)
+                ipt1 = input_('>')
+                if ipt1 == '1':
+                    self.TideFinger()
+                    self.main()
+                if ipt1 == '2':
+                    self.whatweb()
+                    self.main()
+                if ipt1 == '0':
+                    self.main()
             if ipt2 is '7':
                 print_("""
 [A].A段扫描.
@@ -914,6 +976,7 @@ Xss
 6.sparta
 7.unix-privesc-check
 8.goLismero
+9.awvs.py
 0.返回菜单.
             """)
             ipt2 = input_('>')
@@ -950,6 +1013,10 @@ Xss
                     pass
                 else:
                     red('[Error] goLismero run for kali.')
+            
+            if ipt2 == '9':
+                a1 = awvs()
+                a1.main()
 
             if ipt2 is '0':
                 self.main()
@@ -1043,9 +1110,6 @@ if __name__ == '__main__':
     r = Run()
     r.main()
     
-r = Run()
-r.main()
-
 
 
 
