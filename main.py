@@ -745,7 +745,7 @@ C段 前缀 24.
                 datas = _grep(f'({regular(1)})(\.+)*',f'{self.root}lib/fping_result.txt',regex=1,highlight=0)
                 for data in datas:
                     line_number,line_content = data
-                    if 'ICMP Host Unreachable from 192.168.1.105 for ICMP Echo sent to' not in line_content:
+                    if 'ICMP Host Unreachable from' not in line_content:
                         print(line_content.replace('\n','').strip())
                         s1 = line_content.replace('\n','').strip()
                         with open(f'{self.root}lib/fping/{ipt3}_{ipt4}.txt','a+') as w:
