@@ -70,6 +70,7 @@ B = '\033[1;34m'
 
 # sys.path.insert(0,os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/'
+_root = f'{root}'.replace('Tools_list/','')
 
 
 def print_(content):
@@ -263,6 +264,7 @@ class Libs(object):
     
     def __init__(self):
         self.root = root
+        self._root = _root
         c1 = self.commands_(cmd=['sudo chmod +x {}lib/pyc_clear && bash {}lib/pyc_clear'.format(self.root,self.root)])
         warning(c1)
         
@@ -277,6 +279,19 @@ class Libs(object):
     def etree_(self,xpath_,text):
         html = etree.HTML(str(text),etree.HTMLParser())
         return html.xpath(xpath_)
+
+    def Install_hackhttp(self):
+        if not os.path.exists(f'{self._root}hackhttp'):
+            print_('安装hackhttp库...')
+            cmd1 = 'cd $HOME/.Tools && mkdir hackhttp'
+            cmd2 = 'cd $HOME/.Tools/hackhttp && axel -n 60 https://codeload.github.com/Qing-Q/hackhttp/zip/master'
+            cmd3 = 'cd $HOME/.Tools/hackhttp && unzip hackhttp-master.zip'
+            cmd4 = 'cd $HOME/.Tools/hackhttp/hackhttp-master && sudo python2 setup.py install'
+            self.commands__(cmd1)
+            self.commands__(cmd2)
+            self.commands__(cmd3)
+            self.commands__(cmd4)
+            print_('安装hackhttp库完毕...')
 
     def repair_html(self,text):
         html = etree.HTML(text)
@@ -582,6 +597,7 @@ class Libs(object):
         self.commands__(cmd='sudo apt-get -y install gdebi')
         self.commands__(cmd='sudo apt-get -y install axel')
         self.commands__(cmd='sudo apt-get -y install vim')
+        self.Install_hackhttp()
 
         if system_platform == 'kali':
             self.commands__(cmd='python3 -m pip install exp10it==2.7.21 --user')

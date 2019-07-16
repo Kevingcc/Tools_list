@@ -1,5 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 #coding:utf-8
 
-from src.git.git import *
+from src.exploits.exp_2019_7_16_baopo import main
+
+
+if __name__ == "__main__":
+    main()
+
 
