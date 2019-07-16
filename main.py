@@ -63,6 +63,9 @@ try:
     from lib import xsstrike_helps
     from lib import dirbrute_helps
     from lib import TideFinger_helps
+
+    #Exploit Script.
+    from src.exPloits import exp_2019_7_16_baopo
 except Exception as e:
     pass
 
@@ -440,6 +443,7 @@ crunch
 ########
 1.生成.
 2.查看结果.
+3.结果传递至爆破脚本.
 0.返回菜单.
         """)
         ipt1 = input_('>')
@@ -464,6 +468,33 @@ crunch
                     break
                 i += 1
             self.commands__(f'vim {path}')
+        
+        if ipt1 == '3':
+            paths = get_filename(f'{self.root}dict/login')
+            i = 1
+            for f1 in paths:
+                print_(f'{i}. {f1}')
+                i += 1
+            ipt1 = input_('user字典编号>')
+            ipt2 = input_('passwd字典编号>')
+            i = 1
+            for f1 in paths:
+                if i == int(ipt1):
+                    user_path = f1
+                if i == int(ipt2):
+                    passwd_path = f1
+                i += 1
+            print_("""
+1.exp_2019_7_16_baopo.
+0.返回菜单.
+            """)
+            ipt1 = input_('>')
+            if ipt1 == '1':
+                exp_2019_7_16_baopo(user_path,passwd_path)
+                self.main()
+            if ipt1 == '0':
+                self.main()
+        
         if ipt1 == '0':
             self.main()
 
@@ -552,6 +583,7 @@ XSStrike
 [9].内网扫描.
 [10].漏洞分析.
 [11].字典构造.
+[12].Exploits.
 [i].INIT.
 [c].Clear.
 [n].记录线索.
@@ -939,6 +971,21 @@ Xss
                     self.main()
                 else:
                     red('[Error] crunch run for kali.')
+            if ipt2 == '0':
+                self.main()
+
+
+        if ipt1 == '12':
+            print_("""
+#########
+Exploits
+#########
+1.exp_2019_7_16_baopo.py
+0.返回菜单.
+            """)
+            ipt2 = input_('>')
+            if ipt2 == '1':
+                pass
             if ipt2 == '0':
                 self.main()
 
