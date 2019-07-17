@@ -14,7 +14,7 @@ root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/'
 
 """
 
-option_install = True
+option_install = False
 
 """
 awvs server
