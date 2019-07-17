@@ -589,7 +589,7 @@ class Libs(object):
         self.commands__(cmd='python3 -m pip install pymongo==3.8.0 --user')
         self.commands__(cmd='python3 -m pip install redis==3.2.1 --user')
         self.commands__(cmd='python3 -m pip install pymongo==3.8.0 --user')
-        
+
 
         if system_platform == 'kali':
             self.commands__(cmd='python3 -m pip install exp10it==2.7.21 --user')
@@ -597,6 +597,7 @@ class Libs(object):
             self.kali_establish_user()
 
         if system_platform == 'deepin':
+            self.commands__(cmd='sudo apt-get install nikto')
             self.commands__(cmd='sudo apt-get -y install python-scapy')
             self.commands__(cmd='sudo apt-get -y install evince')
             self.commands__(cmd='sudo apt-get -y install code')
