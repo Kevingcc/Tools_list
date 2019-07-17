@@ -748,31 +748,31 @@ class Libs(object):
         
         return (filename[0],filename[1])
 
-    def sElect_Files_(self):
+    def sElect_Files_(self,num):
         """
         获取“subdns”工具日志的域名和ip地址。
         """
-        filename = self.Result_subdns()
-        i = 0
-        for filename1 in filename[0]:
-            print_('查看的文件 | {}.{}'.format(i,filename1))
-            i += 1
-        
-        ipt1 = input('文件编号>')
-        i = 0
-        for filename2 in filename[0]:
-            if ipt1 == str(i):
-                d1 = oBtain_resuLt(filename2)
-                try:
-                    for d2 in d1:
-                        time.sleep(1)
-                        red('Domain ==> {}'.format(d2[0]))
-                        blue('Ip ==> {}'.format(d2[1]))
-                except:
-                    pass
+        if num == 1:
+            filename = self.Result_subdns()
+            i = 0
+            for filename1 in filename[0]:
+                print_('查看的文件 | {}.{}'.format(i,filename1))
+                i += 1
+            
+            ipt1 = input_('文件编号>')
+            i = 0
+            for filename2 in filename[0]:
+                if ipt1 == str(i):
+                    d1 = oBtain_resuLt(filename2)
+                    try:
+                        for d2 in d1:
+                            time.sleep(1)
+                            red('Domain ==> {}'.format(d2[0]))
+                            blue('Ip ==> {}'.format(d2[1]))
+                    except:
+                        pass
 
-            i += 1
-
+                i += 1
 
 
     def sElect_Files__(self):
@@ -884,6 +884,37 @@ def grep(keyword,content):
         lc1 = content.replace(keyword,_red(keyword))
         return lc1
 
+
+
+def get_dirmap_url(content):
+    try:
+        url = domain = ''
+        te1 = content.strip()
+        if 'http://' in content or 'https://' in content:
+            url = content
+        else:
+            domain = content
+        if url:
+            d1 = get_domain(url)
+            u1 = 'http://'+d1+'/'
+            u2 = 'https://'+d1+'/'
+            r1 = requests.get(u1).status_code
+            r2 = requests.get(u2).status_code
+            if r1 == 200:
+                return u1
+            if r2 == 200:
+                return u2
+        if domain:
+            u1 = 'http://'+domain+'/'
+            u2 = 'https://'+domain+'/'
+            r1 = requests.get(u1).status_code
+            r2 = requests.get(u2).status_code
+            if r1 == 200:
+                return u1
+            if r2 == 200:
+                return u2
+    except:
+        pass
 
 
 

@@ -305,8 +305,13 @@ POC_T
                 c3 = self.commands__(cmd=['python3 {}subdns/subdns.py -u {} -d {}'.format(self.root,ipt1,ipt2)])
                 self.Run_subdns()
             if c2 is '4':
-                self.sElect_Files_()
-                self.Run_subdns()
+                print_("""
+1.查看结果.
+0.返回菜单.
+                """)
+                ipt1 = input_('>')
+                if ipt1 == '1':
+                    self.sElect_Files_(num=1)
             if c2 is '0':
                 self.main()
     
@@ -363,8 +368,6 @@ web目录扫描
         if c1:
             print_(content)
             ipt1 = input_('>')
-            if not ipt1:
-                self.Run_dirmap()
             if ipt1 is '1':
                 print_(helps1)
                 # c2 = self.commands__(cmd='python3 {}dirmap/dirmap.py --help'.format(self.root))
