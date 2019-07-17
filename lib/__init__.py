@@ -586,6 +586,10 @@ class Libs(object):
         self.commands__(cmd='sudo apt-get -y install axel')
         self.commands__(cmd='sudo apt-get -y install vim')
         self.commands__(cmd='sudo apt-get -y install tree')
+        self.commands__(cmd='python3 -m pip install pymongo==3.8.0 --user')
+        self.commands__(cmd='python3 -m pip install redis==3.2.1 --user')
+        self.commands__(cmd='python3 -m pip install pymongo==3.8.0 --user')
+        
 
         if system_platform == 'kali':
             self.commands__(cmd='python3 -m pip install exp10it==2.7.21 --user')

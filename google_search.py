@@ -61,7 +61,7 @@ class Search(object):
             return pathname        
 
 
-    def Website_search(self,keyword,number=3):
+    def Website_search(self,keyword,number=9):
         sources = ['github.com','cnblogs.com','github.io','csdn.net']
         for url in sources:
             datas = self.Google_Search(keyword='site:{} {}'.format(url,keyword),number=number)
@@ -116,9 +116,9 @@ class Search(object):
             self.browser_.quit()
 
 
-#queue = Queue()
-#s = Search(queue)
-#s.main()
+queue = Queue()
+s = Search(queue)
+s.main()
 
 
     
