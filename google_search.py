@@ -32,6 +32,25 @@ browser = webdriver.Chrome(
     chrome_options=browser_option
 )
 
+
+
+def argparse_():
+    import argparse
+    parser = argparse.ArgumentParser(description='google search.')
+    parser.add_argument('--version','-v',action='store_true',help='查看版本.')
+    parser.add_argument('--Gkeyword','-gk',help='Search keyword.')
+    parser.add_argument('--Rkeyword','-rk',help='Result keyword.')
+    # parser.add_argument('--path','-p',help='路径.')
+
+    args = parser.parse_args()
+    return args
+
+args = argparse_()
+gk = args.Gkeyword
+rk = args.Rkeyword
+
+
+
 # print('{}lib/chrome'.format(root))
 class Search(object):
     
@@ -61,13 +80,19 @@ class Search(object):
             return pathname        
 
 
-    def Website_search(self,keyword,number=9):
-        sources = ['github.com','cnblogs.com','github.io','csdn.net']
-        for url in sources:
-            datas = self.Google_Search(keyword='site:{} {}'.format(url,keyword),number=number)
+    def Website_search(self,keyword,number=9,sset=False):
+        if sset:
+            datas = self.Google_Search(keyword=keyword,number=number)
             for data in datas:
                 link = data[1]
                 self.Save(content=link)
+        else:
+            sources = ['github.com','cnblogs.com','github.io','csdn.net']
+            for url in sources:
+                datas = self.Google_Search(keyword='site:{} {}'.format(url,keyword),number=number)
+                for data in datas:
+                    link = data[1]
+                    self.Save(content=link)
         
 
     def Save(self,content):
@@ -92,21 +117,14 @@ class Search(object):
 
     def main(self):
         try:
-            print_("""
+            import argparse
 
-1.网站搜索.
-0.Exit.
-            """)
+
             self.option = False
             browser.minimize_window()
-            ipt1 = input('>')
-            if ipt1 is '1':
-                ipt2 = input('Google Search Keyword>')
-                ipt3 = input('Result Search Keyword>')
-                self.Find_Keyword__(keyword1=ipt2,keyword2=ipt3)
-            if ipt1 is '0':
-                exit(0)
-            
+            ipt2 = gk
+            ipt3 = rk
+            self.Find_Keyword__(keyword1=ipt2,keyword2=ipt3)
             browser.quit()
             self.browser.quit()
             self.browser_.quit()
